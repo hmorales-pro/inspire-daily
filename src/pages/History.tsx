@@ -10,6 +10,10 @@ import { optimizeResponse } from '@/lib/openai';
 import ResponseInput from '@/components/ResponseInput';
 import { supabase } from '@/lib/supabase';
 
+// Composants extraits pour réduire la taille du fichier
+import { ResponseCard } from '@/components/ResponseCard';
+import { ResponseList } from '@/components/ResponseList';
+
 const History = () => {
   const [editingId, setEditingId] = useState<number | null>(null);
   const [editedResponse, setEditedResponse] = useState('');
@@ -35,6 +39,7 @@ const History = () => {
         .single();
       
       if (error) throw error;
+      console.log('Profile data:', data); // Debug log
       return data;
     }
   });
@@ -59,6 +64,7 @@ const History = () => {
       setEditedResponse('');
       queryClient.invalidateQueries({ queryKey: ['responses'] });
     } catch (error) {
+      console.error('Save error:', error); // Debug log
       toast({
         title: "Erreur",
         description: "Une erreur est survenue lors de la mise à jour.",
@@ -68,7 +74,10 @@ const History = () => {
   };
 
   const handleOptimize = async (response: Response) => {
-    if (profile?.optimizations_count === 0) {
+    console.log('Current profile:', profile); // Debug log
+    console.log('Optimizations count:', profile?.optimizations_count); // Debug log
+    
+    if (!profile || profile.optimizations_count === 0) {
       toast({
         title: "Limite atteinte",
         description: "Vous avez atteint votre limite d'optimisations pour ce mois. Passez à l'abonnement premium pour des optimisations illimitées.",
@@ -84,6 +93,7 @@ const History = () => {
       
       // Mise à jour du compteur d'optimisations
       if (profile && profile.subscription_type === 'free') {
+        console.log('Updating optimizations count...'); // Debug log
         const { error: updateError } = await supabase
           .from('profiles')
           .update({ 
@@ -91,7 +101,10 @@ const History = () => {
           })
           .eq('id', profile.id);
 
-        if (updateError) throw updateError;
+        if (updateError) {
+          console.error('Update error:', updateError); // Debug log
+          throw updateError;
+        }
         
         // Invalider le cache pour forcer le rechargement du profil
         queryClient.invalidateQueries({ queryKey: ['profile'] });
@@ -109,6 +122,7 @@ const History = () => {
       
       queryClient.invalidateQueries({ queryKey: ['responses'] });
     } catch (error) {
+      console.error('Optimization error:', error); // Debug log
       toast({
         title: "Erreur",
         description: "Une erreur est survenue lors de l'optimisation.",
@@ -184,7 +198,7 @@ const History = () => {
                                 variant="outline"
                                 size="sm"
                                 onClick={() => handleOptimize(response)}
-                                disabled={isOptimizing || profile?.optimizations_count === 0}
+                                disabled={isOptimizing || !profile || profile.optimizations_count === 0}
                               >
                                 <RefreshCw className={`w-4 h-4 mr-2 ${isOptimizing ? 'animate-spin' : ''}`} />
                                 Optimiser
