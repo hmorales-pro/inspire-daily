@@ -13,7 +13,7 @@ export const PricingSection = () => {
           Choisissez votre formule
         </h2>
         <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
-          Des options flexibles pour répondre à vos besoins d'introspection et de développement personnel
+          Des options flexibles pour partager votre quotidien sur les réseaux sociaux
         </p>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {/* Free Plan */}
@@ -30,8 +30,7 @@ export const PricingSection = () => {
               <ul className="space-y-3">
                 <PricingFeature text="1 question par jour" />
                 <PricingFeature text="Historique limité à 30 jours" />
-                <PricingFeature text="3 optimisations IA par mois" />
-                <PricingFeature text="Saisie vocale" />
+                <PricingFeature text="5 optimisations IA par mois" />
               </ul>
               <Button 
                 className="w-full mt-6 bg-primary hover:bg-primary/90"
@@ -58,7 +57,6 @@ export const PricingSection = () => {
                 <PricingFeature text="Historique illimité" />
                 <PricingFeature text="Optimisations IA illimitées" />
                 <PricingFeature text="Saisie vocale" />
-                <PricingFeature text="Questions personnalisées" />
               </ul>
               <Button 
                 className="w-full mt-6 bg-primary hover:bg-primary/90"
@@ -84,7 +82,6 @@ export const PricingSection = () => {
                 <PricingFeature text="Tous les avantages Premium" />
                 <PricingFeature text="2 mois gratuits" />
                 <PricingFeature text="Support prioritaire" />
-                <PricingFeature text="Accès anticipé aux nouveautés" />
               </ul>
               <Button 
                 className="w-full mt-6 bg-primary hover:bg-primary/90"

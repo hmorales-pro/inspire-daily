@@ -16,9 +16,10 @@ interface ResponseInputProps {
   onSave: () => void;
   onOptimize: () => void;
   isOptimizing: boolean;
+  isPremium?: boolean;
 }
 
-const ResponseInput = ({ value, onChange, onSave, onOptimize, isOptimizing }: ResponseInputProps) => {
+const ResponseInput = ({ value, onChange, onSave, onOptimize, isOptimizing, isPremium = false }: ResponseInputProps) => {
   const { toast } = useToast();
 
   return (
@@ -54,14 +55,14 @@ const ResponseInput = ({ value, onChange, onSave, onOptimize, isOptimizing }: Re
                   variant="outline"
                   size="icon"
                   className="w-full"
-                  disabled
+                  disabled={!isPremium}
                 >
                   <Mic className="w-4 h-4" />
                 </Button>
               </div>
             </TooltipTrigger>
             <TooltipContent side="bottom">
-              <p>La reconnaissance vocale arrive bientôt !</p>
+              <p>{isPremium ? "La reconnaissance vocale arrive bientôt !" : "Fonctionnalité réservée aux membres Premium"}</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
