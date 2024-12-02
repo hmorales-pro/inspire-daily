@@ -6,12 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { useNavigate } from 'react-router-dom';
 
-interface Profile {
-  subscription_type: string;
-  optimizations_count: number;
-  optimizations_reset_date: string;
-}
-
 const Settings = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
@@ -47,9 +41,8 @@ const Settings = () => {
   };
 
   const getRemainingOptimizations = () => {
-    const limit = getOptimizationsLimit();
-    if (limit === Infinity) return 'Illimité';
-    return Math.max(0, limit - (profileData?.optimizations_count || 0));
+    if (profileData?.subscription_type === 'premium') return 'Illimité';
+    return profileData?.optimizations_count || 0;
   };
 
   const getNextResetDate = () => {
@@ -61,7 +54,8 @@ const Settings = () => {
     const limit = getOptimizationsLimit();
     if (limit === Infinity) return 100;
     const count = profileData?.optimizations_count || 0;
-    return Math.min(100, (count / limit) * 100);
+    const maxOptimizations = 5;
+    return Math.max(0, Math.min(100, ((maxOptimizations - count) / maxOptimizations) * 100));
   };
 
   const handleUpgrade = () => {
@@ -124,7 +118,7 @@ const Settings = () => {
                   className="mb-2"
                 />
                 <p className="text-sm text-muted-foreground">
-                  {getRemainingOptimizations()} optimisations restantes
+                  {getRemainingOptimizations()} optimisation{getRemainingOptimizations() !== 1 ? 's' : ''} restante{getRemainingOptimizations() !== 1 ? 's' : ''}
                   {getNextResetDate() && ` (Réinitialisation le ${getNextResetDate()})`}
                 </p>
               </div>
