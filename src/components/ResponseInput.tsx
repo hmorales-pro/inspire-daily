@@ -49,14 +49,16 @@ const ResponseInput = ({ value, onChange, onSave, onOptimize, isOptimizing }: Re
         <TooltipProvider delayDuration={50}>
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button
-                variant="outline"
-                size="icon"
-                className="w-10"
-                disabled
-              >
-                <Mic className="w-4 h-4" />
-              </Button>
+              <div className="w-10">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="w-full"
+                  disabled
+                >
+                  <Mic className="w-4 h-4" />
+                </Button>
+              </div>
             </TooltipTrigger>
             <TooltipContent side="bottom">
               <p>La reconnaissance vocale arrive bientôt !</p>
