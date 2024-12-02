@@ -2,7 +2,12 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 import Stripe from 'https://esm.sh/stripe@11.1.0?target=deno'
 
-const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY') as string, {
+// Use test key in development, production key in production
+const stripeKey = Deno.env.get('DENO_ENV') === 'development' 
+  ? Deno.env.get('STRIPE_SECRET_KEY_TEST')
+  : Deno.env.get('STRIPE_SECRET_KEY');
+
+const stripe = new Stripe(stripeKey as string, {
   apiVersion: '2023-10-16',
   httpClient: Stripe.createFetchHttpClient(),
 })
@@ -86,6 +91,7 @@ serve(async (req) => {
       }
     )
   } catch (error) {
+    console.error('Error:', error)
     return new Response(
       JSON.stringify({ error: error.message }),
       {
