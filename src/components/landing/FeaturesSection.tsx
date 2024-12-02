@@ -5,23 +5,23 @@ export const FeaturesSection = () => {
     <div className="bg-white py-16">
       <div className="container mx-auto px-4">
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-primary-dark">
-          Une expérience unique d'introspection
+          Créez du contenu qui vous ressemble
         </h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
           <FeatureCard
             title="Questions quotidiennes"
-            description="Recevez chaque jour une nouvelle question stimulante, soigneusement sélectionnée pour approfondir votre réflexion personnelle."
-            icon="🎯"
-          />
-          <FeatureCard
-            title="Historique complet"
-            description="Gardez une trace de toutes vos réponses et observez votre évolution au fil du temps. Revenez sur vos réflexions passées."
-            icon="📚"
-          />
-          <FeatureCard
-            title="Assistant IA"
-            description="Utilisez notre assistant IA pour affiner et approfondir vos réponses, obtenant ainsi de nouvelles perspectives."
+            description="Recevez chaque jour une nouvelle question inspirante pour alimenter vos réseaux sociaux avec du contenu authentique et engageant."
             icon="✨"
+          />
+          <FeatureCard
+            title="Inspiration garantie"
+            description="Plus besoin de chercher quoi poster : nos questions vous aident à partager votre quotidien et vos expériences de manière naturelle."
+            icon="💡"
+          />
+          <FeatureCard
+            title="Contenu personnalisé"
+            description="Adaptez vos réponses à votre style et votre audience. Créez du contenu unique qui reflète votre personnalité."
+            icon="🎯"
           />
           <FeatureCard
             title="Saisie vocale"
@@ -29,14 +29,14 @@ export const FeaturesSection = () => {
             icon="🎤"
           />
           <FeatureCard
-            title="Interface intuitive"
-            description="Une expérience utilisateur fluide et agréable, conçue pour vous permettre de vous concentrer sur l'essentiel."
-            icon="💫"
+            title="Assistant IA"
+            description="Affinez vos réponses avec notre assistant IA pour un contenu encore plus impactant sur vos réseaux sociaux."
+            icon="🤖"
           />
           <FeatureCard
-            title="Fonctionnalités à venir"
-            description="De nouvelles fonctionnalités en développement : partage sur les réseaux sociaux, export des données, et bien plus encore..."
-            icon="🚀"
+            title="Historique complet"
+            description="Gardez une trace de toutes vos réponses et réutilisez votre contenu quand vous le souhaitez."
+            icon="📚"
           />
         </div>
       </div>

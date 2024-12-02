@@ -8,10 +8,10 @@ export const CTASection = () => {
     <div className="bg-primary-dark text-white py-16">
       <div className="container mx-auto px-4 text-center">
         <h2 className="text-3xl md:text-4xl font-bold mb-6">
-          Prêt à commencer votre voyage introspectif ?
+          Prêt à créer du contenu qui vous inspire ?
         </h2>
         <p className="text-lg md:text-xl mb-8 text-gray-300 max-w-2xl mx-auto">
-          Rejoignez notre communauté et commencez à développer votre réflexion personnelle dès aujourd'hui.
+          Rejoignez notre communauté de créateurs et donnez vie à vos réseaux sociaux avec du contenu authentique.
         </p>
         <Button 
           variant="outline" 
