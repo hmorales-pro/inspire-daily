@@ -1,8 +1,25 @@
 import { useNavigate } from 'react-router-dom';
 import { Button } from './ui/button';
+import { useEffect, useState } from 'react';
+import { supabase } from '@/lib/supabase';
 
 const LandingHeader = () => {
   const navigate = useNavigate();
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    // Check initial auth state
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setIsAuthenticated(!!session);
+    });
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      setIsAuthenticated(!!session);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   return (
     <header className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-sm border-b border-border z-50">
@@ -28,19 +45,30 @@ const LandingHeader = () => {
           </div>
           
           <div className="flex items-center space-x-4">
-            <Button
-              variant="ghost"
-              onClick={() => navigate('/login')}
-              className="text-primary hover:text-primary/90"
-            >
-              Connexion
-            </Button>
-            <Button
-              onClick={() => navigate('/login')}
-              className="bg-primary hover:bg-primary/90 text-white"
-            >
-              S'inscrire
-            </Button>
+            {isAuthenticated ? (
+              <Button
+                onClick={() => navigate('/home')}
+                className="bg-primary hover:bg-primary/90 text-white"
+              >
+                Mon compte
+              </Button>
+            ) : (
+              <>
+                <Button
+                  variant="ghost"
+                  onClick={() => navigate('/login')}
+                  className="text-primary hover:text-primary/90"
+                >
+                  Connexion
+                </Button>
+                <Button
+                  onClick={() => navigate('/login')}
+                  className="bg-primary hover:bg-primary/90 text-white"
+                >
+                  S'inscrire
+                </Button>
+              </>
+            )}
           </div>
         </div>
       </div>
