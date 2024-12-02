@@ -12,16 +12,20 @@ const Login = () => {
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'SIGNED_IN' && session) {
-        navigate('/');
-      }
-      if (event === 'SIGNED_OUT') {
-        navigate('/login');
+        navigate('/home');
       }
       if (event === 'PASSWORD_RECOVERY') {
         toast({
           title: "Réinitialisation du mot de passe",
           description: "Vérifiez votre boîte mail pour réinitialiser votre mot de passe.",
         });
+      }
+    });
+
+    // Vérifier si l'utilisateur est déjà connecté
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) {
+        navigate('/home');
       }
     });
 
