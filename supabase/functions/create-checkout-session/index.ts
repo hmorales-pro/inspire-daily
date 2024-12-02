@@ -53,6 +53,8 @@ serve(async (req) => {
       throw new Error('Not authenticated')
     }
 
+    console.log('User:', user.id);
+
     // Get or create Stripe customer
     const { data: profile } = await supabaseClient
       .from('profiles')
@@ -60,9 +62,11 @@ serve(async (req) => {
       .eq('id', user.id)
       .single()
 
+    console.log('Profile:', profile);
     let customerId = profile?.stripe_customer_id
 
     if (!customerId) {
+      console.log('Creating new customer');
       const customer = await stripe.customers.create({
         email: user.email,
         metadata: {
@@ -70,12 +74,15 @@ serve(async (req) => {
         },
       })
       customerId = customer.id
+      console.log('New customer ID:', customerId);
 
       // Update profile with Stripe customer ID
       await supabaseClient
         .from('profiles')
         .update({ stripe_customer_id: customerId })
         .eq('id', user.id)
+    } else {
+      console.log('Using existing customer ID:', customerId);
     }
 
     // Create checkout session
