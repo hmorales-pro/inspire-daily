@@ -15,6 +15,7 @@ export interface Response {
 }
 
 export const saveResponse = async (response: Omit<Response, 'id' | 'created_at'>) => {
+  // Remove id from the response object to let Supabase auto-generate it
   const { data, error } = await supabase
     .from('responses')
     .insert(response)
