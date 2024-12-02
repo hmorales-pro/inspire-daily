@@ -33,6 +33,10 @@ export default {
           DEFAULT: "#7E69AB",
           foreground: "hsl(var(--secondary-foreground))",
         },
+        popover: {
+          DEFAULT: "white",
+          foreground: "#1A1F2C",
+        },
       },
       keyframes: {
         "accordion-down": {
