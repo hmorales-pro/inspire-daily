@@ -36,28 +36,63 @@ const ResponseInput = ({ value, onChange, onSave, onOptimize, isOptimizing }: Re
     };
 
     recognition.onend = () => {
-      setIsListening(false);
+      // Si on est toujours en mode écoute quand ça se termine, on redémarre
+      if (isListening) {
+        recognition.start();
+      } else {
+        setIsListening(false);
+      }
     };
 
     recognition.onerror = (event: any) => {
+      if (event.error === 'no-speech') {
+        // Redémarrer si aucune parole n'est détectée
+        recognition.stop();
+        setTimeout(() => {
+          if (isListening) {
+            recognition.start();
+          }
+        }, 100);
+        return;
+      }
+
       setIsListening(false);
       toast({
         title: "Erreur",
-        description: "Une erreur est survenue avec la reconnaissance vocale.",
+        description: "Une erreur est survenue avec la reconnaissance vocale. Veuillez réessayer.",
         variant: "destructive",
       });
     };
 
     recognition.onresult = (event: any) => {
-      const transcript = Array.from(event.results)
-        .map((result: any) => result[0])
-        .map(result => result.transcript)
-        .join('');
+      let finalTranscript = '';
+      let interimTranscript = '';
 
-      onChange(transcript);
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        const transcript = event.results[i][0].transcript;
+        if (event.results[i].isFinal) {
+          finalTranscript += transcript;
+        } else {
+          interimTranscript += transcript;
+        }
+      }
+
+      // Mettre à jour le texte avec le résultat final et temporaire
+      if (finalTranscript !== '') {
+        onChange(value + ' ' + finalTranscript);
+      }
     };
 
-    recognition.start();
+    try {
+      recognition.start();
+    } catch (error) {
+      console.error('Erreur lors du démarrage de la reconnaissance vocale:', error);
+      toast({
+        title: "Erreur",
+        description: "Impossible de démarrer la reconnaissance vocale. Veuillez réessayer.",
+        variant: "destructive",
+      });
+    }
 
     // Stocker la référence pour pouvoir l'arrêter plus tard
     (window as any).recognition = recognition;
