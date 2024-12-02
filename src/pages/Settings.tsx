@@ -4,11 +4,15 @@ import { supabase } from '@/lib/supabase';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useToast } from "@/components/ui/use-toast";
+import { Loader2 } from "lucide-react";
 
 const Settings = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const { toast } = useToast();
+  const [searchParams] = useSearchParams();
 
   const { data: session } = useQuery({
     queryKey: ['session'],
@@ -55,12 +59,27 @@ const Settings = () => {
     if (limit === Infinity) return 100;
     const count = profileData?.optimizations_count || 0;
     const maxOptimizations = 5;
-    return Math.max(0, Math.min(100, ((maxOptimizations - count) / maxOptimizations) * 100));
+    return Math.max(0, Math.min(100, (count / maxOptimizations) * 100));
   };
 
-  const handleUpgrade = () => {
-    // TODO: Implement Stripe integration
-    console.log('Upgrade to premium');
+  const handleUpgrade = async () => {
+    try {
+      const response = await supabase.functions.invoke('create-checkout-session');
+      
+      if (response.error) throw response.error;
+      
+      const { url } = response.data;
+      if (url) {
+        window.location.href = url;
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      toast({
+        title: "Erreur",
+        description: "Une erreur est survenue lors de la création de la session de paiement.",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleSignOut = async () => {
@@ -68,6 +87,20 @@ const Settings = () => {
     queryClient.clear();
     navigate('/login');
   };
+
+  useEffect(() => {
+    if (searchParams.get('success') === 'true') {
+      toast({
+        title: "Succès !",
+        description: "Votre abonnement Premium a été activé avec succès.",
+      });
+      queryClient.invalidateQueries({ queryKey: ['profile'] });
+    } else if (searchParams.get('canceled') === 'true') {
+      toast({
+        description: "Le processus de paiement a été annulé.",
+      });
+    }
+  }, [searchParams, toast, queryClient]);
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
@@ -83,7 +116,7 @@ const Settings = () => {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-primary-light p-4 flex items-center justify-center">
-        <p className="text-muted-foreground">Chargement...</p>
+        <Loader2 className="h-6 w-6 animate-spin" />
       </div>
     );
   }
