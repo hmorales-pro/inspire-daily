@@ -20,17 +20,19 @@ Deno.serve(async (req) => {
       });
     }
 
-    // Obtenir le premier jour du mois prochain
+    // Obtenir le premier jour du mois en cours
     const today = new Date();
-    const firstDayNextMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1);
+    const firstDayCurrentMonth = new Date(today.getFullYear(), today.getMonth(), 1);
     
-    // Calculer le nombre de jours dans le mois prochain
-    const lastDayNextMonth = new Date(today.getFullYear(), today.getMonth() + 2, 0);
-    const daysInNextMonth = lastDayNextMonth.getDate();
+    // Calculer le nombre de jours dans le mois en cours
+    const lastDayCurrentMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+    const daysInCurrentMonth = lastDayCurrentMonth.getDate();
 
-    // Générer les questions avec GPT-4o
+    console.log(`Generating questions for ${firstDayCurrentMonth.toISOString().split('T')[0]} to ${lastDayCurrentMonth.toISOString().split('T')[0]}`);
+
+    // Générer les questions avec GPT-4
     const completion = await openai.chat.completions.create({
-      model: 'gpt-4o',
+      model: 'gpt-4',
       messages: [
         {
           role: 'system',
@@ -38,7 +40,7 @@ Deno.serve(async (req) => {
         },
         {
           role: 'user',
-          content: `Génère ${daysInNextMonth} questions uniques en français pour l'introspection quotidienne. Format: une question par ligne, sans numérotation ni ponctuation au début. Les questions doivent être variées et couvrir différents aspects du développement professionnel.`
+          content: `Génère ${daysInCurrentMonth} questions uniques en français pour l'introspection quotidienne. Format: une question par ligne, sans numérotation ni ponctuation au début. Les questions doivent être variées et couvrir différents aspects du développement professionnel.`
         }
       ]
     });
@@ -46,10 +48,12 @@ Deno.serve(async (req) => {
     const questions = completion.choices[0].message.content!.split('\n')
       .filter(q => q.trim().length > 0);
 
+    console.log(`Generated ${questions.length} questions`);
+
     // Insérer les questions dans la base de données
     const questionsToInsert = questions.map((question, index) => ({
       question,
-      display_date: new Date(firstDayNextMonth.getFullYear(), firstDayNextMonth.getMonth(), index + 1).toISOString().split('T')[0]
+      display_date: new Date(firstDayCurrentMonth.getFullYear(), firstDayCurrentMonth.getMonth(), index + 1).toISOString().split('T')[0]
     }));
 
     const { error } = await supabase
@@ -58,11 +62,14 @@ Deno.serve(async (req) => {
 
     if (error) throw error;
 
+    console.log('Questions successfully inserted into the database');
+
     return new Response(
       JSON.stringify({ success: true, questionsGenerated: questions.length }),
       { headers: { 'Content-Type': 'application/json' } }
     );
   } catch (error) {
+    console.error('Error:', error);
     return new Response(
       JSON.stringify({ error: error.message }),
       { status: 500, headers: { 'Content-Type': 'application/json' } }
