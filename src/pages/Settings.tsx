@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/lib/supabase';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -13,6 +13,7 @@ const Settings = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [searchParams] = useSearchParams();
+  const [isUpgrading, setIsUpgrading] = useState(false);
 
   const { data: session } = useQuery({
     queryKey: ['session'],
@@ -64,6 +65,7 @@ const Settings = () => {
 
   const handleUpgrade = async () => {
     try {
+      setIsUpgrading(true);
       const response = await supabase.functions.invoke('create-checkout-session');
       
       if (response.error) throw response.error;
@@ -79,6 +81,8 @@ const Settings = () => {
         description: "Une erreur est survenue lors de la création de la session de paiement.",
         variant: "destructive",
       });
+    } finally {
+      setIsUpgrading(false);
     }
   };
 
@@ -90,7 +94,6 @@ const Settings = () => {
 
   useEffect(() => {
     if (searchParams.get('success') === 'true') {
-      // Invalidate profile query to force a refresh
       queryClient.invalidateQueries({ queryKey: ['profile'] });
       toast({
         title: "Succès !",
@@ -158,8 +161,19 @@ const Settings = () => {
               </div>
 
               {profileData?.subscription_type === 'free' && (
-                <Button onClick={handleUpgrade} className="w-full">
-                  Passer à l'abonnement Premium (5€/mois)
+                <Button 
+                  onClick={handleUpgrade} 
+                  className="w-full" 
+                  disabled={isUpgrading}
+                >
+                  {isUpgrading ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Redirection vers le paiement...
+                    </>
+                  ) : (
+                    'Passer à l'abonnement Premium (5€/mois)'
+                  )}
                 </Button>
               )}
             </CardContent>
