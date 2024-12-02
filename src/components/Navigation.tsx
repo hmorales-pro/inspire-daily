@@ -1,4 +1,4 @@
-import { Home, History, Settings } from "lucide-react";
+import { Home, History } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
 const Navigation = () => {
@@ -29,16 +29,6 @@ const Navigation = () => {
         >
           <History className="h-5 w-5" />
           <span className="text-xs">Historique</span>
-        </Link>
-        
-        <Link
-          to="/settings"
-          className={`flex flex-col items-center p-2 ${
-            isActive("/settings") ? "text-primary" : "text-muted-foreground"
-          }`}
-        >
-          <Settings className="h-5 w-5" />
-          <span className="text-xs">Paramètres</span>
         </Link>
       </div>
     </nav>
