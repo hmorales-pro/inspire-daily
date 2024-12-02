@@ -3,6 +3,8 @@ import QuestionCard from '@/components/QuestionCard';
 import ResponseInput from '@/components/ResponseInput';
 import { useToast } from "@/components/ui/use-toast";
 import { useNavigate } from 'react-router-dom';
+import { saveResponse } from '@/lib/supabase';
+import { optimizeResponse } from '@/lib/openai';
 
 const Index = () => {
   const [response, setResponse] = useState('');
@@ -20,50 +22,46 @@ const Index = () => {
     })
   };
 
-  const handleSave = () => {
-    // Ici, vous pourriez sauvegarder la réponse dans une base de données
-    const savedResponse = {
-      id: Date.now(),
-      question: todayQuestion.question,
-      response: response,
-      date: new Date(),
-      isOptimized: false
-    };
-    
-    // Pour l'instant, on simule la sauvegarde en console
-    console.log('Réponse sauvegardée :', savedResponse);
-    
-    toast({
-      title: "Réponse enregistrée",
-      description: "Votre réponse a été sauvegardée avec succès.",
-    });
-    
-    setResponse('');
-    navigate('/history');
+  const handleSave = async () => {
+    try {
+      await saveResponse({
+        question: todayQuestion.question,
+        response: response,
+        is_optimized: false
+      });
+      
+      toast({
+        title: "Réponse enregistrée",
+        description: "Votre réponse a été sauvegardée avec succès.",
+      });
+      
+      setResponse('');
+      navigate('/history');
+    } catch (error) {
+      toast({
+        title: "Erreur",
+        description: "Une erreur est survenue lors de la sauvegarde.",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleOptimize = async () => {
     setIsOptimizing(true);
     
     try {
-      // Simulation d'un appel API pour l'optimisation
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      const optimizedContent = await optimizeResponse(response);
       
-      // Ici, vous pourriez appeler une API d'IA pour optimiser le contenu
-      const optimizedResponse = {
-        id: Date.now(),
+      await saveResponse({
         question: todayQuestion.question,
-        originalResponse: response,
-        optimizedResponse: response + "\n\n#expertise #apprentissage #croissance",
-        date: new Date(),
-        isOptimized: true
-      };
-      
-      console.log('Réponse optimisée :', optimizedResponse);
+        response: response,
+        is_optimized: true,
+        optimized_response: optimizedContent
+      });
       
       toast({
         title: "Réponse optimisée",
-        description: "Votre contenu a été optimisé avec succès.",
+        description: "Votre contenu a été optimisé et sauvegardé avec succès.",
       });
       
       setResponse('');
