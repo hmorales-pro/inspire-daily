@@ -8,6 +8,7 @@ import { Edit2, RefreshCw } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { optimizeResponse } from '@/lib/openai';
 import ResponseInput from '@/components/ResponseInput';
+import { supabase } from '@/lib/supabase';
 
 const History = () => {
   const [editingId, setEditingId] = useState<number | null>(null);
@@ -19,6 +20,23 @@ const History = () => {
   const { data: responses, isLoading, error } = useQuery({
     queryKey: ['responses'],
     queryFn: getResponses
+  });
+
+  const { data: profile } = useQuery({
+    queryKey: ['profile'],
+    queryFn: async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.user) return null;
+      
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', session.user.id)
+        .single();
+      
+      if (error) throw error;
+      return data;
+    }
   });
 
   const handleEdit = (response: Response) => {
@@ -50,10 +68,34 @@ const History = () => {
   };
 
   const handleOptimize = async (response: Response) => {
+    if (profile?.optimizations_count === 0) {
+      toast({
+        title: "Limite atteinte",
+        description: "Vous avez atteint votre limite d'optimisations pour ce mois. Passez à l'abonnement premium pour des optimisations illimitées.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsOptimizing(true);
     
     try {
       const optimizedContent = await optimizeResponse(response.response);
+      
+      // Mise à jour du compteur d'optimisations
+      if (profile && profile.subscription_type === 'free') {
+        const { error: updateError } = await supabase
+          .from('profiles')
+          .update({ 
+            optimizations_count: Math.max(0, (profile.optimizations_count || 0) - 1)
+          })
+          .eq('id', profile.id);
+
+        if (updateError) throw updateError;
+        
+        // Invalider le cache pour forcer le rechargement du profil
+        queryClient.invalidateQueries({ queryKey: ['profile'] });
+      }
       
       await updateResponse(response.id!, {
         is_optimized: true,
@@ -142,7 +184,7 @@ const History = () => {
                                 variant="outline"
                                 size="sm"
                                 onClick={() => handleOptimize(response)}
-                                disabled={isOptimizing}
+                                disabled={isOptimizing || profile?.optimizations_count === 0}
                               >
                                 <RefreshCw className={`w-4 h-4 mr-2 ${isOptimizing ? 'animate-spin' : ''}`} />
                                 Optimiser
