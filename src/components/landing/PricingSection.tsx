@@ -15,7 +15,7 @@ export const PricingSection = () => {
         <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
           Des options flexibles pour partager votre quotidien sur les réseaux sociaux
         </p>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
           {/* Free Plan */}
           <Card className="bg-white">
             <CardHeader>
@@ -63,31 +63,6 @@ export const PricingSection = () => {
                 onClick={() => navigate("/login")}
               >
                 Choisir Premium
-              </Button>
-            </CardContent>
-          </Card>
-
-          {/* Annual Plan */}
-          <Card className="bg-white">
-            <CardHeader>
-              <CardTitle className="text-2xl font-bold">Annuel</CardTitle>
-              <CardDescription>La meilleure valeur</CardDescription>
-              <div className="mt-4">
-                <span className="text-4xl font-bold">50€</span>
-                <span className="text-gray-500">/an</span>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <ul className="space-y-3">
-                <PricingFeature text="Tous les avantages Premium" />
-                <PricingFeature text="2 mois gratuits" />
-                <PricingFeature text="Support prioritaire" />
-              </ul>
-              <Button 
-                className="w-full mt-6 bg-primary hover:bg-primary/90"
-                onClick={() => navigate("/login")}
-              >
-                Économiser 17%
               </Button>
             </CardContent>
           </Card>
