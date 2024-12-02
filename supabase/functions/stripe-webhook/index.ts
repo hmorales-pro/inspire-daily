@@ -7,44 +7,52 @@ const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY') as string, {
   httpClient: Stripe.createFetchHttpClient(),
 })
 
-const cryptoProvider = Stripe.createSubtleCryptoProvider()
-
 serve(async (request) => {
   try {
     const signature = request.headers.get('Stripe-Signature')
-    console.log('Webhook called with signature:', signature)
-
-    const body = await request.text()
-    let event
-    try {
-      event = await stripe.webhooks.constructEventAsync(
-        body,
-        signature!,
-        Deno.env.get('STRIPE_WEBHOOK_SIGNING_SECRET')!,
-        undefined,
-        cryptoProvider
-      )
-    } catch (err) {
-      console.error('Error verifying webhook signature:', err)
-      return new Response(err.message, { status: 400 })
+    
+    if (!signature) {
+      console.error('No Stripe signature found in headers')
+      return new Response('No Stripe signature found in request', { status: 400 })
     }
 
+    console.log('Processing webhook with signature:', signature)
+    const body = await request.text()
+    
+    // Vérification de la signature du webhook
+    let event
+    try {
+      event = stripe.webhooks.constructEvent(
+        body,
+        signature,
+        Deno.env.get('STRIPE_WEBHOOK_SIGNING_SECRET') as string
+      )
+    } catch (err) {
+      console.error(`⚠️ Webhook signature verification failed:`, err.message)
+      return new Response(`Webhook signature verification failed: ${err.message}`, { status: 400 })
+    }
+
+    console.log('✓ Webhook signature verified')
     console.log('Event type:', event.type)
 
     if (event.type === 'checkout.session.completed') {
       const session = event.data.object
-      console.log('Session data:', session)
+      console.log('Processing checkout session:', session)
       
       const customerId = session.customer as string
+      if (!customerId) {
+        throw new Error('No customer ID found in session')
+      }
+      
       console.log('Customer ID:', customerId)
 
-      // Initialize Supabase client
+      // Initialisation du client Supabase avec la clé service
       const supabaseAdmin = createClient(
         Deno.env.get('SUPABASE_URL') ?? '',
-        Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
+        Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
       )
 
-      console.log('Fetching profile for customer:', customerId)
+      // Recherche du profil utilisateur
       const { data: profiles, error: profileError } = await supabaseAdmin
         .from('profiles')
         .select('*')
@@ -63,20 +71,19 @@ serve(async (request) => {
       const profile = profiles[0]
       console.log('Found profile:', profile)
 
-      // Vérifier le statut du paiement
-      console.log('Session payment status:', session.payment_status)
+      // Vérification du statut du paiement
       if (session.payment_status !== 'paid') {
         console.error('Payment not completed')
         throw new Error('Payment not completed')
       }
 
-      console.log('Updating profile subscription status')
-      const { data: updateData, error: updateError } = await supabaseAdmin
+      // Mise à jour du profil
+      const { error: updateError } = await supabaseAdmin
         .from('profiles')
         .update({
           subscription_type: 'premium',
           subscription_status: 'active',
-          optimizations_count: null // Mettre à null pour les utilisateurs premium (pas de limite)
+          optimizations_count: null
         })
         .eq('id', profile.id)
 
@@ -85,15 +92,20 @@ serve(async (request) => {
         throw updateError
       }
 
-      console.log('Profile updated successfully:', updateData)
+      console.log('✓ Profile updated successfully')
+      return new Response(JSON.stringify({ success: true }), { 
+        status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      })
     }
 
-    return new Response(JSON.stringify({ ok: true }), { 
+    // Pour les autres types d'événements
+    return new Response(JSON.stringify({ received: true }), { 
       status: 200,
       headers: { 'Content-Type': 'application/json' }
     })
   } catch (err) {
-    console.error('Error in webhook handler:', err)
+    console.error('❌ Error processing webhook:', err)
     return new Response(
       JSON.stringify({ error: err.message }), 
       { 
