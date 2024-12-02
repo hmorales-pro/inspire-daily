@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 import QuestionCard from '@/components/QuestionCard';
 import ResponseInput from '@/components/ResponseInput';
 import { useToast } from "@/components/ui/use-toast";
+import { useNavigate } from 'react-router-dom';
 
 const Index = () => {
   const [response, setResponse] = useState('');
   const [isOptimizing, setIsOptimizing] = useState(false);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
-  // Pour cette première version, on utilise une question statique
   const todayQuestion = {
     question: "Quelle est la plus grande leçon que vous ayez apprise dans votre domaine d'expertise ?",
     date: new Date().toLocaleDateString('fr-FR', {
@@ -20,25 +21,62 @@ const Index = () => {
   };
 
   const handleSave = () => {
+    // Ici, vous pourriez sauvegarder la réponse dans une base de données
+    const savedResponse = {
+      id: Date.now(),
+      question: todayQuestion.question,
+      response: response,
+      date: new Date(),
+      isOptimized: false
+    };
+    
+    // Pour l'instant, on simule la sauvegarde en console
+    console.log('Réponse sauvegardée :', savedResponse);
+    
     toast({
       title: "Réponse enregistrée",
       description: "Votre réponse a été sauvegardée avec succès.",
     });
+    
     setResponse('');
+    navigate('/history');
   };
 
   const handleOptimize = async () => {
     setIsOptimizing(true);
-    // Simulation d'une optimisation
-    await new Promise(resolve => setTimeout(resolve, 2000));
     
-    toast({
-      title: "Réponse optimisée",
-      description: "Votre contenu a été optimisé avec succès.",
-    });
-    
-    setIsOptimizing(false);
-    setResponse('');
+    try {
+      // Simulation d'un appel API pour l'optimisation
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      // Ici, vous pourriez appeler une API d'IA pour optimiser le contenu
+      const optimizedResponse = {
+        id: Date.now(),
+        question: todayQuestion.question,
+        originalResponse: response,
+        optimizedResponse: response + "\n\n#expertise #apprentissage #croissance",
+        date: new Date(),
+        isOptimized: true
+      };
+      
+      console.log('Réponse optimisée :', optimizedResponse);
+      
+      toast({
+        title: "Réponse optimisée",
+        description: "Votre contenu a été optimisé avec succès.",
+      });
+      
+      setResponse('');
+      navigate('/history');
+    } catch (error) {
+      toast({
+        title: "Erreur",
+        description: "Une erreur est survenue lors de l'optimisation.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsOptimizing(false);
+    }
   };
 
   return (
