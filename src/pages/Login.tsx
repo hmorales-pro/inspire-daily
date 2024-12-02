@@ -53,34 +53,24 @@ const Login = () => {
           localization={{
             variables: {
               sign_in: {
-                email_input_placeholder: 'Votre email',
-                password_input_placeholder: 'Votre mot de passe',
                 email_label: 'Email',
                 password_label: 'Mot de passe',
+                email_input_placeholder: 'Votre email',
+                password_input_placeholder: 'Votre mot de passe',
                 button_label: 'Se connecter',
                 loading_button_label: 'Connexion en cours...',
                 social_provider_text: 'Se connecter avec {{provider}}',
-                link_text: "Vous n'avez pas de compte ? Inscrivez-vous",
-                password_recovery: {
-                  button_label: "Mot de passe oublié ?",
-                  message: "Nous vous enverrons un lien pour réinitialiser votre mot de passe.",
-                },
-                error_message: {
-                  email_required: "L'email est requis",
-                  password_required: "Le mot de passe est requis",
-                  invalid_credentials: "Email ou mot de passe incorrect",
-                }
+                link_text: "Vous n'avez pas de compte ? Inscrivez-vous"
               },
               sign_up: {
-                email_input_placeholder: 'Votre email',
-                password_input_placeholder: 'Votre mot de passe',
                 email_label: 'Email',
                 password_label: 'Mot de passe',
+                email_input_placeholder: 'Votre email',
+                password_input_placeholder: 'Votre mot de passe',
                 button_label: "S'inscrire",
                 loading_button_label: 'Inscription en cours...',
                 social_provider_text: "S'inscrire avec {{provider}}",
-                link_text: "Vous avez déjà un compte ? Connectez-vous",
-                confirmation_text: "Vérifiez votre email pour confirmer votre inscription",
+                link_text: "Vous avez déjà un compte ? Connectez-vous"
               }
             }
           }}
