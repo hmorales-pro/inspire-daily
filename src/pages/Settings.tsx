@@ -34,7 +34,11 @@ const Settings = () => {
         .eq('id', session.user.id)
         .single();
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error fetching profile:', error);
+        throw error;
+      }
+      console.log('Profile data:', data);
       return data;
     },
     enabled: !!session?.user?.id,
@@ -93,22 +97,29 @@ const Settings = () => {
   };
 
   useEffect(() => {
-    if (searchParams.get('success') === 'true') {
-      // Force un rechargement immédiat des données du profil
-      refetch();
-      
-      // Invalider le cache pour forcer un rechargement lors de la prochaine requête
-      queryClient.invalidateQueries({ queryKey: ['profile'] });
-      
-      toast({
-        title: "Succès !",
-        description: "Votre abonnement Premium a été activé avec succès.",
-      });
-    } else if (searchParams.get('canceled') === 'true') {
-      toast({
-        description: "Le processus de paiement a été annulé.",
-      });
-    }
+    const checkPaymentStatus = async () => {
+      if (searchParams.get('success') === 'true') {
+        // Attendre un peu pour laisser le temps au webhook de mettre à jour les données
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        
+        // Force un rechargement immédiat des données du profil
+        await refetch();
+        
+        // Invalider le cache pour forcer un rechargement lors de la prochaine requête
+        queryClient.invalidateQueries({ queryKey: ['profile'] });
+        
+        toast({
+          title: "Succès !",
+          description: "Votre abonnement Premium a été activé avec succès.",
+        });
+      } else if (searchParams.get('canceled') === 'true') {
+        toast({
+          description: "Le processus de paiement a été annulé.",
+        });
+      }
+    };
+
+    checkPaymentStatus();
   }, [searchParams, toast, queryClient, refetch]);
 
   useEffect(() => {

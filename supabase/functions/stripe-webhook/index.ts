@@ -7,27 +7,45 @@ const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY') as string, {
   httpClient: Stripe.createFetchHttpClient(),
 })
 
+const cryptoProvider = Stripe.createSubtleCryptoProvider()
+
 serve(async (request) => {
   try {
-    console.log('Webhook called - processing request')
+    const signature = request.headers.get('Stripe-Signature')
+    console.log('Webhook called with signature:', signature)
+
     const body = await request.text()
-    const event = JSON.parse(body)
-    console.log('Event type received:', event.type)
+    let event
+    try {
+      event = await stripe.webhooks.constructEventAsync(
+        body,
+        signature!,
+        Deno.env.get('STRIPE_WEBHOOK_SIGNING_SECRET')!,
+        undefined,
+        cryptoProvider
+      )
+    } catch (err) {
+      console.error('Error verifying webhook signature:', err)
+      return new Response(err.message, { status: 400 })
+    }
+
+    console.log('Event type:', event.type)
 
     if (event.type === 'checkout.session.completed') {
-      console.log('Processing checkout.session.completed event')
       const session = event.data.object
-      const customerId = session.customer
+      console.log('Session data:', session)
+      
+      const customerId = session.customer as string
       console.log('Customer ID:', customerId)
 
       // Initialize Supabase client
-      const supabaseClient = createClient(
+      const supabaseAdmin = createClient(
         Deno.env.get('SUPABASE_URL') ?? '',
         Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
       )
 
       console.log('Fetching profile for customer:', customerId)
-      const { data: profiles, error: profileError } = await supabaseClient
+      const { data: profiles, error: profileError } = await supabaseAdmin
         .from('profiles')
         .select('*')
         .eq('stripe_customer_id', customerId)
@@ -53,14 +71,14 @@ serve(async (request) => {
       }
 
       console.log('Updating profile subscription status')
-      const { data: updateData, error: updateError } = await supabaseClient
+      const { data: updateData, error: updateError } = await supabaseAdmin
         .from('profiles')
         .update({
           subscription_type: 'premium',
-          subscription_status: 'active'
+          subscription_status: 'active',
+          optimizations_count: null // Mettre à null pour les utilisateurs premium (pas de limite)
         })
         .eq('id', profile.id)
-        .select()
 
       if (updateError) {
         console.error('Error updating profile:', updateError)
