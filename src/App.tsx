@@ -11,6 +11,7 @@ import History from "./pages/History";
 import Settings from "./pages/Settings";
 import Navigation from "./components/Navigation";
 import Login from "./pages/Login";
+import Header from "./components/Header";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -46,7 +47,12 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
     return <Navigate to="/login" replace />;
   }
 
-  return <>{children}</>;
+  return (
+    <>
+      <Header />
+      {children}
+    </>
+  );
 };
 
 const App = () => (
@@ -56,7 +62,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
-          <div className="pb-16">
+          <div className="min-h-screen bg-primary-light">
             <Routes>
               <Route path="/login" element={<Login />} />
               <Route path="/" element={
