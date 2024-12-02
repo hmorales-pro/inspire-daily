@@ -3,7 +3,7 @@ import { Auth } from '@supabase/auth-ui-react';
 import { ThemeSupa } from '@supabase/auth-ui-shared';
 import { supabase } from '@/lib/supabase';
 import { useNavigate } from 'react-router-dom';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -14,10 +14,9 @@ const Login = () => {
       if (event === 'SIGNED_IN' && session) {
         navigate('/');
       }
-      if (event === 'USER_DELETED' || event === 'SIGNED_OUT') {
+      if (event === 'SIGNED_OUT') {
         navigate('/login');
       }
-      // Gérer les erreurs d'authentification
       if (event === 'PASSWORD_RECOVERY') {
         toast({
           title: "Réinitialisation du mot de passe",
@@ -51,14 +50,19 @@ const Login = () => {
           theme="light"
           providers={['google']}
           redirectTo={window.location.origin}
-          onError={(error) => {
-            toast({
-              variant: "destructive",
-              title: "Erreur de connexion",
-              description: error.message === "Invalid login credentials" 
-                ? "Email ou mot de passe incorrect"
-                : error.message,
-            });
+          localization={{
+            variables: {
+              sign_in: {
+                email_input_placeholder: 'Votre email',
+                password_input_placeholder: 'Votre mot de passe',
+                email_label: 'Email',
+                password_label: 'Mot de passe',
+                button_label: 'Se connecter',
+                loading_button_label: 'Connexion en cours...',
+                social_provider_text: 'Se connecter avec {{provider}}',
+                link_text: "Vous n'avez pas de compte ? Inscrivez-vous",
+              },
+            },
           }}
         />
       </div>
