@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/lib/supabase';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
+import { useNavigate } from 'react-router-dom';
 
 interface Profile {
   subscription_type: string;
@@ -13,7 +14,7 @@ interface Profile {
 
 const Settings = () => {
   const queryClient = useQueryClient();
-  const [profile, setProfile] = useState<Profile | null>(null);
+  const navigate = useNavigate();
 
   const { data: session } = useQuery({
     queryKey: ['session'],
@@ -23,13 +24,15 @@ const Settings = () => {
     },
   });
 
-  const { data: profileData } = useQuery({
-    queryKey: ['profile', session?.user?.id],
+  const { data: profileData, isLoading } = useQuery({
+    queryKey: ['profile'],
     queryFn: async () => {
+      if (!session?.user?.id) return null;
+      
       const { data, error } = await supabase
         .from('profiles')
         .select('*')
-        .eq('id', session?.user?.id)
+        .eq('id', session.user.id)
         .single();
 
       if (error) throw error;
@@ -57,7 +60,8 @@ const Settings = () => {
   const getProgressValue = () => {
     const limit = getOptimizationsLimit();
     if (limit === Infinity) return 100;
-    return ((profileData?.optimizations_count || 0) / limit) * 100;
+    const count = profileData?.optimizations_count || 0;
+    return Math.min(100, (count / limit) * 100);
   };
 
   const handleUpgrade = () => {
@@ -65,16 +69,30 @@ const Settings = () => {
     console.log('Upgrade to premium');
   };
 
-  // Écouter les changements d'authentification
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    queryClient.clear();
+    navigate('/login');
+  };
+
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'SIGNED_OUT') {
-        queryClient.invalidateQueries({ queryKey: ['profile'] });
+        queryClient.clear();
+        navigate('/login');
       }
     });
 
     return () => subscription.unsubscribe();
-  }, [queryClient]);
+  }, [queryClient, navigate]);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-primary-light p-4 flex items-center justify-center">
+        <p className="text-muted-foreground">Chargement...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-primary-light p-4">
@@ -126,9 +144,14 @@ const Settings = () => {
                 Gérez vos informations personnelles
               </CardDescription>
             </CardHeader>
-            <CardContent>
-              <p className="text-sm font-medium">Email</p>
-              <p className="text-muted-foreground">{session?.user?.email}</p>
+            <CardContent className="space-y-4">
+              <div>
+                <p className="text-sm font-medium">Email</p>
+                <p className="text-muted-foreground">{session?.user?.email}</p>
+              </div>
+              <Button onClick={handleSignOut} variant="destructive" className="w-full">
+                Se déconnecter
+              </Button>
             </CardContent>
           </Card>
         </div>
