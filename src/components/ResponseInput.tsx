@@ -33,10 +33,11 @@ const ResponseInput = ({ value, onChange, onSave, onOptimize, isOptimizing }: Re
 
     recognition.onstart = () => {
       setIsListening(true);
+      console.log('Démarrage de la reconnaissance vocale');
     };
 
     recognition.onend = () => {
-      // Si on est toujours en mode écoute quand ça se termine, on redémarre
+      console.log('Fin de la reconnaissance vocale, isListening:', isListening);
       if (isListening) {
         recognition.start();
       } else {
@@ -45,8 +46,8 @@ const ResponseInput = ({ value, onChange, onSave, onOptimize, isOptimizing }: Re
     };
 
     recognition.onerror = (event: any) => {
+      console.log('Erreur de reconnaissance vocale:', event.error);
       if (event.error === 'no-speech') {
-        // Redémarrer si aucune parole n'est détectée
         recognition.stop();
         setTimeout(() => {
           if (isListening) {
@@ -65,26 +66,27 @@ const ResponseInput = ({ value, onChange, onSave, onOptimize, isOptimizing }: Re
     };
 
     recognition.onresult = (event: any) => {
-      let finalTranscript = '';
-      let interimTranscript = '';
+      console.log('Résultat reçu:', event.results);
+      let currentTranscript = '';
 
       for (let i = event.resultIndex; i < event.results.length; i++) {
         const transcript = event.results[i][0].transcript;
         if (event.results[i].isFinal) {
-          finalTranscript += transcript;
-        } else {
-          interimTranscript += transcript;
+          currentTranscript += transcript + ' ';
         }
       }
 
-      // Mettre à jour le texte avec le résultat final et temporaire
-      if (finalTranscript !== '') {
-        onChange(value + ' ' + finalTranscript);
+      if (currentTranscript) {
+        console.log('Transcription:', currentTranscript);
+        // Concaténer le nouveau texte avec l'existant
+        const newValue = value ? `${value} ${currentTranscript}` : currentTranscript;
+        onChange(newValue.trim());
       }
     };
 
     try {
       recognition.start();
+      console.log('Reconnaissance vocale démarrée');
     } catch (error) {
       console.error('Erreur lors du démarrage de la reconnaissance vocale:', error);
       toast({
@@ -94,7 +96,6 @@ const ResponseInput = ({ value, onChange, onSave, onOptimize, isOptimizing }: Re
       });
     }
 
-    // Stocker la référence pour pouvoir l'arrêter plus tard
     (window as any).recognition = recognition;
   };
 
