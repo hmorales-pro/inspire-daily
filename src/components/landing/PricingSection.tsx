@@ -48,7 +48,7 @@ export const PricingSection = () => {
               <CardTitle className="text-2xl font-bold">Premium</CardTitle>
               <CardDescription>Pour aller plus loin</CardDescription>
               <div className="mt-4">
-                <span className="text-4xl font-bold">9€</span>
+                <span className="text-4xl font-bold">5€</span>
                 <span className="text-gray-500">/mois</span>
               </div>
             </CardHeader>
@@ -75,7 +75,7 @@ export const PricingSection = () => {
               <CardTitle className="text-2xl font-bold">Annuel</CardTitle>
               <CardDescription>La meilleure valeur</CardDescription>
               <div className="mt-4">
-                <span className="text-4xl font-bold">90€</span>
+                <span className="text-4xl font-bold">50€</span>
                 <span className="text-gray-500">/an</span>
               </div>
             </CardHeader>
@@ -90,7 +90,7 @@ export const PricingSection = () => {
                 className="w-full mt-6 bg-primary hover:bg-primary/90"
                 onClick={() => navigate("/login")}
               >
-                Économiser 25%
+                Économiser 17%
               </Button>
             </CardContent>
           </Card>
