@@ -9,6 +9,36 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      profiles: {
+        Row: {
+          email: string
+          id: string
+          optimizations_count: number | null
+          optimizations_reset_date: string | null
+          stripe_customer_id: string | null
+          subscription_status: string | null
+          subscription_type: string
+        }
+        Insert: {
+          email: string
+          id: string
+          optimizations_count?: number | null
+          optimizations_reset_date?: string | null
+          stripe_customer_id?: string | null
+          subscription_status?: string | null
+          subscription_type?: string
+        }
+        Update: {
+          email?: string
+          id?: string
+          optimizations_count?: number | null
+          optimizations_reset_date?: string | null
+          stripe_customer_id?: string | null
+          subscription_status?: string | null
+          subscription_type?: string
+        }
+        Relationships: []
+      }
       responses: {
         Row: {
           created_at: string
@@ -17,6 +47,7 @@ export type Database = {
           optimized_response: string | null
           question: string
           response: string
+          user_id: string | null
         }
         Insert: {
           created_at?: string
@@ -25,6 +56,7 @@ export type Database = {
           optimized_response?: string | null
           question: string
           response: string
+          user_id?: string | null
         }
         Update: {
           created_at?: string
@@ -33,8 +65,17 @@ export type Database = {
           optimized_response?: string | null
           question?: string
           response?: string
+          user_id?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "responses_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
