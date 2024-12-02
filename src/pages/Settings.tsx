@@ -23,7 +23,7 @@ const Settings = () => {
     },
   });
 
-  const { data: profileData, isLoading } = useQuery({
+  const { data: profileData, isLoading, refetch } = useQuery({
     queryKey: ['profile'],
     queryFn: async () => {
       if (!session?.user?.id) return null;
@@ -94,7 +94,12 @@ const Settings = () => {
 
   useEffect(() => {
     if (searchParams.get('success') === 'true') {
+      // Force un rechargement immédiat des données du profil
+      refetch();
+      
+      // Invalider le cache pour forcer un rechargement lors de la prochaine requête
       queryClient.invalidateQueries({ queryKey: ['profile'] });
+      
       toast({
         title: "Succès !",
         description: "Votre abonnement Premium a été activé avec succès.",
@@ -104,7 +109,7 @@ const Settings = () => {
         description: "Le processus de paiement a été annulé.",
       });
     }
-  }, [searchParams, toast, queryClient]);
+  }, [searchParams, toast, queryClient, refetch]);
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
