@@ -1,14 +1,83 @@
-import React from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { getResponses, type Response } from '@/lib/supabase';
+import React, { useState } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { getResponses, type Response, saveResponse } from '@/lib/supabase';
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Button } from "@/components/ui/button";
+import { Edit2, RefreshCw } from "lucide-react";
+import { useToast } from "@/components/ui/use-toast";
+import { optimizeResponse } from '@/lib/openai';
+import ResponseInput from '@/components/ResponseInput';
 
 const History = () => {
+  const [editingId, setEditingId] = useState<number | null>(null);
+  const [editedResponse, setEditedResponse] = useState('');
+  const [isOptimizing, setIsOptimizing] = useState(false);
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+
   const { data: responses, isLoading, error } = useQuery({
     queryKey: ['responses'],
     queryFn: getResponses
   });
+
+  const handleEdit = (response: Response) => {
+    setEditingId(response.id!);
+    setEditedResponse(response.response);
+  };
+
+  const handleSave = async (response: Response) => {
+    try {
+      await saveResponse({
+        ...response,
+        response: editedResponse,
+      });
+      
+      toast({
+        title: "Réponse mise à jour",
+        description: "Votre réponse a été modifiée avec succès.",
+      });
+      
+      setEditingId(null);
+      setEditedResponse('');
+      queryClient.invalidateQueries({ queryKey: ['responses'] });
+    } catch (error) {
+      toast({
+        title: "Erreur",
+        description: "Une erreur est survenue lors de la mise à jour.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleOptimize = async (response: Response) => {
+    setIsOptimizing(true);
+    
+    try {
+      const optimizedContent = await optimizeResponse(response.response);
+      
+      await saveResponse({
+        ...response,
+        is_optimized: true,
+        optimized_response: optimizedContent,
+      });
+      
+      toast({
+        title: "Réponse optimisée",
+        description: "Votre contenu a été optimisé avec succès.",
+      });
+      
+      queryClient.invalidateQueries({ queryKey: ['responses'] });
+    } catch (error) {
+      toast({
+        title: "Erreur",
+        description: "Une erreur est survenue lors de l'optimisation.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsOptimizing(false);
+    }
+  };
 
   if (isLoading) {
     return (
@@ -49,15 +118,48 @@ const History = () => {
                     </p>
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    <div>
-                      <h3 className="font-medium mb-2">Réponse originale :</h3>
-                      <p className="text-muted-foreground">{response.response}</p>
-                    </div>
-                    {response.is_optimized && response.optimized_response && (
-                      <div>
-                        <h3 className="font-medium mb-2">Réponse optimisée :</h3>
-                        <p className="text-muted-foreground">{response.optimized_response}</p>
-                      </div>
+                    {editingId === response.id ? (
+                      <ResponseInput
+                        value={editedResponse}
+                        onChange={setEditedResponse}
+                        onSave={() => handleSave(response)}
+                        onOptimize={() => handleOptimize(response)}
+                        isOptimizing={isOptimizing}
+                      />
+                    ) : (
+                      <>
+                        <div>
+                          <div className="flex justify-between items-center mb-2">
+                            <h3 className="font-medium">Réponse originale :</h3>
+                            <div className="space-x-2">
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => handleEdit(response)}
+                              >
+                                <Edit2 className="w-4 h-4 mr-2" />
+                                Éditer
+                              </Button>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => handleOptimize(response)}
+                                disabled={isOptimizing}
+                              >
+                                <RefreshCw className={`w-4 h-4 mr-2 ${isOptimizing ? 'animate-spin' : ''}`} />
+                                Optimiser
+                              </Button>
+                            </div>
+                          </div>
+                          <p className="text-muted-foreground">{response.response}</p>
+                        </div>
+                        {response.is_optimized && response.optimized_response && (
+                          <div>
+                            <h3 className="font-medium mb-2">Réponse optimisée :</h3>
+                            <p className="text-muted-foreground">{response.optimized_response}</p>
+                          </div>
+                        )}
+                      </>
                     )}
                   </CardContent>
                 </Card>
