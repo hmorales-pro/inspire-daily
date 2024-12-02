@@ -1,7 +1,7 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getResponses, type Response } from '@/lib/supabase';
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 const History = () => {
@@ -43,7 +43,7 @@ const History = () => {
               responses?.map((response: Response) => (
                 <Card key={response.id}>
                   <CardHeader>
-                    <CardTitle className="text-lg">{response.question}</CardTitle>
+                    <h2 className="text-lg font-semibold">{response.question}</h2>
                     <p className="text-sm text-muted-foreground">
                       {new Date(response.created_at!).toLocaleDateString('fr-FR')}
                     </p>
