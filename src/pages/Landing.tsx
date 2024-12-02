@@ -58,11 +58,6 @@ const Landing = () => {
               icon="🎤"
             />
             <FeatureCard
-              title="Export des données"
-              description="Téléchargez l'ensemble de vos réponses dans un format pratique pour les conserver ou les analyser."
-              icon="📥"
-            />
-            <FeatureCard
               title="Interface intuitive"
               description="Une expérience utilisateur fluide et agréable, conçue pour vous permettre de vous concentrer sur l'essentiel."
               icon="💫"
@@ -123,7 +118,6 @@ const Landing = () => {
                   <PricingFeature text="Historique illimité" />
                   <PricingFeature text="Optimisations IA illimitées" />
                   <PricingFeature text="Saisie vocale" />
-                  <PricingFeature text="Export des données" />
                   <PricingFeature text="Questions personnalisées" />
                 </ul>
                 <Button 
@@ -164,7 +158,7 @@ const Landing = () => {
         </div>
       </div>
 
-      {/* CTA Section */}
+      {/* CTA Section and Footer */}
       <div className="bg-primary-dark text-white py-16">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">
@@ -249,6 +243,7 @@ const Landing = () => {
   );
 };
 
+// Component definitions
 // Composant FeatureCard
 const FeatureCard = ({ title, description, icon }: { title: string; description: string; icon: string }) => (
   <div className="bg-gray-50 p-6 rounded-lg text-center animate-fade-in">
