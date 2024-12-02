@@ -11,10 +11,8 @@ const stripeKey = Deno.env.get('DENO_ENV') === 'development'
   ? Deno.env.get('STRIPE_SECRET_KEY_TEST')
   : Deno.env.get('STRIPE_SECRET_KEY');
 
-// Use different price IDs for test and production
-const priceId = Deno.env.get('DENO_ENV') === 'development'
-  ? 'price_1QRYL0FBde5KXeAQgcVMKhww'  // Test price ID
-  : 'price_1QRYA7FBde5KXeAQpiM1fZdB';  // Production price ID
+// Use production price ID
+const priceId = 'price_1QRYA7FBde5KXeAQpiM1fZdB';
 
 const stripe = new Stripe(stripeKey as string, {
   apiVersion: '2023-10-16',
