@@ -45,21 +45,29 @@ serve(async (request) => {
       const profile = profiles[0]
       console.log('Found profile:', profile)
 
+      // Vérifier le statut du paiement
+      console.log('Session payment status:', session.payment_status)
+      if (session.payment_status !== 'paid') {
+        console.error('Payment not completed')
+        throw new Error('Payment not completed')
+      }
+
       console.log('Updating profile subscription status')
-      const { error: updateError } = await supabaseClient
+      const { data: updateData, error: updateError } = await supabaseClient
         .from('profiles')
         .update({
           subscription_type: 'premium',
           subscription_status: 'active'
         })
         .eq('id', profile.id)
+        .select()
 
       if (updateError) {
         console.error('Error updating profile:', updateError)
         throw updateError
       }
 
-      console.log('Successfully updated profile subscription to premium')
+      console.log('Profile updated successfully:', updateData)
     }
 
     return new Response(JSON.stringify({ ok: true }), { 
