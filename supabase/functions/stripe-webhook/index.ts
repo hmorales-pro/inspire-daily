@@ -7,38 +7,26 @@ const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY') as string, {
   httpClient: Stripe.createFetchHttpClient(),
 })
 
-const supabaseClient = createClient(
-  Deno.env.get('SUPABASE_URL') ?? '',
-  Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
-)
-
-console.log('Webhook function starting...')
-
 serve(async (request) => {
-  const signature = request.headers.get('Stripe-Signature')
-
-  if (!signature) {
-    console.error('No signature found')
-    return new Response('No signature found', { status: 400 })
-  }
-
   try {
+    console.log('Webhook called - processing request')
     const body = await request.text()
-    console.log('Received webhook body:', body)
-    
     const event = JSON.parse(body)
-    console.log('Event type:', event.type)
+    console.log('Event type received:', event.type)
 
     if (event.type === 'checkout.session.completed') {
+      console.log('Processing checkout.session.completed event')
       const session = event.data.object
       const customerId = session.customer
-      
-      console.log('Processing checkout session:', {
-        sessionId: session.id,
-        customerId: customerId
-      })
+      console.log('Customer ID:', customerId)
 
-      // Get user profile by Stripe customer ID
+      // Initialize Supabase client
+      const supabaseClient = createClient(
+        Deno.env.get('SUPABASE_URL') ?? '',
+        Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
+      )
+
+      console.log('Fetching profile for customer:', customerId)
       const { data: profiles, error: profileError } = await supabaseClient
         .from('profiles')
         .select('*')
@@ -57,7 +45,7 @@ serve(async (request) => {
       const profile = profiles[0]
       console.log('Found profile:', profile)
 
-      // Update subscription status
+      console.log('Updating profile subscription status')
       const { error: updateError } = await supabaseClient
         .from('profiles')
         .update({
@@ -79,7 +67,7 @@ serve(async (request) => {
       headers: { 'Content-Type': 'application/json' }
     })
   } catch (err) {
-    console.error('Error processing webhook:', err)
+    console.error('Error in webhook handler:', err)
     return new Response(
       JSON.stringify({ error: err.message }), 
       { 
