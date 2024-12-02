@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Send, RefreshCw, Mic } from "lucide-react";
@@ -46,18 +46,19 @@ const ResponseInput = ({ value, onChange, onSave, onOptimize, isOptimizing }: Re
           <RefreshCw className={`w-4 h-4 mr-2 ${isOptimizing ? 'animate-spin' : ''}`} />
           Optimiser
         </Button>
-        <TooltipProvider>
+        <TooltipProvider delayDuration={50}>
           <Tooltip>
             <TooltipTrigger asChild>
               <Button
                 variant="outline"
-                className="px-4"
+                size="icon"
+                className="w-10"
                 disabled
               >
                 <Mic className="w-4 h-4" />
               </Button>
             </TooltipTrigger>
-            <TooltipContent>
+            <TooltipContent side="bottom">
               <p>La reconnaissance vocale arrive bientôt !</p>
             </TooltipContent>
           </Tooltip>
