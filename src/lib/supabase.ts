@@ -12,13 +12,19 @@ export interface Response {
   created_at?: string;
   is_optimized: boolean;
   optimized_response?: string;
+  user_id?: string;
 }
 
 export const saveResponse = async (response: Omit<Response, 'id' | 'created_at'>) => {
-  // Remove id from the response object to let Supabase auto-generate it
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session?.user) throw new Error('User must be logged in to save responses');
+
   const { data, error } = await supabase
     .from('responses')
-    .insert(response)
+    .insert({
+      ...response,
+      user_id: session.user.id
+    })
     .select()
     .single();
 
@@ -27,10 +33,14 @@ export const saveResponse = async (response: Omit<Response, 'id' | 'created_at'>
 };
 
 export const updateResponse = async (id: number, response: Partial<Response>) => {
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session?.user) throw new Error('User must be logged in to update responses');
+
   const { data, error } = await supabase
     .from('responses')
     .update(response)
     .eq('id', id)
+    .eq('user_id', session.user.id)
     .select()
     .single();
 
@@ -39,9 +49,13 @@ export const updateResponse = async (id: number, response: Partial<Response>) =>
 };
 
 export const getResponses = async () => {
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session?.user) throw new Error('User must be logged in to get responses');
+
   const { data, error } = await supabase
     .from('responses')
     .select('*')
+    .eq('user_id', session.user.id)
     .order('created_at', { ascending: false });
 
   if (error) throw error;
