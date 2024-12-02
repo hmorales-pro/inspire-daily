@@ -28,7 +28,7 @@ serve(async (req) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'gpt-4o-mini',
+        model: 'gpt-4',
         messages: [
           {
             role: 'system',
@@ -45,6 +45,20 @@ serve(async (req) => {
     if (!aiResponse.ok) {
       const errorData = await aiResponse.json()
       console.error('OpenAI API error:', errorData)
+      
+      // Gestion spécifique de l'erreur de quota
+      if (errorData.error?.code === 'insufficient_quota') {
+        return new Response(
+          JSON.stringify({ 
+            error: "Le service d'optimisation n'est pas disponible pour le moment. Veuillez réessayer plus tard." 
+          }),
+          { 
+            status: 503,
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          },
+        )
+      }
+      
       throw new Error(`OpenAI API error: ${JSON.stringify(errorData)}`)
     }
 
@@ -61,7 +75,9 @@ serve(async (req) => {
   } catch (error) {
     console.error('Error in optimize-response function:', error)
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ 
+        error: "Une erreur est survenue lors de l'optimisation. Veuillez réessayer plus tard." 
+      }),
       { 
         status: 500,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
