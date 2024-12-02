@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
 
 const Settings = () => {
@@ -142,7 +142,7 @@ const Settings = () => {
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
-                <p className="text-sm font-medium">Type d'abonnement</p>
+                <p className="text-sm font-medium">Type d&apos;abonnement</p>
                 <p className="text-2xl font-bold capitalize">
                   {profileData?.subscription_type || 'Gratuit'}
                 </p>
@@ -172,7 +172,7 @@ const Settings = () => {
                       Redirection vers le paiement...
                     </>
                   ) : (
-                    'Passer à l'abonnement Premium (5€/mois)'
+                    "Passer à l'abonnement Premium (5€/mois)"
                   )}
                 </Button>
               )}
