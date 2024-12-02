@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/lib/supabase';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -12,6 +12,7 @@ interface Profile {
 }
 
 const Settings = () => {
+  const queryClient = useQueryClient();
   const [profile, setProfile] = useState<Profile | null>(null);
 
   const { data: session } = useQuery({
@@ -53,10 +54,27 @@ const Settings = () => {
     return new Date(profileData.optimizations_reset_date).toLocaleDateString('fr-FR');
   };
 
+  const getProgressValue = () => {
+    const limit = getOptimizationsLimit();
+    if (limit === Infinity) return 100;
+    return ((profileData?.optimizations_count || 0) / limit) * 100;
+  };
+
   const handleUpgrade = () => {
     // TODO: Implement Stripe integration
     console.log('Upgrade to premium');
   };
+
+  // Écouter les changements d'authentification
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_OUT') {
+        queryClient.invalidateQueries({ queryKey: ['profile'] });
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [queryClient]);
 
   return (
     <div className="min-h-screen bg-primary-light p-4">
@@ -84,7 +102,7 @@ const Settings = () => {
               <div>
                 <p className="text-sm font-medium mb-2">Optimisations restantes</p>
                 <Progress 
-                  value={((profileData?.optimizations_count || 0) / getOptimizationsLimit()) * 100} 
+                  value={getProgressValue()}
                   className="mb-2"
                 />
                 <p className="text-sm text-muted-foreground">
