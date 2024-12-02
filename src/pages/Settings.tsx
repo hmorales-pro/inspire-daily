@@ -90,11 +90,12 @@ const Settings = () => {
 
   useEffect(() => {
     if (searchParams.get('success') === 'true') {
+      // Invalidate profile query to force a refresh
+      queryClient.invalidateQueries({ queryKey: ['profile'] });
       toast({
         title: "Succès !",
         description: "Votre abonnement Premium a été activé avec succès.",
       });
-      queryClient.invalidateQueries({ queryKey: ['profile'] });
     } else if (searchParams.get('canceled') === 'true') {
       toast({
         description: "Le processus de paiement a été annulé.",
