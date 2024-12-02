@@ -9,7 +9,6 @@ import { supabase } from "@/lib/supabase";
 import Index from "./pages/Index";
 import History from "./pages/History";
 import Settings from "./pages/Settings";
-import Navigation from "./components/Navigation";
 import Login from "./pages/Login";
 import Landing from "./pages/Landing";
 import Header from "./components/Header";
@@ -83,7 +82,6 @@ const App = () => (
                 </ProtectedRoute>
               } />
             </Routes>
-            <Navigation />
           </div>
         </BrowserRouter>
       </TooltipProvider>

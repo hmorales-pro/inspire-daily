@@ -1,10 +1,12 @@
 import { useNavigate } from 'react-router-dom';
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
-import { LogOut, User } from 'lucide-react';
+import { History, Home, LogOut, User } from 'lucide-react';
 import { Button } from './ui/button';
+import { useLocation } from 'react-router-dom';
 
 const Header = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const supabase = useSupabaseClient();
 
   const handleLogout = async () => {
@@ -12,8 +14,12 @@ const Header = () => {
     navigate('/login');
   };
 
+  const isActive = (path: string) => {
+    return location.pathname === path;
+  };
+
   return (
-    <header className="bg-white border-b border-border">
+    <header className="bg-white border-b border-border sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div 
@@ -37,24 +43,52 @@ const Header = () => {
             </svg>
             <h1 className="text-xl font-bold text-primary">Inspire Daily</h1>
           </div>
-          
-          <div className="flex items-center space-x-4">
+
+          <div className="flex items-center space-x-2">
             <Button
               variant="ghost"
               size="sm"
-              className="text-muted-foreground hover:text-primary"
+              className={`flex items-center space-x-2 ${
+                isActive("/home") ? "text-primary" : "text-muted-foreground hover:text-primary"
+              }`}
+              onClick={() => navigate('/home')}
+            >
+              <Home className="h-5 w-5" />
+              <span className="hidden sm:inline">Accueil</span>
+            </Button>
+
+            <Button
+              variant="ghost"
+              size="sm"
+              className={`flex items-center space-x-2 ${
+                isActive("/history") ? "text-primary" : "text-muted-foreground hover:text-primary"
+              }`}
+              onClick={() => navigate('/history')}
+            >
+              <History className="h-5 w-5" />
+              <span className="hidden sm:inline">Historique</span>
+            </Button>
+
+            <Button
+              variant="ghost"
+              size="sm"
+              className={`flex items-center space-x-2 ${
+                isActive("/settings") ? "text-primary" : "text-muted-foreground hover:text-primary"
+              }`}
               onClick={() => navigate('/settings')}
             >
               <User className="h-5 w-5" />
+              <span className="hidden sm:inline">Profil</span>
             </Button>
             
             <Button
               variant="ghost"
               size="sm"
-              className="text-muted-foreground hover:text-primary"
+              className="flex items-center space-x-2 text-muted-foreground hover:text-primary"
               onClick={handleLogout}
             >
               <LogOut className="h-5 w-5" />
+              <span className="hidden sm:inline">Déconnexion</span>
             </Button>
           </div>
         </div>
