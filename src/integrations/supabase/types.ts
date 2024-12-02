@@ -103,6 +103,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      generate_current_month_questions: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       setup_monthly_questions_cron: {
         Args: Record<PropertyKey, never>
         Returns: undefined

@@ -32,17 +32,32 @@ const Index = () => {
     }
   });
 
-  const todayQuestion = {
-    question: "Quelle est la plus grande leçon que vous ayez apprise dans votre domaine d'expertise ?",
-    date: new Date().toLocaleDateString('fr-FR', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    })
-  };
+  // Fetch today's question
+  const { data: todayQuestion, isLoading } = useQuery({
+    queryKey: ['todayQuestion'],
+    queryFn: async () => {
+      const today = new Date().toISOString().split('T')[0]; // Format: YYYY-MM-DD
+      const { data, error } = await supabase
+        .from('daily_questions')
+        .select('*')
+        .eq('display_date', today)
+        .single();
+
+      if (error) throw error;
+      return data;
+    }
+  });
 
   const handleSave = async () => {
+    if (!todayQuestion) {
+      toast({
+        title: "Erreur",
+        description: "Impossible de sauvegarder sans question du jour.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     try {
       await saveResponse({
         question: todayQuestion.question,
@@ -67,6 +82,15 @@ const Index = () => {
   };
 
   const handleOptimize = async () => {
+    if (!todayQuestion) {
+      toast({
+        title: "Erreur",
+        description: "Impossible d'optimiser sans question du jour.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     if (profile?.optimizations_count === 0) {
       toast({
         title: "Limite atteinte",
@@ -121,6 +145,22 @@ const Index = () => {
     }
   };
 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-primary-light p-4 flex items-center justify-center">
+        <p className="text-muted-foreground">Chargement de la question du jour...</p>
+      </div>
+    );
+  }
+
+  if (!todayQuestion) {
+    return (
+      <div className="min-h-screen bg-primary-light p-4 flex items-center justify-center">
+        <p className="text-muted-foreground">Aucune question disponible pour aujourd'hui.</p>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-primary-light p-4 space-y-6">
       <div className="max-w-4xl mx-auto pt-8">
@@ -131,7 +171,12 @@ const Index = () => {
         <div className="space-y-6">
           <QuestionCard 
             question={todayQuestion.question}
-            date={todayQuestion.date}
+            date={new Date().toLocaleDateString('fr-FR', {
+              weekday: 'long',
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric'
+            })}
           />
           
           <ResponseInput
