@@ -69,7 +69,7 @@ serve(async (req) => {
       customer: customerId,
       line_items: [
         {
-          price: 'price_XXXXX', // Remplacez par votre Price ID Stripe
+          price: 'price_1QRYA7FBde5KXeAQpiM1fZdB',
           quantity: 1,
         },
       ],
