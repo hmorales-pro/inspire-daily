@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { getResponses, type Response, saveResponse } from '@/lib/supabase';
+import { getResponses, type Response, updateResponse } from '@/lib/supabase';
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
@@ -28,8 +28,7 @@ const History = () => {
 
   const handleSave = async (response: Response) => {
     try {
-      await saveResponse({
-        ...response,
+      await updateResponse(response.id!, {
         response: editedResponse,
       });
       
@@ -56,8 +55,7 @@ const History = () => {
     try {
       const optimizedContent = await optimizeResponse(response.response);
       
-      await saveResponse({
-        ...response,
+      await updateResponse(response.id!, {
         is_optimized: true,
         optimized_response: optimizedContent,
       });

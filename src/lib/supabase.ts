@@ -26,6 +26,18 @@ export const saveResponse = async (response: Omit<Response, 'id' | 'created_at'>
   return data;
 };
 
+export const updateResponse = async (id: number, response: Partial<Response>) => {
+  const { data, error } = await supabase
+    .from('responses')
+    .update(response)
+    .eq('id', id)
+    .select()
+    .single();
+
+  if (error) throw error;
+  return data;
+};
+
 export const getResponses = async () => {
   const { data, error } = await supabase
     .from('responses')
