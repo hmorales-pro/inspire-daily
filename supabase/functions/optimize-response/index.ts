@@ -16,9 +16,11 @@ serve(async (req) => {
     const openAIApiKey = Deno.env.get('OPENAI_API_KEY')
 
     if (!openAIApiKey) {
+      console.error('OpenAI API key is missing from Edge Function configuration')
       throw new Error('Missing OpenAI API key in Edge Function configuration')
     }
 
+    console.log('Calling OpenAI API to optimize response...')
     const aiResponse = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -40,9 +42,16 @@ serve(async (req) => {
       }),
     })
 
+    if (!aiResponse.ok) {
+      const errorData = await aiResponse.json()
+      console.error('OpenAI API error:', errorData)
+      throw new Error(`OpenAI API error: ${JSON.stringify(errorData)}`)
+    }
+
     const data = await aiResponse.json()
     const optimizedContent = data.choices[0].message.content
 
+    console.log('Successfully optimized response')
     return new Response(
       JSON.stringify({ optimizedContent }),
       { 
@@ -50,6 +59,7 @@ serve(async (req) => {
       },
     )
   } catch (error) {
+    console.error('Error in optimize-response function:', error)
     return new Response(
       JSON.stringify({ error: error.message }),
       { 
