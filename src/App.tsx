@@ -11,6 +11,7 @@ import History from "./pages/History";
 import Settings from "./pages/Settings";
 import Navigation from "./components/Navigation";
 import Login from "./pages/Login";
+import Landing from "./pages/Landing";
 import Header from "./components/Header";
 
 const queryClient = new QueryClient({
@@ -44,7 +45,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   }
 
   if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/" replace />;
   }
 
   return (
@@ -64,8 +65,9 @@ const App = () => (
         <BrowserRouter>
           <div className="min-h-screen bg-primary-light">
             <Routes>
+              <Route path="/" element={<Landing />} />
               <Route path="/login" element={<Login />} />
-              <Route path="/" element={
+              <Route path="/home" element={
                 <ProtectedRoute>
                   <Index />
                 </ProtectedRoute>
