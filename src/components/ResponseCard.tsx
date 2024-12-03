@@ -33,6 +33,15 @@ export const ResponseCard = ({
     onEdit({ ...response, id: null });
   };
 
+  const handleSave = () => {
+    // If we're editing the optimized version, only update that
+    if (response.is_optimized && editedResponse === editedResponse) {
+      onSave({ ...response, optimized_response: editedResponse });
+    } else {
+      onSave({ ...response, response: editedResponse });
+    }
+  };
+
   return (
     <Card key={response.id}>
       <CardHeader>
@@ -47,7 +56,7 @@ export const ResponseCard = ({
             <ResponseInput
               value={editedResponse}
               onChange={setEditedResponse}
-              onSave={() => onSave(response)}
+              onSave={handleSave}
               onOptimize={() => onOptimize(response)}
               isOptimizing={isOptimizing}
               isPremium={profile?.subscription_type === 'premium'}
