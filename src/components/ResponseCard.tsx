@@ -34,8 +34,8 @@ export const ResponseCard = ({
   };
 
   const handleSave = () => {
-    // If we're editing the optimized version, only update that
-    if (response.is_optimized && editedResponse === editedResponse) {
+    // Si on édite la version optimisée, on ne met à jour que optimized_response
+    if (response.is_optimized && response.optimized_response === response.response) {
       onSave({ ...response, optimized_response: editedResponse });
     } else {
       onSave({ ...response, response: editedResponse });
@@ -109,7 +109,7 @@ export const ResponseCard = ({
                     size="sm"
                     onClick={() => {
                       setEditedResponse(response.optimized_response!);
-                      onEdit({ ...response, response: response.optimized_response });
+                      onEdit(response);
                     }}
                   >
                     <Edit2 className="w-4 h-4 mr-2" />
