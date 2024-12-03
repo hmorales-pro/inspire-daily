@@ -1,0 +1,39 @@
+import React from 'react';
+import { Button } from "@/components/ui/button";
+import { Edit2, RefreshCw } from "lucide-react";
+
+interface ResponseActionsProps {
+  isOptimizing: boolean;
+  profile: any;
+  onEdit: () => void;
+  onOptimize: () => void;
+}
+
+export const ResponseActions = ({
+  isOptimizing,
+  profile,
+  onEdit,
+  onOptimize
+}: ResponseActionsProps) => {
+  return (
+    <div className="space-x-2">
+      <Button
+        variant="outline"
+        size="sm"
+        onClick={onEdit}
+      >
+        <Edit2 className="w-4 h-4 mr-2" />
+        Éditer
+      </Button>
+      <Button
+        variant="outline"
+        size="sm"
+        onClick={onOptimize}
+        disabled={isOptimizing || !profile || profile.optimizations_count === 0}
+      >
+        <RefreshCw className={`w-4 h-4 mr-2 ${isOptimizing ? 'animate-spin' : ''}`} />
+        Optimiser
+      </Button>
+    </div>
+  );
+};
