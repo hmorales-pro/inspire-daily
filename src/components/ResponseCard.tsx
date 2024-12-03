@@ -100,7 +100,7 @@ export const ResponseCard = ({
                     size="sm"
                     onClick={() => {
                       setEditedResponse(response.optimized_response!);
-                      onEdit(response);
+                      onEdit({ ...response, id: response.id });
                     }}
                   >
                     <Edit2 className="w-4 h-4 mr-2" />
