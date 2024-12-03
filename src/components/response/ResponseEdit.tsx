@@ -11,6 +11,7 @@ interface ResponseEditProps {
   onCancel: () => void;
   onOptimize: () => void;
   setEditedResponse: (value: string) => void;
+  isEditingOptimized: boolean;
 }
 
 export const ResponseEdit = ({
@@ -20,10 +21,14 @@ export const ResponseEdit = ({
   onSave,
   onCancel,
   onOptimize,
-  setEditedResponse
+  setEditedResponse,
+  isEditingOptimized
 }: ResponseEditProps) => {
   return (
     <div className="space-y-4">
+      <h3 className="font-medium">
+        {isEditingOptimized ? "Modification de la réponse optimisée :" : "Modification de la réponse originale :"}
+      </h3>
       <ResponseInput
         value={editedResponse}
         onChange={setEditedResponse}

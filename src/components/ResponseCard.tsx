@@ -48,9 +48,9 @@ export const ResponseCard = ({
   };
 
   const handleEdit = (isOptimized: boolean) => {
-    setIsEditingOptimized(isOptimized);
     const textToEdit = isOptimized ? response.optimized_response || '' : response.response;
     setEditedResponse(textToEdit);
+    setIsEditingOptimized(isOptimized);
     onEdit(response);
   };
 
@@ -72,6 +72,7 @@ export const ResponseCard = ({
             onCancel={handleCancel}
             onOptimize={() => onOptimize(response)}
             setEditedResponse={setEditedResponse}
+            isEditingOptimized={isEditingOptimized}
           />
         ) : (
           <>
