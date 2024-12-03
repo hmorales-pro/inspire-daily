@@ -1,4 +1,12 @@
+import { useQuery } from "@tanstack/react-query";
+import { getAppSettings } from "@/lib/settings";
+
 export const Footer = () => {
+  const { data: version } = useQuery({
+    queryKey: ['app-version'],
+    queryFn: () => getAppSettings('app_version'),
+  });
+
   return (
     <footer className="bg-primary-light py-12">
       <div className="container mx-auto px-4">
@@ -56,7 +64,10 @@ export const Footer = () => {
         </div>
         
         <div className="border-t border-gray-200 mt-12 pt-8 text-center text-gray-600">
-          <p>© 2024 Inspire Daily. Tous droits réservés.</p>
+          <div className="flex justify-between items-center">
+            <p>© 2024 Inspire Daily. Tous droits réservés.</p>
+            {version && <p className="text-sm text-muted-foreground">v{version}</p>}
+          </div>
         </div>
       </div>
     </footer>
