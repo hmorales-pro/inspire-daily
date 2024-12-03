@@ -9,6 +9,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { TextFormatting } from './TextFormatting';
 
 interface ResponseInputProps {
   value: string;
@@ -21,10 +22,46 @@ interface ResponseInputProps {
 
 const ResponseInput = ({ value, onChange, onSave, onOptimize, isOptimizing, isPremium = false }: ResponseInputProps) => {
   const { toast } = useToast();
+  const textareaRef = React.useRef<HTMLTextAreaElement>(null);
+
+  const handleFormat = (type: 'bold' | 'italic') => {
+    if (!textareaRef.current) return;
+
+    const start = textareaRef.current.selectionStart;
+    const end = textareaRef.current.selectionEnd;
+    const selectedText = value.substring(start, end);
+
+    if (selectedText) {
+      const prefix = type === 'bold' ? '**' : '_';
+      const newText = value.substring(0, start) + 
+                     `${prefix}${selectedText}${prefix}` + 
+                     value.substring(end);
+      onChange(newText);
+
+      // Restore cursor position
+      setTimeout(() => {
+        if (textareaRef.current) {
+          textareaRef.current.selectionStart = start + prefix.length;
+          textareaRef.current.selectionEnd = end + prefix.length;
+          textareaRef.current.focus();
+        }
+      }, 0);
+    } else {
+      toast({
+        title: "Sélection requise",
+        description: "Veuillez sélectionner le texte à formater",
+        variant: "destructive",
+      });
+    }
+  };
 
   return (
     <div className="w-full max-w-md mx-auto space-y-4 animate-fade-in">
+      <div className="flex justify-end mb-2">
+        <TextFormatting isPremium={isPremium} onFormat={handleFormat} />
+      </div>
       <Textarea
+        ref={textareaRef}
         placeholder="Écrivez votre réponse ici..."
         value={value}
         onChange={(e) => onChange(e.target.value)}
