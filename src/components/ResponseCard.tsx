@@ -28,18 +28,22 @@ export const ResponseCard = ({
   onOptimize,
   setEditedResponse
 }: ResponseCardProps) => {
+  // Keep track of whether we're editing the optimized version
+  const [editingOptimized, setEditingOptimized] = React.useState(false);
+
   const handleCancel = () => {
     setEditedResponse(response.response);
+    setEditingOptimized(false);
     onEdit({ ...response, id: null });
   };
 
   const handleSave = () => {
-    // Si on édite la version optimisée, on ne met à jour que optimized_response
-    if (response.is_optimized && response.optimized_response === response.response) {
+    if (editingOptimized) {
       onSave({ ...response, optimized_response: editedResponse });
     } else {
       onSave({ ...response, response: editedResponse });
     }
+    setEditingOptimized(false);
   };
 
   return (
@@ -81,6 +85,7 @@ export const ResponseCard = ({
                     size="sm"
                     onClick={() => {
                       setEditedResponse(response.response);
+                      setEditingOptimized(false);
                       onEdit(response);
                     }}
                   >
@@ -109,6 +114,7 @@ export const ResponseCard = ({
                     size="sm"
                     onClick={() => {
                       setEditedResponse(response.optimized_response!);
+                      setEditingOptimized(true);
                       onEdit(response);
                     }}
                   >
