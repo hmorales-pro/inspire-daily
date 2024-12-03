@@ -29,7 +29,7 @@ export const ResponseContent = ({
           onOptimize={onOptimize}
         />
       </div>
-      <p className="text-muted-foreground">{content}</p>
+      <p className="text-muted-foreground whitespace-pre-wrap">{content}</p>
     </div>
   );
 };

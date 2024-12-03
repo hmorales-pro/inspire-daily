@@ -27,29 +27,29 @@ export const ResponseCard = ({
   onOptimize,
   setEditedResponse
 }: ResponseCardProps) => {
-  const [editingOptimized, setEditingOptimized] = React.useState(false);
+  const [isEditingOptimized, setIsEditingOptimized] = React.useState(false);
 
   const handleCancel = () => {
-    const textToRestore = editingOptimized ? response.optimized_response || '' : response.response;
+    const textToRestore = isEditingOptimized ? response.optimized_response || '' : response.response;
     setEditedResponse(textToRestore);
-    setEditingOptimized(false);
+    setIsEditingOptimized(false);
     onEdit({ ...response, id: null });
   };
 
   const handleSave = () => {
     const updatedResponse = {
       ...response,
-      ...(editingOptimized
+      ...(isEditingOptimized
         ? { optimized_response: editedResponse }
         : { response: editedResponse })
     };
     onSave(updatedResponse);
-    setEditingOptimized(false);
+    setIsEditingOptimized(false);
   };
 
   const handleEdit = (isOptimized: boolean) => {
-    setEditingOptimized(isOptimized);
     const textToEdit = isOptimized ? response.optimized_response || '' : response.response;
+    setIsEditingOptimized(isOptimized);
     setEditedResponse(textToEdit);
     onEdit(response);
   };
