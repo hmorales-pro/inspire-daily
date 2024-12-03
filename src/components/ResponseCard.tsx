@@ -38,19 +38,19 @@ export const ResponseCard = ({
   };
 
   const handleSave = () => {
-    const updatedResponse = { ...response };
-    if (editingOptimized) {
-      updatedResponse.optimized_response = editedResponse;
-    } else {
-      updatedResponse.response = editedResponse;
-    }
-    onSave(updatedResponse);
+    onSave({
+      ...response,
+      ...(editingOptimized 
+        ? { optimized_response: editedResponse }
+        : { response: editedResponse }
+      )
+    });
     setEditingOptimized(false);
   };
 
   const handleEdit = (isOptimized: boolean) => {
-    const textToEdit = isOptimized ? response.optimized_response || '' : response.response;
-    setEditedResponse(textToEdit);
+    const initialText = isOptimized ? response.optimized_response || '' : response.response;
+    setEditedResponse(initialText);
     setEditingOptimized(isOptimized);
     onEdit(response);
   };
