@@ -14,7 +14,8 @@ const Login = () => {
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'SIGNED_IN' && session) {
-        navigate('/home');
+        // Utiliser window.location.origin pour obtenir l'URL complète du site
+        window.location.href = `${window.location.origin}/home`;
       }
       if (event === 'PASSWORD_RECOVERY') {
         toast({
@@ -27,7 +28,7 @@ const Login = () => {
     // Vérifier si l'utilisateur est déjà connecté
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) {
-        navigate('/home');
+        window.location.href = `${window.location.origin}/home`;
       }
     });
 
@@ -64,7 +65,7 @@ const Login = () => {
             }}
             theme="light"
             providers={['google']}
-            redirectTo={window.location.origin}
+            redirectTo={`${window.location.origin}/home`}
             localization={{
               variables: {
                 sign_in: {
