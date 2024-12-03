@@ -48,14 +48,11 @@ export const ResponseCard = ({
   };
 
   const handleEdit = (isOptimized: boolean) => {
-    // Important: On met à jour d'abord isEditingOptimized pour que le bon texte soit chargé
     setIsEditingOptimized(isOptimized);
-    // Ensuite on charge le texte correspondant
     const textToEdit = isOptimized ? response.optimized_response || '' : response.response;
-    // On met à jour le texte dans la textarea
-    setEditedResponse(textToEdit);
-    // On informe le parent que nous sommes en mode édition
     onEdit(response);
+    // Important: On met à jour le texte APRÈS avoir informé le parent
+    setEditedResponse(textToEdit);
   };
 
   return (
