@@ -2,10 +2,18 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from './ui/button';
 import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
+import { useQuery } from "@tanstack/react-query";
+import { getAppSettings } from "@/lib/settings";
 
 const LandingHeader = () => {
   const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+
+  const { data: redirectUrl } = useQuery({
+    queryKey: ['redirectUrl'],
+    queryFn: () => getAppSettings('redirect_url'),
+    initialData: 'https://inspire-daily.lovable.dev'
+  });
 
   useEffect(() => {
     // Check initial auth state

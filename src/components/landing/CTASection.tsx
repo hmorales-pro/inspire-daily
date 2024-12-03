@@ -1,8 +1,16 @@
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { getAppSettings } from "@/lib/settings";
 
 export const CTASection = () => {
   const navigate = useNavigate();
+  
+  const { data: redirectUrl } = useQuery({
+    queryKey: ['redirectUrl'],
+    queryFn: () => getAppSettings('redirect_url'),
+    initialData: 'https://inspire-daily.lovable.dev'
+  });
   
   return (
     <div className="bg-primary-dark text-white py-16">
