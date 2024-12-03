@@ -82,6 +82,7 @@ export const ResponseCard = ({
               profile={profile}
               onEdit={() => handleEdit(false)}
               onOptimize={() => onOptimize(response)}
+              isOriginalVersion={true}
             />
             {response.is_optimized && response.optimized_response && (
               <ResponseContent
@@ -91,6 +92,7 @@ export const ResponseCard = ({
                 profile={profile}
                 onEdit={() => handleEdit(true)}
                 onOptimize={() => onOptimize(response)}
+                isOriginalVersion={false}
               />
             )}
           </>

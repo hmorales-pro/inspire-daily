@@ -8,6 +8,7 @@ interface ResponseContentProps {
   profile: any;
   onEdit: () => void;
   onOptimize: () => void;
+  isOriginalVersion?: boolean;
 }
 
 export const ResponseContent = ({
@@ -16,7 +17,8 @@ export const ResponseContent = ({
   isOptimizing,
   profile,
   onEdit,
-  onOptimize
+  onOptimize,
+  isOriginalVersion = true
 }: ResponseContentProps) => {
   return (
     <div>
@@ -27,6 +29,7 @@ export const ResponseContent = ({
           profile={profile}
           onEdit={onEdit}
           onOptimize={onOptimize}
+          showOptimize={isOriginalVersion}
         />
       </div>
       <p className="text-muted-foreground whitespace-pre-wrap">{content}</p>

@@ -7,13 +7,15 @@ interface ResponseActionsProps {
   profile: any;
   onEdit: () => void;
   onOptimize: () => void;
+  showOptimize?: boolean;
 }
 
 export const ResponseActions = ({
   isOptimizing,
   profile,
   onEdit,
-  onOptimize
+  onOptimize,
+  showOptimize = true
 }: ResponseActionsProps) => {
   return (
     <div className="space-x-2">
@@ -25,15 +27,17 @@ export const ResponseActions = ({
         <Edit2 className="w-4 h-4 mr-2" />
         Éditer
       </Button>
-      <Button
-        variant="outline"
-        size="sm"
-        onClick={onOptimize}
-        disabled={isOptimizing || !profile || profile.optimizations_count === 0}
-      >
-        <RefreshCw className={`w-4 h-4 mr-2 ${isOptimizing ? 'animate-spin' : ''}`} />
-        Optimiser
-      </Button>
+      {showOptimize && (
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={onOptimize}
+          disabled={isOptimizing || !profile || profile.optimizations_count === 0}
+        >
+          <RefreshCw className={`w-4 h-4 mr-2 ${isOptimizing ? 'animate-spin' : ''}`} />
+          Optimiser
+        </Button>
+      )}
     </div>
   );
 };
