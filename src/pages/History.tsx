@@ -43,9 +43,8 @@ const History = () => {
 
   const handleSave = async (response) => {
     try {
-      await updateResponse(response.id, {
-        response: editedResponse,
-      });
+      // Nous utilisons maintenant l'objet response complet qui contient les bonnes propriétés à mettre à jour
+      await updateResponse(response.id, response);
       
       toast({
         title: "Réponse mise à jour",
