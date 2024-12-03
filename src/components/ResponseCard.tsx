@@ -48,8 +48,8 @@ export const ResponseCard = ({
   };
 
   const handleEdit = (isOptimized: boolean) => {
-    const textToEdit = isOptimized ? response.optimized_response || '' : response.response;
     setIsEditingOptimized(isOptimized);
+    const textToEdit = isOptimized ? response.optimized_response || '' : response.response;
     setEditedResponse(textToEdit);
     onEdit(response);
   };
