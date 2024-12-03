@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Edit2, RefreshCw } from "lucide-react";
+import { Edit2, RefreshCw, X } from "lucide-react";
 import ResponseInput from '@/components/ResponseInput';
 import { Response } from '@/lib/supabase';
 
@@ -28,6 +28,11 @@ export const ResponseCard = ({
   onOptimize,
   setEditedResponse
 }: ResponseCardProps) => {
+  const handleCancel = () => {
+    setEditedResponse(response.response);
+    onEdit({ ...response, id: null });
+  };
+
   return (
     <Card key={response.id}>
       <CardHeader>
@@ -38,13 +43,24 @@ export const ResponseCard = ({
       </CardHeader>
       <CardContent className="space-y-4">
         {editingId === response.id ? (
-          <ResponseInput
-            value={editedResponse}
-            onChange={setEditedResponse}
-            onSave={() => onSave(response)}
-            onOptimize={() => onOptimize(response)}
-            isOptimizing={isOptimizing}
-          />
+          <div className="space-y-4">
+            <ResponseInput
+              value={editedResponse}
+              onChange={setEditedResponse}
+              onSave={() => onSave(response)}
+              onOptimize={() => onOptimize(response)}
+              isOptimizing={isOptimizing}
+              isPremium={profile?.subscription_type === 'premium'}
+            />
+            <Button
+              variant="outline"
+              onClick={handleCancel}
+              className="w-full"
+            >
+              <X className="w-4 h-4 mr-2" />
+              Annuler
+            </Button>
+          </div>
         ) : (
           <>
             <div>
@@ -54,7 +70,10 @@ export const ResponseCard = ({
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => onEdit(response)}
+                    onClick={() => {
+                      setEditedResponse(response.response);
+                      onEdit(response);
+                    }}
                   >
                     <Edit2 className="w-4 h-4 mr-2" />
                     Éditer
@@ -74,7 +93,20 @@ export const ResponseCard = ({
             </div>
             {response.is_optimized && response.optimized_response && (
               <div>
-                <h3 className="font-medium mb-2">Réponse optimisée :</h3>
+                <div className="flex justify-between items-center mb-2">
+                  <h3 className="font-medium">Réponse optimisée :</h3>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      setEditedResponse(response.optimized_response!);
+                      onEdit(response);
+                    }}
+                  >
+                    <Edit2 className="w-4 h-4 mr-2" />
+                    Éditer
+                  </Button>
+                </div>
                 <p className="text-muted-foreground">{response.optimized_response}</p>
               </div>
             )}
