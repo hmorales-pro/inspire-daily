@@ -28,22 +28,29 @@ export const ResponseCard = ({
   onOptimize,
   setEditedResponse
 }: ResponseCardProps) => {
-  // Keep track of whether we're editing the optimized version
   const [editingOptimized, setEditingOptimized] = React.useState(false);
 
   const handleCancel = () => {
-    setEditedResponse(response.response);
+    setEditedResponse(editingOptimized ? response.optimized_response || '' : response.response);
     setEditingOptimized(false);
     onEdit({ ...response, id: null });
   };
 
   const handleSave = () => {
+    const updatedResponse = { ...response };
     if (editingOptimized) {
-      onSave({ ...response, optimized_response: editedResponse });
+      updatedResponse.optimized_response = editedResponse;
     } else {
-      onSave({ ...response, response: editedResponse });
+      updatedResponse.response = editedResponse;
     }
+    onSave(updatedResponse);
     setEditingOptimized(false);
+  };
+
+  const handleEdit = (isOptimized: boolean) => {
+    setEditedResponse(isOptimized ? response.optimized_response || '' : response.response);
+    setEditingOptimized(isOptimized);
+    onEdit(response);
   };
 
   return (
@@ -83,11 +90,7 @@ export const ResponseCard = ({
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => {
-                      setEditedResponse(response.response);
-                      setEditingOptimized(false);
-                      onEdit(response);
-                    }}
+                    onClick={() => handleEdit(false)}
                   >
                     <Edit2 className="w-4 h-4 mr-2" />
                     Éditer
@@ -112,11 +115,7 @@ export const ResponseCard = ({
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => {
-                      setEditedResponse(response.optimized_response!);
-                      setEditingOptimized(true);
-                      onEdit(response);
-                    }}
+                    onClick={() => handleEdit(true)}
                   >
                     <Edit2 className="w-4 h-4 mr-2" />
                     Éditer
