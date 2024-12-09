@@ -12,6 +12,12 @@ import Settings from "./pages/Settings";
 import Login from "./pages/Login";
 import Landing from "./pages/Landing";
 import Header from "./components/Header";
+import About from "./pages/About";
+import Contact from "./pages/Contact";
+import Support from "./pages/Support";
+import TermsOfService from "./pages/legal/TermsOfService";
+import PrivacyPolicy from "./pages/legal/PrivacyPolicy";
+import LegalNotice from "./pages/legal/LegalNotice";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -81,6 +87,12 @@ const App = () => (
                   <Settings />
                 </ProtectedRoute>
               } />
+              <Route path="/about" element={<About />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/support" element={<Support />} />
+              <Route path="/legal/terms" element={<TermsOfService />} />
+              <Route path="/legal/privacy" element={<PrivacyPolicy />} />
+              <Route path="/legal/notice" element={<LegalNotice />} />
             </Routes>
           </div>
         </BrowserRouter>
