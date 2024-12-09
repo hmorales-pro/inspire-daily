@@ -6,16 +6,23 @@ import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
+import { useQuery } from "@tanstack/react-query";
+import { getAppSettings } from "@/lib/settings";
 
 const Login = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
+  const { data: redirectUrl } = useQuery({
+    queryKey: ['redirectUrl'],
+    queryFn: () => getAppSettings('redirect_url'),
+    initialData: 'https://inspire-daily.eu'
+  });
+
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'SIGNED_IN' && session) {
-        // Utiliser window.location.origin pour obtenir l'URL complète du site
-        window.location.href = `${window.location.origin}/home`;
+        window.location.href = `${redirectUrl}/home`;
       }
       if (event === 'PASSWORD_RECOVERY') {
         toast({
@@ -28,12 +35,12 @@ const Login = () => {
     // Vérifier si l'utilisateur est déjà connecté
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) {
-        window.location.href = `${window.location.origin}/home`;
+        window.location.href = `${redirectUrl}/home`;
       }
     });
 
     return () => subscription.unsubscribe();
-  }, [navigate, toast]);
+  }, [navigate, toast, redirectUrl]);
 
   return (
     <div className="min-h-screen bg-primary-light p-4">
@@ -65,7 +72,7 @@ const Login = () => {
             }}
             theme="light"
             providers={['google']}
-            redirectTo={`${window.location.origin}/home`}
+            redirectTo={`${redirectUrl}/home`}
             localization={{
               variables: {
                 sign_in: {
