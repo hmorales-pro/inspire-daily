@@ -21,15 +21,15 @@ const LegalNotice = () => {
         
         <div className="prose prose-purple max-w-none">
           <h2 className="text-2xl font-semibold mt-8 mb-4">Éditeur du site</h2>
-          <p>Inspire Daily<br />
+          <p>Inspire Daily est une marque de la société Eziom<br />
           Société par Actions Simplifiée (SAS)<br />
           Capital social : 1000€<br />
-          RCS Paris B XXX XXX XXX<br />
-          Siège social : [Adresse]<br />
+          RCS Marseille 922 234 216<br />
+          Siège social : 47 chemin des Anémones, 13012 Marseille<br />
           Email : contact@inspire-daily.com</p>
 
           <h2 className="text-2xl font-semibold mt-8 mb-4">Directeur de la publication</h2>
-          <p>[Nom du directeur de publication]<br />
+          <p>Le directeur de la publication est le représentant légal de la société Eziom.<br />
           Email : director@inspire-daily.com</p>
 
           <h2 className="text-2xl font-semibold mt-8 mb-4">Hébergement</h2>
@@ -40,7 +40,7 @@ const LegalNotice = () => {
           États-Unis</p>
 
           <h2 className="text-2xl font-semibold mt-8 mb-4">Propriété intellectuelle</h2>
-          <p>L'ensemble du site inspire-daily.com est la propriété exclusive de Inspire Daily. Toute reproduction, même partielle, est interdite sans autorisation préalable.</p>
+          <p>L'ensemble du site inspire-daily.com est la propriété exclusive de la société Eziom. Toute reproduction, même partielle, est interdite sans autorisation préalable.</p>
 
           <h2 className="text-2xl font-semibold mt-8 mb-4">Protection des données</h2>
           <p>Conformément à la loi Informatique et Libertés du 6 janvier 1978, vous disposez d'un droit d'accès, de rectification et de suppression des données vous concernant.</p>
