@@ -101,7 +101,9 @@ export const Footer = () => {
           <p className="text-base text-gray-400 text-center">
             © {new Date().getFullYear()} Inspire Daily. Tous droits réservés.
             {import.meta.env.VITE_APP_VERSION && (
-              <span className="ml-2 text-xs">v{import.meta.env.VITE_APP_VERSION}</span>
+              <span className="ml-2 text-xs text-gray-400">
+                v{import.meta.env.VITE_APP_VERSION}
+              </span>
             )}
           </p>
         </div>
