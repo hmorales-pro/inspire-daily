@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 const Login = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
-  const redirectTo = `${window.location.origin}/home`;
+  const redirectTo = `${window.location.origin}`;
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
