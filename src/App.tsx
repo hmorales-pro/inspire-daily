@@ -50,7 +50,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   }
 
   if (!isAuthenticated) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/login" replace />;
   }
 
   return (
@@ -70,9 +70,8 @@ const App = () => (
         <BrowserRouter>
           <div className="min-h-screen bg-primary-light">
             <Routes>
-              <Route path="/" element={<Landing />} />
               <Route path="/login" element={<Login />} />
-              <Route path="/home" element={
+              <Route path="/" element={
                 <ProtectedRoute>
                   <Index />
                 </ProtectedRoute>
