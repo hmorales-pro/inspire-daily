@@ -36,7 +36,7 @@ const Index = () => {
   const { data: todayQuestion, isLoading } = useQuery({
     queryKey: ['todayQuestion'],
     queryFn: async () => {
-      const today = new Date().toISOString().split('T')[0]; // Format: YYYY-MM-DD
+      const today = new Date().toISOString().split('T')[0];
       const { data, error } = await supabase
         .from('daily_questions')
         .select('*')
@@ -105,7 +105,6 @@ const Index = () => {
     try {
       const optimizedContent = await optimizeResponse(response);
       
-      // Mise à jour du compteur d'optimisations
       if (profile && profile.subscription_type === 'free') {
         const { error: updateError } = await supabase
           .from('profiles')
@@ -116,7 +115,6 @@ const Index = () => {
 
         if (updateError) throw updateError;
         
-        // Invalider le cache pour forcer le rechargement du profil
         queryClient.invalidateQueries({ queryKey: ['profile'] });
       }
       

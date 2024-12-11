@@ -10,21 +10,12 @@ import { useNavigate } from 'react-router-dom';
 const Login = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
-  const redirectTo = `${window.location.origin}/`;
+  const redirectTo = `${window.location.origin}/home`;
 
   useEffect(() => {
-    const checkSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session) {
-        navigate('/', { replace: true });
-      }
-    };
-
-    checkSession();
-
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'SIGNED_IN' && session) {
-        navigate('/', { replace: true });
+        navigate('/home', { replace: true });
       }
       if (event === 'PASSWORD_RECOVERY') {
         toast({

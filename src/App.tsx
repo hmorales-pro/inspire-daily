@@ -32,7 +32,6 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
   useEffect(() => {
-    // Vérification initiale de la session
     const checkSession = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       setIsAuthenticated(!!session);
@@ -40,7 +39,6 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
     
     checkSession();
 
-    // Écoute des changements d'état d'authentification
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setIsAuthenticated(!!session);
     });
@@ -48,25 +46,53 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
     return () => subscription.unsubscribe();
   }, []);
 
-  // Affichage du loader pendant la vérification
   if (isAuthenticated === null) {
     return <div className="min-h-screen bg-primary-light p-4 flex items-center justify-center">
       <p className="text-muted-foreground">Chargement...</p>
     </div>;
   }
 
-  // Redirection vers login si non authentifié
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
   }
 
-  // Affichage du contenu protégé si authentifié
   return (
     <>
       <Header />
       {children}
     </>
   );
+};
+
+const PublicRoute = ({ children }: { children: React.ReactNode }) => {
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    const checkSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      setIsAuthenticated(!!session);
+    };
+    
+    checkSession();
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setIsAuthenticated(!!session);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  if (isAuthenticated === null) {
+    return <div className="min-h-screen bg-primary-light p-4 flex items-center justify-center">
+      <p className="text-muted-foreground">Chargement...</p>
+    </div>;
+  }
+
+  if (isAuthenticated) {
+    return <Navigate to="/home" replace />;
+  }
+
+  return <>{children}</>;
 };
 
 const App = () => (
@@ -78,8 +104,28 @@ const App = () => (
         <BrowserRouter>
           <div className="min-h-screen bg-primary-light">
             <Routes>
-              <Route path="/login" element={<Login />} />
-              <Route path="/" element={<Index />} />
+              {/* Routes publiques */}
+              <Route path="/" element={<Landing />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/support" element={<Support />} />
+              <Route path="/legal/terms" element={<TermsOfService />} />
+              <Route path="/legal/privacy" element={<PrivacyPolicy />} />
+              <Route path="/legal/notice" element={<LegalNotice />} />
+              
+              {/* Routes d'authentification */}
+              <Route path="/login" element={
+                <PublicRoute>
+                  <Login />
+                </PublicRoute>
+              } />
+
+              {/* Routes protégées */}
+              <Route path="/home" element={
+                <ProtectedRoute>
+                  <Index />
+                </ProtectedRoute>
+              } />
               <Route path="/history" element={
                 <ProtectedRoute>
                   <History />
@@ -90,12 +136,6 @@ const App = () => (
                   <Settings />
                 </ProtectedRoute>
               } />
-              <Route path="/about" element={<About />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/support" element={<Support />} />
-              <Route path="/legal/terms" element={<TermsOfService />} />
-              <Route path="/legal/privacy" element={<PrivacyPolicy />} />
-              <Route path="/legal/notice" element={<LegalNotice />} />
             </Routes>
           </div>
         </BrowserRouter>
