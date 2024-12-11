@@ -26,11 +26,11 @@ const LegalNotice = () => {
           Capital social : 1000€<br />
           RCS Marseille 922 234 216<br />
           Siège social : 47 chemin des Anémones, 13012 Marseille<br />
-          Email : contact@inspire-daily.com</p>
+          Email : hugo.morales.pro@gmail.com</p>
 
           <h2 className="text-2xl font-semibold mt-8 mb-4">Directeur de la publication</h2>
           <p>Le directeur de la publication est le représentant légal de la société Eziom.<br />
-          Email : director@inspire-daily.com</p>
+          Email : hugo.morales.pro@gmail.com</p>
 
           <h2 className="text-2xl font-semibold mt-8 mb-4">Hébergement</h2>
           <p>Le site est hébergé par :<br />

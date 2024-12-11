@@ -55,7 +55,7 @@ const PrivacyPolicy = () => {
           </ul>
 
           <h2 className="text-2xl font-semibold mt-8 mb-4">6. Contact</h2>
-          <p>Pour toute question concernant notre politique de confidentialité, contactez-nous à privacy@inspire-daily.com</p>
+          <p>Pour toute question concernant notre politique de confidentialité, contactez-nous à hugo.morales.pro@gmail.com</p>
         </div>
       </div>
     </div>

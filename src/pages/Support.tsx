@@ -42,7 +42,7 @@ const Support = () => {
             <h2 className="text-2xl font-semibold mb-4">Nous contacter</h2>
             <p className="text-muted-foreground mb-4">Notre équipe est disponible pour vous aider. Contactez-nous par email ou via nos réseaux sociaux.</p>
             <div className="space-y-2">
-              <p>Email : support@inspire-daily.com</p>
+              <p>Email : hugo.morales.pro@gmail.com</p>
               <p>Horaires : Du lundi au vendredi, 9h-18h</p>
             </div>
           </section>
