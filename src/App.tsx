@@ -79,11 +79,7 @@ const App = () => (
           <div className="min-h-screen bg-primary-light">
             <Routes>
               <Route path="/login" element={<Login />} />
-              <Route path="/" element={
-                <ProtectedRoute>
-                  <Index />
-                </ProtectedRoute>
-              } />
+              <Route path="/" element={<Index />} />
               <Route path="/history" element={
                 <ProtectedRoute>
                   <History />
