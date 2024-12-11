@@ -18,7 +18,7 @@ Deno.serve(async (req) => {
 
     const { data, error } = await supabaseClient
       .from('app_settings')
-      .update({ value: '1.0.1' })
+      .update({ value: '1.0.2' })
       .eq('key', 'app_version')
       .select()
 
