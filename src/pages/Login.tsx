@@ -5,16 +5,26 @@ import { supabase } from '@/lib/supabase';
 import { useToast } from '@/hooks/use-toast';
 import { BackButton } from '@/components/auth/AuthProviderButton';
 import { AuthContainer } from '@/components/auth/AuthContainer';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const { toast } = useToast();
+  const navigate = useNavigate();
   const redirectTo = `${window.location.origin}/`;
 
   useEffect(() => {
+    const checkSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        navigate('/', { replace: true });
+      }
+    };
+
+    checkSession();
+
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'SIGNED_IN' && session) {
-        // Use replace instead of href to avoid adding to browser history
-        window.location.replace(redirectTo);
+        navigate('/', { replace: true });
       }
       if (event === 'PASSWORD_RECOVERY') {
         toast({
@@ -24,15 +34,8 @@ const Login = () => {
       }
     });
 
-    // Check if user is already logged in
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) {
-        window.location.replace(redirectTo);
-      }
-    });
-
     return () => subscription.unsubscribe();
-  }, [toast]);
+  }, [navigate, toast]);
 
   return (
     <AuthContainer>

@@ -32,27 +32,35 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    // Vérification initiale de la session
+    const checkSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
       setIsAuthenticated(!!session);
-    });
+    };
+    
+    checkSession();
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+    // Écoute des changements d'état d'authentification
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setIsAuthenticated(!!session);
     });
 
     return () => subscription.unsubscribe();
   }, []);
 
+  // Affichage du loader pendant la vérification
   if (isAuthenticated === null) {
     return <div className="min-h-screen bg-primary-light p-4 flex items-center justify-center">
       <p className="text-muted-foreground">Chargement...</p>
     </div>;
   }
 
+  // Redirection vers login si non authentifié
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
   }
 
+  // Affichage du contenu protégé si authentifié
   return (
     <>
       <Header />
