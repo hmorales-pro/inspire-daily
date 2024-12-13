@@ -11,5 +11,11 @@
   "back": "Back",
   "edit": "Edit",
   "success": "Success",
-  "error": "Error"
+  "error": "Error",
+  "saved": "Successfully saved",
+  "saveError": "Error while saving",
+  "optimized": "Successfully optimized",
+  "optimizeError": "Error while optimizing",
+  "updated": "Successfully updated",
+  "updateError": "Error while updating"
 }
