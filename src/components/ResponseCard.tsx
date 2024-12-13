@@ -3,6 +3,9 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Response } from '@/lib/supabase';
 import { ResponseContent } from './response/ResponseContent';
 import { ResponseEdit } from './response/ResponseEdit';
+import { useTranslation } from 'react-i18next';
+import { format } from 'date-fns';
+import { fr, enUS } from 'date-fns/locale';
 
 interface ResponseCardProps {
   response: Response;
@@ -28,6 +31,7 @@ export const ResponseCard = ({
   setEditedResponse
 }: ResponseCardProps) => {
   const [isEditingOptimized, setIsEditingOptimized] = React.useState(false);
+  const { t, i18n } = useTranslation();
 
   const handleCancel = () => {
     const textToRestore = isEditingOptimized ? response.optimized_response || '' : response.response;
@@ -51,8 +55,12 @@ export const ResponseCard = ({
     setIsEditingOptimized(isOptimized);
     const textToEdit = isOptimized ? response.optimized_response || '' : response.response;
     onEdit(response);
-    // Important: On met à jour le texte APRÈS avoir informé le parent
     setEditedResponse(textToEdit);
+  };
+
+  const formatDate = (date: string) => {
+    const locale = i18n.language === 'fr' ? fr : enUS;
+    return format(new Date(date), 'PP', { locale });
   };
 
   return (
@@ -60,7 +68,7 @@ export const ResponseCard = ({
       <CardHeader>
         <h2 className="text-lg font-semibold">{response.question}</h2>
         <p className="text-sm text-muted-foreground">
-          {new Date(response.created_at!).toLocaleDateString('fr-FR')}
+          {formatDate(response.created_at!)}
         </p>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -78,7 +86,7 @@ export const ResponseCard = ({
         ) : (
           <>
             <ResponseContent
-              title="Réponse originale :"
+              title={t('history.originalResponse')}
               content={response.response}
               isOptimizing={isOptimizing}
               profile={profile}
@@ -88,7 +96,7 @@ export const ResponseCard = ({
             />
             {response.is_optimized && response.optimized_response && (
               <ResponseContent
-                title="Réponse optimisée :"
+                title={t('history.optimizedResponse')}
                 content={response.optimized_response}
                 isOptimizing={isOptimizing}
                 profile={profile}
