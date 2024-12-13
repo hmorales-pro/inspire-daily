@@ -17,7 +17,6 @@ const corsHeaders = {
 };
 
 serve(async (req) => {
-  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
@@ -25,12 +24,10 @@ serve(async (req) => {
   try {
     console.log('Starting question generation process...');
     
-    // Get the current date and calculate first day of current and next month
     const today = new Date();
     const firstDayCurrentMonth = new Date(today.getFullYear(), today.getMonth(), 1);
     const firstDayNextMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1);
     
-    // Get existing questions for the period
     const { data: existingQuestions } = await supabase
       .from('daily_questions')
       .select('display_date')
@@ -38,13 +35,11 @@ serve(async (req) => {
       .lt('display_date', new Date(firstDayNextMonth.getTime() + 31 * 24 * 60 * 60 * 1000).toISOString())
       .order('display_date');
 
-    // Create a Set of dates that already have questions
     const existingDates = new Set(existingQuestions?.map(q => q.display_date) || []);
 
-    // Calculate missing dates for current and next month
     const missingDates = [];
     let currentDate = new Date(firstDayCurrentMonth);
-    const endDate = new Date(firstDayNextMonth.getTime() + 31 * 24 * 60 * 60 * 1000); // End of next month
+    const endDate = new Date(firstDayNextMonth.getTime() + 31 * 24 * 60 * 60 * 1000);
 
     while (currentDate < endDate) {
       const dateString = currentDate.toISOString().split('T')[0];
@@ -64,9 +59,9 @@ serve(async (req) => {
       );
     }
 
-    // Generate questions for missing dates
-    const completion = await openai.chat.completions.create({
-      model: 'gpt-4o',
+    // Generate French questions
+    const frCompletion = await openai.chat.completions.create({
+      model: 'gpt-4',
       messages: [
         {
           role: 'system',
@@ -79,16 +74,35 @@ serve(async (req) => {
       ]
     });
 
-    const questions = completion.choices[0].message.content!.split('\n')
-      .filter(q => q.trim().length > 0)
-      .map((question, index) => ({
-        question: question.trim(),
-        display_date: missingDates[index]
-      }));
+    // Generate English questions
+    const enCompletion = await openai.chat.completions.create({
+      model: 'gpt-4',
+      messages: [
+        {
+          role: 'system',
+          content: 'You are an expert in personal and professional development. Generate deep and relevant reflection questions to help professionals grow.'
+        },
+        {
+          role: 'user',
+          content: `Generate ${missingDates.length} unique questions in English for daily introspection. Format: one question per line, without numbering or punctuation at the start. Questions should be varied and cover different aspects of professional development.`
+        }
+      ]
+    });
 
-    console.log(`Generated ${questions.length} new questions`);
+    const frQuestions = frCompletion.choices[0].message.content!.split('\n')
+      .filter(q => q.trim().length > 0);
+    
+    const enQuestions = enCompletion.choices[0].message.content!.split('\n')
+      .filter(q => q.trim().length > 0);
 
-    // Insert new questions
+    const questions = missingDates.map((date, index) => ({
+      question: frQuestions[index].trim(),
+      question_en: enQuestions[index].trim(),
+      display_date: date
+    }));
+
+    console.log(`Generated ${questions.length} new questions in both languages`);
+
     const { error } = await supabase
       .from('daily_questions')
       .insert(questions);

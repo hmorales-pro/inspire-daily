@@ -7,6 +7,7 @@ import { saveResponse } from '@/lib/supabase';
 import { optimizeResponse } from '@/lib/openai';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/lib/supabase';
+import { useTranslation } from 'react-i18next';
 
 const Index = () => {
   const [response, setResponse] = useState('');
@@ -14,6 +15,7 @@ const Index = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const { t, i18n } = useTranslation();
 
   const { data: profile } = useQuery({
     queryKey: ['profile'],
@@ -32,7 +34,6 @@ const Index = () => {
     }
   });
 
-  // Fetch today's question
   const { data: todayQuestion, isLoading } = useQuery({
     queryKey: ['todayQuestion'],
     queryFn: async () => {
@@ -52,7 +53,7 @@ const Index = () => {
     if (!todayQuestion) {
       toast({
         title: "Erreur",
-        description: "Impossible de sauvegarder sans question du jour.",
+        description: t('home.noQuestion'),
         variant: "destructive",
       });
       return;
@@ -60,22 +61,22 @@ const Index = () => {
 
     try {
       await saveResponse({
-        question: todayQuestion.question,
+        question: i18n.language === 'en' ? todayQuestion.question_en : todayQuestion.question,
         response: response,
         is_optimized: false
       });
       
       toast({
-        title: "Réponse enregistrée",
-        description: "Votre réponse a été sauvegardée avec succès.",
+        title: t('common.save'),
+        description: t('home.response.saved'),
       });
       
       setResponse('');
       navigate('/history');
     } catch (error) {
       toast({
-        title: "Erreur",
-        description: "Une erreur est survenue lors de la sauvegarde.",
+        title: t('common.error'),
+        description: t('home.response.saveError'),
         variant: "destructive",
       });
     }
@@ -84,8 +85,8 @@ const Index = () => {
   const handleOptimize = async () => {
     if (!todayQuestion) {
       toast({
-        title: "Erreur",
-        description: "Impossible d'optimiser sans question du jour.",
+        title: t('common.error'),
+        description: t('home.noQuestion'),
         variant: "destructive",
       });
       return;
@@ -93,8 +94,8 @@ const Index = () => {
 
     if (profile?.optimizations_count === 0) {
       toast({
-        title: "Limite atteinte",
-        description: "Vous avez atteint votre limite d'optimisations pour ce mois. Passez à l'abonnement premium pour des optimisations illimitées.",
+        title: t('common.error'),
+        description: t('home.response.optimizationLimit'),
         variant: "destructive",
       });
       return;
@@ -119,23 +120,23 @@ const Index = () => {
       }
       
       await saveResponse({
-        question: todayQuestion.question,
+        question: i18n.language === 'en' ? todayQuestion.question_en : todayQuestion.question,
         response: response,
         is_optimized: true,
         optimized_response: optimizedContent
       });
       
       toast({
-        title: "Réponse optimisée",
-        description: "Votre contenu a été optimisé et sauvegardé avec succès.",
+        title: t('common.optimize'),
+        description: t('home.response.optimized'),
       });
       
       setResponse('');
       navigate('/history');
     } catch (error) {
       toast({
-        title: "Erreur",
-        description: "Une erreur est survenue lors de l'optimisation.",
+        title: t('common.error'),
+        description: t('home.response.optimizeError'),
         variant: "destructive",
       });
     } finally {
@@ -146,7 +147,7 @@ const Index = () => {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-primary-light p-4 flex items-center justify-center">
-        <p className="text-muted-foreground">Chargement de la question du jour...</p>
+        <p className="text-muted-foreground">{t('home.loading')}</p>
       </div>
     );
   }
@@ -154,7 +155,7 @@ const Index = () => {
   if (!todayQuestion) {
     return (
       <div className="min-h-screen bg-primary-light p-4 flex items-center justify-center">
-        <p className="text-muted-foreground">Aucune question disponible pour aujourd'hui.</p>
+        <p className="text-muted-foreground">{t('home.noQuestion')}</p>
       </div>
     );
   }
@@ -163,13 +164,13 @@ const Index = () => {
     <div className="min-h-screen bg-primary-light p-4 space-y-6">
       <div className="max-w-4xl mx-auto pt-8">
         <h1 className="text-2xl font-bold text-center text-primary-dark mb-8">
-          Question du jour
+          {t('home.title')}
         </h1>
         
         <div className="space-y-6">
           <QuestionCard 
-            question={todayQuestion.question}
-            date={new Date().toLocaleDateString('fr-FR', {
+            question={i18n.language === 'en' ? todayQuestion.question_en : todayQuestion.question}
+            date={new Date().toLocaleDateString(i18n.language === 'en' ? 'en-US' : 'fr-FR', {
               weekday: 'long',
               year: 'numeric',
               month: 'long',
@@ -183,6 +184,7 @@ const Index = () => {
             onSave={handleSave}
             onOptimize={handleOptimize}
             isOptimizing={isOptimizing}
+            isPremium={profile?.subscription_type === 'premium'}
           />
         </div>
       </div>

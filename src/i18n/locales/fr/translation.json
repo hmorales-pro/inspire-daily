@@ -4,7 +4,13 @@
     "history": "Historique",
     "profile": "Profil",
     "logout": "Déconnexion",
-    "loading": "Chargement..."
+    "loading": "Chargement...",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "optimize": "Optimiser",
+    "copy": "Copier",
+    "back": "Retour",
+    "edit": "Modifier"
   },
   "auth": {
     "login": "Connexion",
@@ -19,30 +25,112 @@
     },
     "features": {
       "title": "Créez du contenu qui vous ressemble",
-      "dailyQuestions": {
-        "title": "Questions quotidiennes",
-        "description": "Recevez chaque jour une nouvelle question inspirante pour alimenter vos réseaux sociaux avec du contenu authentique et engageant."
-      },
-      "guaranteedInspiration": {
-        "title": "Inspiration garantie",
-        "description": "Plus besoin de chercher quoi poster : nos questions vous aident à partager votre quotidien et vos expériences de manière naturelle."
-      },
-      "customContent": {
-        "title": "Contenu personnalisé",
-        "description": "Adaptez vos réponses à votre style et votre audience. Créez du contenu unique qui reflète votre personnalité."
-      },
-      "voiceInput": {
-        "title": "Saisie vocale",
-        "description": "Exprimez-vous naturellement grâce à la reconnaissance vocale. Parlez librement, nous transcrivons pour vous."
-      },
-      "aiAssistant": {
-        "title": "Assistant IA",
-        "description": "Affinez vos réponses avec notre assistant IA pour un contenu encore plus impactant sur vos réseaux sociaux."
-      },
-      "completeHistory": {
-        "title": "Historique complet",
-        "description": "Gardez une trace de toutes vos réponses et réutilisez votre contenu quand vous le souhaitez."
+      "sections": {
+        "dailyQuestions": {
+          "title": "Questions quotidiennes",
+          "description": "Recevez chaque jour une nouvelle question inspirante pour alimenter vos réseaux sociaux avec du contenu authentique et engageant."
+        },
+        "guaranteedInspiration": {
+          "title": "Inspiration garantie",
+          "description": "Plus besoin de chercher quoi poster : nos questions vous aident à partager votre quotidien et vos expériences de manière naturelle."
+        },
+        "customContent": {
+          "title": "Contenu personnalisé",
+          "description": "Adaptez vos réponses à votre style et votre audience. Créez du contenu unique qui reflète votre personnalité."
+        },
+        "voiceInput": {
+          "title": "Saisie vocale",
+          "description": "Exprimez-vous naturellement grâce à la reconnaissance vocale. Parlez librement, nous transcrivons pour vous."
+        },
+        "aiAssistant": {
+          "title": "Assistant IA",
+          "description": "Affinez vos réponses avec notre assistant IA pour un contenu encore plus impactant sur vos réseaux sociaux."
+        },
+        "completeHistory": {
+          "title": "Historique complet",
+          "description": "Gardez une trace de toutes vos réponses et réutilisez votre contenu quand vous le souhaitez."
+        }
       }
+    },
+    "pricing": {
+      "title": "Choisissez votre formule",
+      "subtitle": "Des options flexibles pour partager votre quotidien sur les réseaux sociaux",
+      "free": {
+        "title": "Gratuit",
+        "description": "Pour commencer votre voyage",
+        "price": "0",
+        "features": [
+          "1 question par jour",
+          "Historique limité à 30 jours",
+          "5 optimisations IA par mois"
+        ]
+      },
+      "premium": {
+        "title": "Premium",
+        "description": "Pour aller plus loin",
+        "price": "5",
+        "features": [
+          "1 question par jour",
+          "Historique illimité",
+          "Optimisations IA illimitées",
+          "Saisie vocale"
+        ]
+      }
+    },
+    "cta": {
+      "title": "Prêt à créer du contenu qui vous inspire ?",
+      "subtitle": "Rejoignez notre communauté de créateurs et donnez vie à vos réseaux sociaux avec du contenu authentique.",
+      "button": "S'inscrire maintenant"
     }
+  },
+  "home": {
+    "title": "Question du jour",
+    "noQuestion": "Aucune question disponible pour aujourd'hui.",
+    "loading": "Chargement de la question du jour...",
+    "response": {
+      "placeholder": "Écrivez votre réponse ici...",
+      "save": "Enregistrer",
+      "optimize": "Optimiser",
+      "voiceInput": "Saisie vocale bientôt disponible !",
+      "premiumOnly": "Fonctionnalité réservée aux membres Premium"
+    }
+  },
+  "history": {
+    "title": "Historique",
+    "noResponses": "Aucune réponse enregistrée pour le moment.",
+    "loading": "Chargement...",
+    "error": "Une erreur est survenue lors du chargement de l'historique.",
+    "originalResponse": "Réponse originale :",
+    "optimizedResponse": "Réponse optimisée :",
+    "selectionRequired": "Veuillez sélectionner le texte à formater"
+  },
+  "settings": {
+    "title": "Paramètres",
+    "subscription": {
+      "title": "Votre abonnement",
+      "status": "Statut actuel :",
+      "type": "Type d'abonnement :",
+      "free": "Gratuit",
+      "premium": "Premium",
+      "active": "Actif",
+      "inactive": "Inactif",
+      "upgrade": "Passer à Premium",
+      "features": {
+        "title": "Fonctionnalités Premium :",
+        "unlimited": "Optimisations illimitées",
+        "history": "Historique illimité",
+        "voice": "Saisie vocale"
+      }
+    },
+    "account": {
+      "title": "Votre compte",
+      "email": "Adresse email :",
+      "logout": "Déconnexion"
+    }
+  },
+  "legal": {
+    "terms": "Conditions d'utilisation",
+    "privacy": "Politique de confidentialité",
+    "notice": "Mentions légales"
   }
 }

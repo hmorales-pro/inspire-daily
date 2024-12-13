@@ -4,7 +4,13 @@
     "history": "History",
     "profile": "Profile",
     "logout": "Logout",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "optimize": "Optimize",
+    "copy": "Copy",
+    "back": "Back",
+    "edit": "Edit"
   },
   "auth": {
     "login": "Login",
@@ -19,30 +25,112 @@
     },
     "features": {
       "title": "Create content that reflects who you are",
-      "dailyQuestions": {
-        "title": "Daily Questions",
-        "description": "Receive a new inspiring question every day to fuel your social media with authentic and engaging content."
-      },
-      "guaranteedInspiration": {
-        "title": "Guaranteed Inspiration",
-        "description": "No more wondering what to post: our questions help you share your daily life and experiences naturally."
-      },
-      "customContent": {
-        "title": "Custom Content",
-        "description": "Adapt your answers to your style and audience. Create unique content that reflects your personality."
-      },
-      "voiceInput": {
-        "title": "Voice Input",
-        "description": "Express yourself naturally with voice recognition. Speak freely, we transcribe for you."
-      },
-      "aiAssistant": {
-        "title": "AI Assistant",
-        "description": "Refine your answers with our AI assistant for even more impactful content on your social media."
-      },
-      "completeHistory": {
-        "title": "Complete History",
-        "description": "Keep track of all your answers and reuse your content whenever you want."
+      "sections": {
+        "dailyQuestions": {
+          "title": "Daily Questions",
+          "description": "Receive a new inspiring question every day to fuel your social media with authentic and engaging content."
+        },
+        "guaranteedInspiration": {
+          "title": "Guaranteed Inspiration",
+          "description": "No more wondering what to post: our questions help you share your daily life and experiences naturally."
+        },
+        "customContent": {
+          "title": "Custom Content",
+          "description": "Adapt your answers to your style and audience. Create unique content that reflects your personality."
+        },
+        "voiceInput": {
+          "title": "Voice Input",
+          "description": "Express yourself naturally with voice recognition. Speak freely, we transcribe for you."
+        },
+        "aiAssistant": {
+          "title": "AI Assistant",
+          "description": "Refine your answers with our AI assistant for even more impactful content on your social media."
+        },
+        "completeHistory": {
+          "title": "Complete History",
+          "description": "Keep track of all your answers and reuse your content whenever you want."
+        }
       }
+    },
+    "pricing": {
+      "title": "Choose your plan",
+      "subtitle": "Flexible options to share your daily life on social media",
+      "free": {
+        "title": "Free",
+        "description": "To start your journey",
+        "price": "0",
+        "features": [
+          "1 question per day",
+          "30-day history",
+          "5 AI optimizations per month"
+        ]
+      },
+      "premium": {
+        "title": "Premium",
+        "description": "To go further",
+        "price": "5",
+        "features": [
+          "1 question per day",
+          "Unlimited history",
+          "Unlimited AI optimizations",
+          "Voice input"
+        ]
+      }
+    },
+    "cta": {
+      "title": "Ready to create inspiring content?",
+      "subtitle": "Join our community of creators and bring your social media to life with authentic content.",
+      "button": "Sign up now"
     }
+  },
+  "home": {
+    "title": "Today's Question",
+    "noQuestion": "No question available for today.",
+    "loading": "Loading today's question...",
+    "response": {
+      "placeholder": "Write your answer here...",
+      "save": "Save",
+      "optimize": "Optimize",
+      "voiceInput": "Voice input coming soon!",
+      "premiumOnly": "Premium feature only"
+    }
+  },
+  "history": {
+    "title": "History",
+    "noResponses": "No responses recorded yet.",
+    "loading": "Loading...",
+    "error": "An error occurred while loading the history.",
+    "originalResponse": "Original response:",
+    "optimizedResponse": "Optimized response:",
+    "selectionRequired": "Please select text to format"
+  },
+  "settings": {
+    "title": "Settings",
+    "subscription": {
+      "title": "Your subscription",
+      "status": "Current status:",
+      "type": "Subscription type:",
+      "free": "Free",
+      "premium": "Premium",
+      "active": "Active",
+      "inactive": "Inactive",
+      "upgrade": "Upgrade to Premium",
+      "features": {
+        "title": "Premium features:",
+        "unlimited": "Unlimited optimizations",
+        "history": "Unlimited history",
+        "voice": "Voice input"
+      }
+    },
+    "account": {
+      "title": "Your account",
+      "email": "Email address:",
+      "logout": "Logout"
+    }
+  },
+  "legal": {
+    "terms": "Terms of Service",
+    "privacy": "Privacy Policy",
+    "notice": "Legal Notice"
   }
 }

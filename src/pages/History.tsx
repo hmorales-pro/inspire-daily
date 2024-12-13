@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getResponses, updateResponse } from '@/lib/supabase';
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -8,11 +8,13 @@ import { supabase } from '@/lib/supabase';
 import { ResponseList } from '@/components/ResponseList';
 import { useHistoryState } from '@/hooks/useHistoryState';
 import { filterResponsesBySubscription } from '@/utils/responseFilters';
+import { useTranslation } from 'react-i18next';
 
 const History = () => {
   const { editingId, editedResponse, isOptimizing, setEditingId, setEditedResponse, setIsOptimizing } = useHistoryState();
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const { t } = useTranslation();
 
   const { data: responses, isLoading, error } = useQuery({
     queryKey: ['responses'],
@@ -43,12 +45,11 @@ const History = () => {
 
   const handleSave = async (response) => {
     try {
-      // Nous utilisons maintenant l'objet response complet qui contient les bonnes propriétés à mettre à jour
       await updateResponse(response.id, response);
       
       toast({
-        title: "Réponse mise à jour",
-        description: "Votre réponse a été modifiée avec succès.",
+        title: t('common.save'),
+        description: t('history.response.updated'),
       });
       
       setEditingId(null);
@@ -56,8 +57,8 @@ const History = () => {
       queryClient.invalidateQueries({ queryKey: ['responses'] });
     } catch (error) {
       toast({
-        title: "Erreur",
-        description: "Une erreur est survenue lors de la mise à jour.",
+        title: t('common.error'),
+        description: t('history.response.updateError'),
         variant: "destructive",
       });
     }
@@ -66,8 +67,8 @@ const History = () => {
   const handleOptimize = async (response) => {
     if (!profile || profile.optimizations_count === 0) {
       toast({
-        title: "Limite atteinte",
-        description: "Vous avez atteint votre limite d'optimisations pour ce mois. Passez à l'abonnement premium pour des optimisations illimitées.",
+        title: t('common.error'),
+        description: t('history.response.optimizationLimit'),
         variant: "destructive",
       });
       return;
@@ -97,15 +98,15 @@ const History = () => {
       });
       
       toast({
-        title: "Réponse optimisée",
-        description: "Votre contenu a été optimisé avec succès.",
+        title: t('common.optimize'),
+        description: t('history.response.optimized'),
       });
       
       queryClient.invalidateQueries({ queryKey: ['responses'] });
     } catch (error) {
       toast({
-        title: "Erreur",
-        description: "Une erreur est survenue lors de l'optimisation.",
+        title: t('common.error'),
+        description: t('history.response.optimizeError'),
         variant: "destructive",
       });
     } finally {
@@ -116,7 +117,7 @@ const History = () => {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-primary-light p-4 flex items-center justify-center">
-        <p className="text-muted-foreground">Chargement...</p>
+        <p className="text-muted-foreground">{t('history.loading')}</p>
       </div>
     );
   }
@@ -124,7 +125,7 @@ const History = () => {
   if (error) {
     return (
       <div className="min-h-screen bg-primary-light p-4 flex items-center justify-center">
-        <p className="text-destructive">Une erreur est survenue lors du chargement de l'historique.</p>
+        <p className="text-destructive">{t('history.error')}</p>
       </div>
     );
   }
@@ -135,7 +136,7 @@ const History = () => {
     <div className="min-h-screen bg-primary-light p-4">
       <div className="max-w-4xl mx-auto pt-8">
         <h1 className="text-2xl font-bold text-center text-primary-dark mb-8">
-          Historique
+          {t('history.title')}
         </h1>
         
         <ScrollArea className="h-[calc(100vh-200px)]">
