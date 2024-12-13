@@ -1,52 +1,32 @@
 import { useTranslation } from "react-i18next";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
+import { BackButton } from "@/components/BackButton";
 
 const Support = () => {
-  const { t } = useTranslation(['pages']);
+  const { t } = useTranslation('pages');
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-12">
-      <h1 className="text-4xl font-bold mb-4">{t('pages.support.title')}</h1>
+      <BackButton />
+      <h1 className="text-4xl font-bold mb-8">{t('support.title')}</h1>
       <p className="text-lg text-gray-600 mb-12">
-        {t('pages.support.description')}
+        {t('support.description')}
       </p>
 
       <div className="grid md:grid-cols-3 gap-8">
-        <Card>
-          <CardHeader>
-            <CardTitle>{t('pages.support.sections.faq.title')}</CardTitle>
-            <CardDescription>
-              {t('pages.support.sections.faq.description')}
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            {/* FAQ content will be added here */}
-          </CardContent>
-        </Card>
+        <div className="bg-white p-6 rounded-lg shadow-sm">
+          <h2 className="text-xl font-semibold mb-4">{t('support.sections.faq.title')}</h2>
+          <p className="text-gray-600">{t('support.sections.faq.description')}</p>
+        </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>{t('pages.support.sections.contact.title')}</CardTitle>
-            <CardDescription>
-              {t('pages.support.sections.contact.description')}
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            {/* Contact information will be added here */}
-          </CardContent>
-        </Card>
+        <div className="bg-white p-6 rounded-lg shadow-sm">
+          <h2 className="text-xl font-semibold mb-4">{t('support.sections.contact.title')}</h2>
+          <p className="text-gray-600">{t('support.sections.contact.description')}</p>
+        </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>{t('pages.support.sections.resources.title')}</CardTitle>
-            <CardDescription>
-              {t('pages.support.sections.resources.description')}
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            {/* Resources content will be added here */}
-          </CardContent>
-        </Card>
+        <div className="bg-white p-6 rounded-lg shadow-sm">
+          <h2 className="text-xl font-semibold mb-4">{t('support.sections.resources.title')}</h2>
+          <p className="text-gray-600">{t('support.sections.resources.description')}</p>
+        </div>
       </div>
     </div>
   );
