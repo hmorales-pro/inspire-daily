@@ -21,7 +21,8 @@ i18n
     resources,
     fallbackLng: 'fr',
     detection: {
-      order: ['navigator', 'htmlTag', 'path', 'subdomain'],
+      order: ['localStorage', 'navigator', 'htmlTag', 'path', 'subdomain'],
+      caches: ['localStorage'],
     },
     interpolation: {
       escapeValue: false
