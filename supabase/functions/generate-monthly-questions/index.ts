@@ -24,9 +24,22 @@ serve(async (req) => {
   try {
     console.log('Starting question generation process...');
     
-    const today = new Date();
-    const firstDayCurrentMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-    const firstDayNextMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1);
+    // Parse request body to get target month if provided
+    const { targetMonth } = await req.json().catch(() => ({}));
+    
+    let firstDayCurrentMonth, firstDayNextMonth;
+    
+    if (targetMonth) {
+      // If target month is provided, use it
+      const [year, month] = targetMonth.split('-').map(Number);
+      firstDayCurrentMonth = new Date(year, month - 1, 1);
+      firstDayNextMonth = new Date(year, month, 1);
+    } else {
+      // Default to current month
+      const today = new Date();
+      firstDayCurrentMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+      firstDayNextMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1);
+    }
     
     const { data: existingQuestions } = await supabase
       .from('daily_questions')
