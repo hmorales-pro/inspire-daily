@@ -32,7 +32,7 @@ const resources = {
     home: homeEN,
     history: historyEN,
     settings: settingsEN,
-    footer: footerFR,
+    footer: footerEN,
     legal: legalEN,
     pages: pagesEN
   },
