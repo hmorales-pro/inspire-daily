@@ -25,18 +25,18 @@ export const ResponseContent = ({
   isOriginalVersion = true
 }: ResponseContentProps) => {
   const { toast } = useToast();
-  const { t } = useTranslation();
+  const { t } = useTranslation(['history', 'common']);
 
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(content);
       toast({
-        description: t('history.response.copied'),
+        description: t('history:response.copied'),
       });
     } catch (err) {
       toast({
-        title: t('common.error'),
-        description: t('history.response.copyError'),
+        title: t('common:error'),
+        description: t('history:response.copyError'),
         variant: "destructive",
       });
     }
@@ -53,7 +53,7 @@ export const ResponseContent = ({
             onClick={handleCopy}
           >
             <Copy className="w-4 h-4 mr-2" />
-            {t('common.copy')}
+            {t('common:copy')}
           </Button>
           <ResponseActions
             isOptimizing={isOptimizing}
