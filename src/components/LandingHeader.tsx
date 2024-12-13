@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useQuery } from "@tanstack/react-query";
 import { getAppSettings } from "@/lib/settings";
+import { LanguageSwitcher } from './LanguageSwitcher';
 
 const LandingHeader = () => {
   const navigate = useNavigate();
@@ -53,6 +54,7 @@ const LandingHeader = () => {
           </div>
           
           <div className="flex items-center space-x-4">
+            <LanguageSwitcher />
             {isAuthenticated ? (
               <Button
                 onClick={() => navigate('/home')}
