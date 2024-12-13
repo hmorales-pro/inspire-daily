@@ -3,6 +3,7 @@ import { ResponseActions } from './ResponseActions';
 import { Button } from "@/components/ui/button";
 import { Copy } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import { useTranslation } from 'react-i18next';
 
 interface ResponseContentProps {
   title: string;
@@ -24,17 +25,18 @@ export const ResponseContent = ({
   isOriginalVersion = true
 }: ResponseContentProps) => {
   const { toast } = useToast();
+  const { t } = useTranslation();
 
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(content);
       toast({
-        description: "Texte copié dans le presse-papier",
+        description: t('history.response.copied'),
       });
     } catch (err) {
       toast({
-        title: "Erreur",
-        description: "Impossible de copier le texte",
+        title: t('common.error'),
+        description: t('history.response.copyError'),
         variant: "destructive",
       });
     }
@@ -51,7 +53,7 @@ export const ResponseContent = ({
             onClick={handleCopy}
           >
             <Copy className="w-4 h-4 mr-2" />
-            Copier
+            {t('common.copy')}
           </Button>
           <ResponseActions
             isOptimizing={isOptimizing}

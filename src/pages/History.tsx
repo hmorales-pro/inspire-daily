@@ -48,7 +48,7 @@ const History = () => {
       await updateResponse(response.id, response);
       
       toast({
-        title: t('common.save'),
+        title: t('common.success'),
         description: t('history.response.updated'),
       });
       
@@ -98,7 +98,7 @@ const History = () => {
       });
       
       toast({
-        title: t('common.optimize'),
+        title: t('common.success'),
         description: t('history.response.optimized'),
       });
       
@@ -117,7 +117,7 @@ const History = () => {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-primary-light p-4 flex items-center justify-center">
-        <p className="text-muted-foreground">{t('history.loading')}</p>
+        <p className="text-muted-foreground">{t('common.loading')}</p>
       </div>
     );
   }

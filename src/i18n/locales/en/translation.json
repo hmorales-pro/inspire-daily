@@ -105,7 +105,16 @@
     "error": "An error occurred while loading the history.",
     "originalResponse": "Original response:",
     "optimizedResponse": "Optimized response:",
-    "selectionRequired": "Please select text to format"
+    "selectionRequired": "Please select text to format",
+    "response": {
+      "copied": "Text copied to clipboard",
+      "copyError": "Unable to copy text",
+      "updated": "Response updated successfully",
+      "updateError": "Error updating response",
+      "optimized": "Response optimized successfully",
+      "optimizeError": "Error optimizing response",
+      "optimizationLimit": "You have no optimizations left"
+    }
   },
   "settings": {
     "title": "Settings",

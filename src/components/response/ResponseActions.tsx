@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Edit2, RefreshCw } from "lucide-react";
+import { useTranslation } from 'react-i18next';
 
 interface ResponseActionsProps {
   isOptimizing: boolean;
@@ -17,6 +18,8 @@ export const ResponseActions = ({
   onOptimize,
   showOptimize = true
 }: ResponseActionsProps) => {
+  const { t } = useTranslation();
+  
   return (
     <div className="space-x-2">
       <Button
@@ -25,7 +28,7 @@ export const ResponseActions = ({
         onClick={onEdit}
       >
         <Edit2 className="w-4 h-4 mr-2" />
-        Éditer
+        {t('common.edit')}
       </Button>
       {showOptimize && (
         <Button
@@ -35,7 +38,7 @@ export const ResponseActions = ({
           disabled={isOptimizing || !profile || profile.optimizations_count === 0}
         >
           <RefreshCw className={`w-4 h-4 mr-2 ${isOptimizing ? 'animate-spin' : ''}`} />
-          Optimiser
+          {t('common.optimize')}
         </Button>
       )}
     </div>

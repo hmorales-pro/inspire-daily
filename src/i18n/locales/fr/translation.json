@@ -105,7 +105,16 @@
     "error": "Une erreur est survenue lors du chargement de l'historique.",
     "originalResponse": "Réponse originale :",
     "optimizedResponse": "Réponse optimisée :",
-    "selectionRequired": "Veuillez sélectionner le texte à formater"
+    "selectionRequired": "Veuillez sélectionner le texte à formater",
+    "response": {
+      "copied": "Texte copié dans le presse-papier",
+      "copyError": "Impossible de copier le texte",
+      "updated": "Réponse mise à jour avec succès",
+      "updateError": "Erreur lors de la mise à jour de la réponse",
+      "optimized": "Réponse optimisée avec succès",
+      "optimizeError": "Erreur lors de l'optimisation de la réponse",
+      "optimizationLimit": "Vous n'avez plus d'optimisations disponibles"
+    }
   },
   "settings": {
     "title": "Paramètres",
