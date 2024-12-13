@@ -24,7 +24,8 @@ const DailyQuestion = () => {
       console.log('Today question data:', data);
       return data;
     },
-    staleTime: 0, // Force refetch when language changes
+    staleTime: Infinity,
+    cacheTime: Infinity,
   });
 
   if (isLoading) {
@@ -52,7 +53,6 @@ const DailyQuestion = () => {
     );
   }
 
-  // Log the current language and question data for debugging
   console.log('Current language:', i18n.language);
   console.log('Question data:', {
     question: todayQuestion.question,
