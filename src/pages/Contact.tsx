@@ -2,17 +2,49 @@ import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { BackButton } from "@/components/BackButton";
+import { useState } from "react";
+import { supabase } from "@/lib/supabase";
 
 const Contact = () => {
   const { t } = useTranslation('pages');
   const { toast } = useToast();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    toast({
-      title: t('contact.form.success'),
-      description: "We'll get back to you soon!",
-    });
+    setIsSubmitting(true);
+
+    const formData = new FormData(e.currentTarget);
+    const data = {
+      name: formData.get('name') as string,
+      email: formData.get('email') as string,
+      message: formData.get('message') as string,
+    };
+
+    try {
+      const { error } = await supabase.functions.invoke('send-contact-email', {
+        body: data,
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: t('contact.form.success'),
+        description: t('contact.form.successDescription'),
+      });
+
+      // Reset form
+      (e.target as HTMLFormElement).reset();
+    } catch (error) {
+      console.error('Error sending message:', error);
+      toast({
+        title: t('contact.form.error'),
+        description: t('contact.form.errorDescription'),
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -31,6 +63,7 @@ const Contact = () => {
           <input
             type="text"
             id="name"
+            name="name"
             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary"
             required
           />
@@ -43,6 +76,7 @@ const Contact = () => {
           <input
             type="email"
             id="email"
+            name="email"
             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary"
             required
           />
@@ -54,14 +88,15 @@ const Contact = () => {
           </label>
           <textarea
             id="message"
+            name="message"
             rows={5}
             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary"
             required
           />
         </div>
 
-        <Button type="submit" className="w-full">
-          {t('contact.form.send')}
+        <Button type="submit" className="w-full" disabled={isSubmitting}>
+          {isSubmitting ? t('common:loading') : t('contact.form.send')}
         </Button>
       </form>
     </div>
