@@ -25,7 +25,7 @@ const DailyQuestion = () => {
       return data;
     },
     staleTime: Infinity,
-    cacheTime: Infinity,
+    gcTime: Infinity,
   });
 
   if (isLoading) {
