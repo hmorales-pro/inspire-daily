@@ -1,0 +1,48 @@
+{
+  "common": {
+    "home": "Home",
+    "history": "History",
+    "profile": "Profile",
+    "logout": "Logout",
+    "loading": "Loading..."
+  },
+  "auth": {
+    "login": "Login",
+    "signup": "Sign up",
+    "myAccount": "My Account"
+  },
+  "landing": {
+    "hero": {
+      "title": "One question a day to inspire your posts",
+      "subtitle": "Find daily inspiration for your social media with questions that spark creativity and encourage authentic sharing.",
+      "cta": "Start for free"
+    },
+    "features": {
+      "title": "Create content that reflects who you are",
+      "dailyQuestions": {
+        "title": "Daily Questions",
+        "description": "Receive a new inspiring question every day to fuel your social media with authentic and engaging content."
+      },
+      "guaranteedInspiration": {
+        "title": "Guaranteed Inspiration",
+        "description": "No more wondering what to post: our questions help you share your daily life and experiences naturally."
+      },
+      "customContent": {
+        "title": "Custom Content",
+        "description": "Adapt your answers to your style and audience. Create unique content that reflects your personality."
+      },
+      "voiceInput": {
+        "title": "Voice Input",
+        "description": "Express yourself naturally with voice recognition. Speak freely, we transcribe for you."
+      },
+      "aiAssistant": {
+        "title": "AI Assistant",
+        "description": "Refine your answers with our AI assistant for even more impactful content on your social media."
+      },
+      "completeHistory": {
+        "title": "Complete History",
+        "description": "Keep track of all your answers and reuse your content whenever you want."
+      }
+    }
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "common": {
+    "home": "Accueil",
+    "history": "Historique",
+    "profile": "Profil",
+    "logout": "Déconnexion",
+    "loading": "Chargement..."
+  },
+  "auth": {
+    "login": "Connexion",
+    "signup": "S'inscrire",
+    "myAccount": "Mon compte"
+  },
+  "landing": {
+    "hero": {
+      "title": "Une question par jour pour inspirer vos posts",
+      "subtitle": "Trouvez l'inspiration quotidienne pour vos réseaux sociaux avec des questions qui stimulent la créativité et encouragent le partage authentique.",
+      "cta": "Commencer gratuitement"
+    },
+    "features": {
+      "title": "Créez du contenu qui vous ressemble",
+      "dailyQuestions": {
+        "title": "Questions quotidiennes",
+        "description": "Recevez chaque jour une nouvelle question inspirante pour alimenter vos réseaux sociaux avec du contenu authentique et engageant."
+      },
+      "guaranteedInspiration": {
+        "title": "Inspiration garantie",
+        "description": "Plus besoin de chercher quoi poster : nos questions vous aident à partager votre quotidien et vos expériences de manière naturelle."
+      },
+      "customContent": {
+        "title": "Contenu personnalisé",
+        "description": "Adaptez vos réponses à votre style et votre audience. Créez du contenu unique qui reflète votre personnalité."
+      },
+      "voiceInput": {
+        "title": "Saisie vocale",
+        "description": "Exprimez-vous naturellement grâce à la reconnaissance vocale. Parlez librement, nous transcrivons pour vous."
+      },
+      "aiAssistant": {
+        "title": "Assistant IA",
+        "description": "Affinez vos réponses avec notre assistant IA pour un contenu encore plus impactant sur vos réseaux sociaux."
+      },
+      "completeHistory": {
+        "title": "Historique complet",
+        "description": "Gardez une trace de toutes vos réponses et réutilisez votre contenu quand vous le souhaitez."
+      }
+    }
+  }
+}

@@ -3,11 +3,14 @@ import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import { History, Home, LogOut, User } from 'lucide-react';
 import { Button } from './ui/button';
 import { useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { LanguageSwitcher } from './LanguageSwitcher';
 
 const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const supabase = useSupabaseClient();
+  const { t } = useTranslation();
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -59,7 +62,7 @@ const Header = () => {
               onClick={() => navigate('/home')}
             >
               <Home className="h-5 w-5" />
-              <span className="hidden sm:inline">Accueil</span>
+              <span className="hidden sm:inline">{t('common.home')}</span>
             </Button>
 
             <Button
@@ -71,7 +74,7 @@ const Header = () => {
               onClick={() => navigate('/history')}
             >
               <History className="h-5 w-5" />
-              <span className="hidden sm:inline">Historique</span>
+              <span className="hidden sm:inline">{t('common.history')}</span>
             </Button>
 
             <Button
@@ -83,7 +86,7 @@ const Header = () => {
               onClick={() => navigate('/settings')}
             >
               <User className="h-5 w-5" />
-              <span className="hidden sm:inline">Profil</span>
+              <span className="hidden sm:inline">{t('common.profile')}</span>
             </Button>
             
             <Button
@@ -93,8 +96,10 @@ const Header = () => {
               onClick={handleLogout}
             >
               <LogOut className="h-5 w-5" />
-              <span className="hidden sm:inline">Déconnexion</span>
+              <span className="hidden sm:inline">{t('common.logout')}</span>
             </Button>
+
+            <LanguageSwitcher />
           </div>
         </div>
       </div>
