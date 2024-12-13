@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 
 const LandingHeader = () => {
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t } = useTranslation(['auth', 'common']);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
   const { data: redirectUrl } = useQuery({
@@ -62,7 +62,7 @@ const LandingHeader = () => {
                 onClick={() => navigate('/home')}
                 className="bg-primary hover:bg-primary/90 text-white"
               >
-                {t('auth.myAccount')}
+                {t('auth:myAccount')}
               </Button>
             ) : (
               <>
@@ -71,13 +71,13 @@ const LandingHeader = () => {
                   onClick={() => navigate('/login')}
                   className="text-primary hover:text-primary/90"
                 >
-                  {t('auth.login')}
+                  {t('auth:login')}
                 </Button>
                 <Button
                   onClick={() => navigate('/login')}
                   className="bg-primary hover:bg-primary/90 text-white"
                 >
-                  {t('auth.signup')}
+                  {t('auth:signup')}
                 </Button>
               </>
             )}
