@@ -10,7 +10,9 @@
     "optimize": "Optimiser",
     "copy": "Copier",
     "back": "Retour",
-    "edit": "Modifier"
+    "edit": "Modifier",
+    "success": "Succès",
+    "error": "Erreur"
   },
   "auth": {
     "login": "Connexion",
@@ -108,14 +110,23 @@
   "settings": {
     "title": "Paramètres",
     "subscription": {
-      "title": "Votre abonnement",
-      "status": "Statut actuel :",
-      "type": "Type d'abonnement :",
+      "title": "Abonnement",
+      "description": "Gérez votre abonnement et vos optimisations",
+      "type": "Type d'abonnement",
       "free": "Gratuit",
       "premium": "Premium",
       "active": "Actif",
       "inactive": "Inactif",
-      "upgrade": "Passer à Premium",
+      "upgrade": "Passer à l'abonnement Premium (5€/mois)",
+      "cancel": "Annuler mon abonnement Premium",
+      "unlimited": "Illimité",
+      "remainingOptimizations": "Optimisations restantes",
+      "optimizations": "optimisation(s)",
+      "resetDate": "Réinitialisation le",
+      "redirecting": "Redirection vers le paiement...",
+      "canceling": "Annulation en cours...",
+      "cancelSuccess": "Votre abonnement a été annulé avec succès.",
+      "cancelError": "Une erreur est survenue lors de l'annulation de l'abonnement.",
       "features": {
         "title": "Fonctionnalités Premium :",
         "unlimited": "Optimisations illimitées",
@@ -124,9 +135,10 @@
       }
     },
     "account": {
-      "title": "Votre compte",
-      "email": "Adresse email :",
-      "logout": "Déconnexion"
+      "title": "Compte",
+      "description": "Gérez vos informations personnelles",
+      "email": "Email",
+      "logout": "Se déconnecter"
     }
   },
   "legal": {

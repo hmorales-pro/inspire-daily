@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
+import { useTranslation } from 'react-i18next';
 import { supabase } from '@/lib/supabase';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -15,6 +16,7 @@ interface SubscriptionCardProps {
 
 export const SubscriptionCard = ({ profileData, isUpgrading, handleUpgrade }: SubscriptionCardProps) => {
   const { toast } = useToast();
+  const { t } = useTranslation();
   const queryClient = useQueryClient();
   const [isCanceling, setIsCanceling] = useState(false);
 
@@ -24,13 +26,13 @@ export const SubscriptionCard = ({ profileData, isUpgrading, handleUpgrade }: Su
   };
 
   const getRemainingOptimizations = () => {
-    if (profileData?.subscription_type === 'premium') return 'Illimité';
+    if (profileData?.subscription_type === 'premium') return t('settings.subscription.unlimited');
     return profileData?.optimizations_count || 0;
   };
 
   const getNextResetDate = () => {
     if (!profileData?.optimizations_reset_date) return null;
-    return new Date(profileData.optimizations_reset_date).toLocaleDateString('fr-FR');
+    return new Date(profileData.optimizations_reset_date).toLocaleDateString();
   };
 
   const getProgressValue = () => {
@@ -51,14 +53,14 @@ export const SubscriptionCard = ({ profileData, isUpgrading, handleUpgrade }: Su
       await queryClient.invalidateQueries({ queryKey: ['profile'] });
       
       toast({
-        title: "Succès",
-        description: "Votre abonnement a été annulé avec succès.",
+        title: t('common.success'),
+        description: t('settings.subscription.cancelSuccess'),
       });
     } catch (error) {
       console.error('Error:', error);
       toast({
-        title: "Erreur",
-        description: "Une erreur est survenue lors de l'annulation de l'abonnement.",
+        title: t('common.error'),
+        description: t('settings.subscription.cancelError'),
         variant: "destructive",
       });
     } finally {
@@ -69,28 +71,28 @@ export const SubscriptionCard = ({ profileData, isUpgrading, handleUpgrade }: Su
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Abonnement</CardTitle>
+        <CardTitle>{t('settings.subscription.title')}</CardTitle>
         <CardDescription>
-          Gérez votre abonnement et vos optimisations
+          {t('settings.subscription.description')}
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <div>
-          <p className="text-sm font-medium">Type d&apos;abonnement</p>
+          <p className="text-sm font-medium">{t('settings.subscription.type')}</p>
           <p className="text-2xl font-bold capitalize">
-            {profileData?.subscription_type || 'Gratuit'}
+            {t(`settings.subscription.${profileData?.subscription_type || 'free'}`)}
           </p>
         </div>
 
         <div>
-          <p className="text-sm font-medium mb-2">Optimisations restantes</p>
+          <p className="text-sm font-medium mb-2">{t('settings.subscription.remainingOptimizations')}</p>
           <Progress 
             value={getProgressValue()}
             className="mb-2"
           />
           <p className="text-sm text-muted-foreground">
-            {getRemainingOptimizations()} optimisation{getRemainingOptimizations() !== 1 ? 's' : ''} restante{getRemainingOptimizations() !== 1 ? 's' : ''}
-            {getNextResetDate() && ` (Réinitialisation le ${getNextResetDate()})`}
+            {getRemainingOptimizations()} {t('settings.subscription.optimizations')}
+            {getNextResetDate() && ` (${t('settings.subscription.resetDate')} ${getNextResetDate()})`}
           </p>
         </div>
 
@@ -103,10 +105,10 @@ export const SubscriptionCard = ({ profileData, isUpgrading, handleUpgrade }: Su
             {isUpgrading ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Redirection vers le paiement...
+                {t('settings.subscription.redirecting')}
               </>
             ) : (
-              "Passer à l'abonnement Premium (5€/mois)"
+              t('settings.subscription.upgrade')
             )}
           </Button>
         ) : (
@@ -119,10 +121,10 @@ export const SubscriptionCard = ({ profileData, isUpgrading, handleUpgrade }: Su
             {isCanceling ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Annulation en cours...
+                {t('settings.subscription.canceling')}
               </>
             ) : (
-              "Annuler mon abonnement Premium"
+              t('settings.subscription.cancel')
             )}
           </Button>
         )}

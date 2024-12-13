@@ -10,7 +10,9 @@
     "optimize": "Optimize",
     "copy": "Copy",
     "back": "Back",
-    "edit": "Edit"
+    "edit": "Edit",
+    "success": "Success",
+    "error": "Error"
   },
   "auth": {
     "login": "Login",
@@ -108,14 +110,23 @@
   "settings": {
     "title": "Settings",
     "subscription": {
-      "title": "Your subscription",
-      "status": "Current status:",
-      "type": "Subscription type:",
+      "title": "Subscription",
+      "description": "Manage your subscription and optimizations",
+      "type": "Subscription type",
       "free": "Free",
       "premium": "Premium",
       "active": "Active",
       "inactive": "Inactive",
-      "upgrade": "Upgrade to Premium",
+      "upgrade": "Upgrade to Premium (€5/month)",
+      "cancel": "Cancel Premium subscription",
+      "unlimited": "Unlimited",
+      "remainingOptimizations": "Remaining optimizations",
+      "optimizations": "optimization(s)",
+      "resetDate": "Reset on",
+      "redirecting": "Redirecting to payment...",
+      "canceling": "Cancellation in progress...",
+      "cancelSuccess": "Your subscription has been successfully cancelled.",
+      "cancelError": "An error occurred while cancelling your subscription.",
       "features": {
         "title": "Premium features:",
         "unlimited": "Unlimited optimizations",
@@ -124,8 +135,9 @@
       }
     },
     "account": {
-      "title": "Your account",
-      "email": "Email address:",
+      "title": "Account",
+      "description": "Manage your personal information",
+      "email": "Email",
       "logout": "Logout"
     }
   },

@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
+import { useTranslation } from 'react-i18next';
 import { supabase } from '@/lib/supabase';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -11,6 +12,7 @@ interface AccountCardProps {
 export const AccountCard = ({ email }: AccountCardProps) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const { t } = useTranslation();
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
@@ -21,18 +23,18 @@ export const AccountCard = ({ email }: AccountCardProps) => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Compte</CardTitle>
+        <CardTitle>{t('settings.account.title')}</CardTitle>
         <CardDescription>
-          Gérez vos informations personnelles
+          {t('settings.account.description')}
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <div>
-          <p className="text-sm font-medium">Email</p>
+          <p className="text-sm font-medium">{t('settings.account.email')}</p>
           <p className="text-muted-foreground">{email}</p>
         </div>
         <Button onClick={handleSignOut} variant="destructive" className="w-full">
-          Se déconnecter
+          {t('settings.account.logout')}
         </Button>
       </CardContent>
     </Card>
