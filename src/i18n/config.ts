@@ -11,6 +11,7 @@ import historyEN from './locales/en/history.json';
 import settingsEN from './locales/en/settings.json';
 import footerEN from './locales/en/footer.json';
 import legalEN from './locales/en/legal.json';
+import pagesEN from './locales/en/pages.json';
 
 // French translations
 import commonFR from './locales/fr/common.json';
@@ -21,6 +22,7 @@ import historyFR from './locales/fr/history.json';
 import settingsFR from './locales/fr/settings.json';
 import footerFR from './locales/fr/footer.json';
 import legalFR from './locales/fr/legal.json';
+import pagesFR from './locales/fr/pages.json';
 
 const resources = {
   en: {
@@ -31,7 +33,8 @@ const resources = {
     history: historyEN,
     settings: settingsEN,
     footer: footerFR,
-    legal: legalEN
+    legal: legalEN,
+    pages: pagesEN
   },
   fr: {
     common: commonFR,
@@ -41,7 +44,8 @@ const resources = {
     history: historyFR,
     settings: settingsFR,
     footer: footerFR,
-    legal: legalFR
+    legal: legalFR,
+    pages: pagesFR
   }
 };
 
@@ -51,7 +55,7 @@ i18n
   .init({
     resources,
     fallbackLng: 'fr',
-    ns: ['common', 'auth', 'landing', 'home', 'history', 'settings', 'footer', 'legal'],
+    ns: ['common', 'auth', 'landing', 'home', 'history', 'settings', 'footer', 'legal', 'pages'],
     defaultNS: 'common',
     fallbackNS: 'common',
     detection: {

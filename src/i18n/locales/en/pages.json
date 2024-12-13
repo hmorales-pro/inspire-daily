@@ -1,0 +1,55 @@
+{
+  "about": {
+    "title": "About",
+    "description": "Inspire Daily is an application that helps you create authentic content for your social media.",
+    "mission": {
+      "title": "Our Mission",
+      "description": "We believe that the best content comes from authentic and personal experiences. Our mission is to help you share these moments with your audience in an engaging and natural way."
+    },
+    "values": {
+      "title": "Our Values",
+      "authenticity": {
+        "title": "Authenticity",
+        "description": "We encourage authentic and personal sharing."
+      },
+      "creativity": {
+        "title": "Creativity",
+        "description": "We stimulate your creativity with inspiring questions."
+      },
+      "community": {
+        "title": "Community",
+        "description": "We build a community of creators who help each other."
+      }
+    }
+  },
+  "contact": {
+    "title": "Contact",
+    "description": "We're here to help. Don't hesitate to contact us with any questions.",
+    "form": {
+      "name": "Name",
+      "email": "Email",
+      "message": "Message",
+      "send": "Send",
+      "success": "Message sent successfully",
+      "error": "An error occurred while sending the message"
+    }
+  },
+  "support": {
+    "title": "Support",
+    "description": "Need help? Check our resources or contact us.",
+    "sections": {
+      "faq": {
+        "title": "FAQ",
+        "description": "Quickly find answers to your questions."
+      },
+      "contact": {
+        "title": "Contact Us",
+        "description": "Our team is here to help."
+      },
+      "resources": {
+        "title": "Resources",
+        "description": "Guides and tutorials to help you get started."
+      }
+    }
+  }
+}
