@@ -4,11 +4,13 @@ import { supabase } from '@/lib/supabase';
 import { Loader2 } from "lucide-react";
 import { useSearchParams } from 'react-router-dom';
 import { useToast } from "@/hooks/use-toast";
+import { useTranslation } from 'react-i18next';
 import { SubscriptionCard } from '@/components/settings/SubscriptionCard';
 import { AccountCard } from '@/components/settings/AccountCard';
 
 const Settings = () => {
   const { toast } = useToast();
+  const { t } = useTranslation();
   const [searchParams] = useSearchParams();
   const [isUpgrading, setIsUpgrading] = useState(false);
 
@@ -54,8 +56,8 @@ const Settings = () => {
     } catch (error) {
       console.error('Error:', error);
       toast({
-        title: "Erreur",
-        description: "Une erreur est survenue lors de la création de la session de paiement.",
+        title: t('common.error'),
+        description: t('settings.subscription.upgradeError'),
         variant: "destructive",
       });
     } finally {
@@ -70,18 +72,18 @@ const Settings = () => {
         await new Promise(resolve => setTimeout(resolve, 2000));
         await refetch();
         toast({
-          title: "Succès !",
-          description: "Votre abonnement Premium a été activé avec succès.",
+          title: t('common.success'),
+          description: t('settings.subscription.upgradeSuccess'),
         });
       } else if (searchParams.get('canceled') === 'true') {
         toast({
-          description: "Le processus de paiement a été annulé.",
+          description: t('settings.subscription.upgradeCanceled'),
         });
       }
     };
 
     checkPaymentStatus();
-  }, [searchParams, toast, refetch]);
+  }, [searchParams, toast, refetch, t]);
 
   if (isLoading) {
     return (
@@ -95,7 +97,7 @@ const Settings = () => {
     <div className="min-h-screen bg-primary-light p-4">
       <div className="max-w-4xl mx-auto pt-8">
         <h1 className="text-2xl font-bold text-center text-primary-dark mb-8">
-          Paramètres
+          {t('settings.title')}
         </h1>
 
         <div className="space-y-6">

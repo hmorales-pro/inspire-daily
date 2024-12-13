@@ -127,6 +127,9 @@
       "canceling": "Annulation en cours...",
       "cancelSuccess": "Votre abonnement a été annulé avec succès.",
       "cancelError": "Une erreur est survenue lors de l'annulation de l'abonnement.",
+      "upgradeSuccess": "Votre abonnement Premium a été activé avec succès.",
+      "upgradeError": "Une erreur est survenue lors de la mise à niveau de votre abonnement.",
+      "upgradeCanceled": "Le processus de paiement a été annulé.",
       "features": {
         "title": "Fonctionnalités Premium :",
         "unlimited": "Optimisations illimitées",

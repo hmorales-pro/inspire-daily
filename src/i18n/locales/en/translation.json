@@ -127,6 +127,9 @@
       "canceling": "Cancellation in progress...",
       "cancelSuccess": "Your subscription has been successfully cancelled.",
       "cancelError": "An error occurred while cancelling your subscription.",
+      "upgradeSuccess": "Your Premium subscription has been successfully activated.",
+      "upgradeError": "An error occurred while upgrading your subscription.",
+      "upgradeCanceled": "The payment process was cancelled.",
       "features": {
         "title": "Premium features:",
         "unlimited": "Unlimited optimizations",
