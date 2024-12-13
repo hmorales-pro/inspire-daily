@@ -5,9 +5,11 @@ import { supabase } from '@/lib/supabase';
 import { useQuery } from "@tanstack/react-query";
 import { getAppSettings } from "@/lib/settings";
 import { LanguageSwitcher } from './LanguageSwitcher';
+import { useTranslation } from 'react-i18next';
 
 const LandingHeader = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation('common');
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
   const { data: redirectUrl } = useQuery({
@@ -60,7 +62,7 @@ const LandingHeader = () => {
                 onClick={() => navigate('/home')}
                 className="bg-primary hover:bg-primary/90 text-white"
               >
-                Mon compte
+                {t('auth.myAccount')}
               </Button>
             ) : (
               <>
@@ -69,13 +71,13 @@ const LandingHeader = () => {
                   onClick={() => navigate('/login')}
                   className="text-primary hover:text-primary/90"
                 >
-                  Connexion
+                  {t('auth.login')}
                 </Button>
                 <Button
                   onClick={() => navigate('/login')}
                   className="bg-primary hover:bg-primary/90 text-white"
                 >
-                  S'inscrire
+                  {t('auth.signup')}
                 </Button>
               </>
             )}

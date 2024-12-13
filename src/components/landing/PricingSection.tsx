@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 
 export const PricingSection = () => {
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t } = useTranslation('landing');
   
   // Improved type checking and conversion to string array
   const getFeaturesArray = (path: string): string[] => {
@@ -22,26 +22,26 @@ export const PricingSection = () => {
     return [];
   };
 
-  const freeFeatures = getFeaturesArray('landing.pricing.free.features');
-  const premiumFeatures = getFeaturesArray('landing.pricing.premium.features');
+  const freeFeatures = getFeaturesArray('pricing.free.features');
+  const premiumFeatures = getFeaturesArray('pricing.premium.features');
   
   return (
     <div className="bg-primary-light py-16">
       <div className="container mx-auto px-4">
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-4 text-primary-dark">
-          {t('landing.pricing.title')}
+          {t('pricing.title')}
         </h2>
         <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
-          {t('landing.pricing.subtitle')}
+          {t('pricing.subtitle')}
         </p>
         <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
           {/* Free Plan */}
           <Card className="bg-white">
             <CardHeader>
-              <CardTitle className="text-2xl font-bold">{t('landing.pricing.free.title')}</CardTitle>
-              <CardDescription>{t('landing.pricing.free.description')}</CardDescription>
+              <CardTitle className="text-2xl font-bold">{t('pricing.free.title')}</CardTitle>
+              <CardDescription>{t('pricing.free.description')}</CardDescription>
               <div className="mt-4">
-                <span className="text-4xl font-bold">{t('landing.pricing.free.price')}€</span>
+                <span className="text-4xl font-bold">{t('pricing.free.price')}€</span>
                 <span className="text-gray-500">/mois</span>
               </div>
             </CardHeader>
@@ -55,7 +55,7 @@ export const PricingSection = () => {
                 className="w-full mt-6 bg-primary hover:bg-primary/90"
                 onClick={() => navigate("/login")}
               >
-                {t('landing.hero.cta')}
+                {t('hero.cta')}
               </Button>
             </CardContent>
           </Card>
@@ -63,10 +63,10 @@ export const PricingSection = () => {
           {/* Premium Plan */}
           <Card className="bg-white border-primary">
             <CardHeader>
-              <CardTitle className="text-2xl font-bold">{t('landing.pricing.premium.title')}</CardTitle>
-              <CardDescription>{t('landing.pricing.premium.description')}</CardDescription>
+              <CardTitle className="text-2xl font-bold">{t('pricing.premium.title')}</CardTitle>
+              <CardDescription>{t('pricing.premium.description')}</CardDescription>
               <div className="mt-4">
-                <span className="text-4xl font-bold">{t('landing.pricing.premium.price')}€</span>
+                <span className="text-4xl font-bold">{t('pricing.premium.price')}€</span>
                 <span className="text-gray-500">/mois</span>
               </div>
             </CardHeader>
@@ -80,7 +80,7 @@ export const PricingSection = () => {
                 className="w-full mt-6 bg-primary hover:bg-primary/90"
                 onClick={() => navigate("/login")}
               >
-                {t('landing.pricing.premium.title')}
+                {t('pricing.premium.title')}
               </Button>
             </CardContent>
           </Card>

@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { getAppSettings } from "@/lib/settings";
 
 export const Copyright = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation('footer');
   const [version, setVersion] = useState<string | null>(null);
 
   useEffect(() => {
@@ -22,7 +22,7 @@ export const Copyright = () => {
   return (
     <div className="mt-8 border-t border-gray-200 pt-8 flex justify-center items-center space-x-2">
       <p className="text-base text-gray-400">
-        © {new Date().getFullYear()} Inspire Daily. {t('footer.copyright')}
+        © {new Date().getFullYear()} Inspire Daily. {t('copyright')}
       </p>
       {version && (
         <span className="text-xs text-gray-400">
