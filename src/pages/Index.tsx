@@ -8,7 +8,6 @@ import { supabase } from '@/lib/supabase';
 import { useTranslation } from 'react-i18next';
 import ResponseInput from '@/components/ResponseInput';
 import DailyQuestion from '@/components/DailyQuestion';
-import TranslateButton from '@/components/TranslateButton';
 
 const Index = () => {
   const [response, setResponse] = useState('');
@@ -158,9 +157,6 @@ const Index = () => {
         </h1>
         
         <div className="space-y-6">
-          <div className="flex justify-end">
-            <TranslateButton />
-          </div>
           <DailyQuestion />
           
           <ResponseInput
