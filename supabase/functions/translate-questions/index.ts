@@ -4,7 +4,7 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.3';
 import { OpenAI } from 'https://esm.sh/openai@4.26.0';
 
 const openai = new OpenAI({
-  apiKey: Deno.env.get('OPENAI_API_KEY')
+  apiKey: Deno.env.get('OPENAI_API_KEY'),
 });
 
 const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
@@ -30,16 +30,22 @@ serve(async (req) => {
       .select('*')
       .is('question_en', null);
 
-    if (fetchError) throw fetchError;
+    if (fetchError) {
+      console.error('Error fetching questions:', fetchError);
+      throw fetchError;
+    }
 
     console.log(`Found ${questions?.length} questions to translate`);
 
     if (!questions || questions.length === 0) {
+      console.log('No questions to translate');
       return new Response(
         JSON.stringify({ message: 'No questions to translate' }),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
+
+    const translations = [];
 
     // Translate questions in batches
     for (const question of questions) {
@@ -73,14 +79,23 @@ serve(async (req) => {
         continue;
       }
 
+      translations.push({
+        original: question.question,
+        translated: translatedQuestion
+      });
+
       // Add a small delay to avoid rate limits
       await new Promise(resolve => setTimeout(resolve, 200));
     }
 
+    console.log('Translation process completed successfully');
+    console.log('Translations:', translations);
+
     return new Response(
       JSON.stringify({ 
         success: true, 
-        message: `Successfully translated ${questions.length} questions`
+        message: `Successfully translated ${translations.length} questions`,
+        translations
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
