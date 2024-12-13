@@ -14,11 +14,11 @@
   "social": {
     "title": "Réseaux sociaux"
   },
-  "newsletter": {
-    "title": "Newsletter",
-    "description": "Recevez nos actualités et conseils pour créer du contenu engageant.",
-    "emailPlaceholder": "Votre email",
-    "subscribe": "S'abonner"
+  "resources": {
+    "title": "Ressources",
+    "blog": "Blog",
+    "faq": "FAQ",
+    "guides": "Guides"
   },
   "copyright": "Tous droits réservés."
 }

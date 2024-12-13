@@ -1,7 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { FooterSection } from "./footer/FooterSection";
 import { FooterLink } from "./footer/FooterLink";
-import { NewsletterForm } from "./footer/NewsletterForm";
 import { Copyright } from "./footer/Copyright";
 
 export const Footer = () => {
@@ -37,11 +36,12 @@ export const Footer = () => {
             </ul>
           </FooterSection>
 
-          <FooterSection title={t('newsletter.title')}>
-            <p className="text-base text-gray-500">
-              {t('newsletter.description')}
-            </p>
-            <NewsletterForm />
+          <FooterSection title={t('resources.title')}>
+            <ul className="space-y-4">
+              <li><FooterLink to="/blog">{t('resources.blog')}</FooterLink></li>
+              <li><FooterLink to="/faq">{t('resources.faq')}</FooterLink></li>
+              <li><FooterLink to="/guides">{t('resources.guides')}</FooterLink></li>
+            </ul>
           </FooterSection>
         </div>
 
