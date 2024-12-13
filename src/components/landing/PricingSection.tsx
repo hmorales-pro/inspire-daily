@@ -8,11 +8,16 @@ export const PricingSection = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   
-  // Add more robust type checking and default values
+  // Improved type checking and conversion to string array
   const getFeaturesArray = (path: string): string[] => {
     const features = t(path, { returnObjects: true });
     if (!features) return [];
-    if (Array.isArray(features)) return features;
+    
+    // If it's already an array, map each item to string
+    if (Array.isArray(features)) {
+      return features.map(item => String(item));
+    }
+    
     console.warn(`Translation for ${path} is not an array:`, features);
     return [];
   };
