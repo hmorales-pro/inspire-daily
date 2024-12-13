@@ -1,20 +1,19 @@
 import React, { useState } from 'react';
-import QuestionCard from '@/components/QuestionCard';
-import ResponseInput from '@/components/ResponseInput';
 import { useToast } from "@/components/ui/use-toast";
 import { useNavigate } from 'react-router-dom';
 import { saveResponse } from '@/lib/supabase';
 import { optimizeResponse } from '@/lib/openai';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/lib/supabase';
 import { useTranslation } from 'react-i18next';
+import ResponseInput from '@/components/ResponseInput';
+import DailyQuestion from '@/components/DailyQuestion';
 
 const Index = () => {
   const [response, setResponse] = useState('');
   const [isOptimizing, setIsOptimizing] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
   const { t, i18n } = useTranslation();
 
   const { data: profile } = useQuery({
@@ -37,8 +36,8 @@ const Index = () => {
     }
   });
 
-  const { data: todayQuestion, isLoading, error } = useQuery({
-    queryKey: ['todayQuestion'],
+  const { data: todayQuestion } = useQuery({
+    queryKey: ['todayQuestion', i18n.language],
     queryFn: async () => {
       const today = new Date().toISOString().split('T')[0];
       const { data, error } = await supabase
@@ -51,9 +50,6 @@ const Index = () => {
         console.error('Error fetching today question:', error);
         throw error;
       }
-
-      // Log the question data to help with debugging
-      console.log('Today question data:', data);
       return data;
     }
   });
@@ -125,8 +121,6 @@ const Index = () => {
           .eq('id', profile.id);
 
         if (updateError) throw updateError;
-        
-        queryClient.invalidateQueries({ queryKey: ['profile'] });
       }
       
       await saveResponse({
@@ -155,35 +149,6 @@ const Index = () => {
     }
   };
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-primary-light p-4 flex items-center justify-center">
-        <p className="text-muted-foreground">{t('home.loading')}</p>
-      </div>
-    );
-  }
-
-  if (error) {
-    console.error('Error in Index component:', error);
-    return (
-      <div className="min-h-screen bg-primary-light p-4 flex items-center justify-center">
-        <p className="text-red-500">Une erreur est survenue lors du chargement de la question.</p>
-      </div>
-    );
-  }
-
-  if (!todayQuestion) {
-    return (
-      <div className="min-h-screen bg-primary-light p-4 flex items-center justify-center">
-        <p className="text-muted-foreground">{t('home.noQuestion')}</p>
-      </div>
-    );
-  }
-
-  const questionText = i18n.language === 'en' && todayQuestion.question_en 
-    ? todayQuestion.question_en 
-    : todayQuestion.question;
-
   return (
     <div className="min-h-screen bg-primary-light p-4 space-y-6">
       <div className="max-w-4xl mx-auto pt-8">
@@ -192,15 +157,7 @@ const Index = () => {
         </h1>
         
         <div className="space-y-6">
-          <QuestionCard 
-            question={questionText}
-            date={new Date().toLocaleDateString(i18n.language === 'en' ? 'en-US' : 'fr-FR', {
-              weekday: 'long',
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric'
-            })}
-          />
+          <DailyQuestion />
           
           <ResponseInput
             value={response}
