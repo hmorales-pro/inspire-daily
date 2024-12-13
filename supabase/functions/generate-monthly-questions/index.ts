@@ -61,7 +61,7 @@ serve(async (req) => {
 
     // Generate French questions
     const frCompletion = await openai.chat.completions.create({
-      model: 'gpt-4',
+      model: 'gpt-4o',
       messages: [
         {
           role: 'system',
@@ -76,7 +76,7 @@ serve(async (req) => {
 
     // Generate English questions
     const enCompletion = await openai.chat.completions.create({
-      model: 'gpt-4',
+      model: 'gpt-4o',
       messages: [
         {
           role: 'system',
