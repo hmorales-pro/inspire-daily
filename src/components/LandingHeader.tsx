@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 
 const LandingHeader = () => {
   const navigate = useNavigate();
-  const { t } = useTranslation('common');
+  const { t } = useTranslation();
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
   const { data: redirectUrl } = useQuery({
