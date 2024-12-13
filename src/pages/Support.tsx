@@ -1,51 +1,60 @@
-import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 
 const Support = () => {
-  const navigate = useNavigate();
+  const { t } = useTranslation();
 
   return (
     <div className="min-h-screen bg-primary-light">
-      <div className="max-w-3xl mx-auto px-4 py-8">
-        <Button 
-          variant="ghost" 
-          onClick={() => navigate(-1)}
-          className="mb-6"
-        >
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          Retour
-        </Button>
+      <div className="max-w-4xl mx-auto px-4 py-12">
+        <h1 className="text-4xl font-bold mb-6">{t('pages.support.title')}</h1>
+        <p className="text-lg text-gray-600 mb-12">{t('pages.support.description')}</p>
 
-        <h1 className="text-3xl font-bold mb-8">Support</h1>
-        
-        <div className="space-y-8">
-          <section>
-            <h2 className="text-2xl font-semibold mb-4">FAQ</h2>
-            <div className="space-y-4">
-              <div>
-                <h3 className="font-medium mb-2">Comment fonctionne Inspire Daily ?</h3>
-                <p className="text-muted-foreground">Inspire Daily vous propose une question inspirante chaque jour pour vous aider à créer du contenu authentique pour vos réseaux sociaux.</p>
-              </div>
-              <div>
-                <h3 className="font-medium mb-2">Comment puis-je accéder à mon historique ?</h3>
-                <p className="text-muted-foreground">Votre historique de réponses est accessible depuis l'onglet "Historique" dans la navigation principale.</p>
-              </div>
-              <div>
-                <h3 className="font-medium mb-2">Comment fonctionne l'optimisation des réponses ?</h3>
-                <p className="text-muted-foreground">L'optimisation des réponses utilise l'IA pour améliorer la formulation de vos réponses tout en conservant votre message d'origine.</p>
-              </div>
-            </div>
-          </section>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="bg-white p-6 rounded-lg shadow">
+            <h2 className="text-xl font-semibold mb-3">
+              {t('pages.support.sections.faq.title')}
+            </h2>
+            <p className="text-gray-600 mb-4">
+              {t('pages.support.sections.faq.description')}
+            </p>
+            <Link
+              to="#"
+              className="text-primary hover:text-primary-dark font-medium"
+            >
+              {t('common.readMore')} →
+            </Link>
+          </div>
 
-          <section>
-            <h2 className="text-2xl font-semibold mb-4">Nous contacter</h2>
-            <p className="text-muted-foreground mb-4">Notre équipe est disponible pour vous aider. Contactez-nous par email ou via nos réseaux sociaux.</p>
-            <div className="space-y-2">
-              <p>Email : hugo.morales.pro@gmail.com</p>
-              <p>Horaires : Du lundi au vendredi, 9h-18h</p>
-            </div>
-          </section>
+          <div className="bg-white p-6 rounded-lg shadow">
+            <h2 className="text-xl font-semibold mb-3">
+              {t('pages.support.sections.contact.title')}
+            </h2>
+            <p className="text-gray-600 mb-4">
+              {t('pages.support.sections.contact.description')}
+            </p>
+            <Link
+              to="/contact"
+              className="text-primary hover:text-primary-dark font-medium"
+            >
+              {t('common.contact')} →
+            </Link>
+          </div>
+
+          <div className="bg-white p-6 rounded-lg shadow">
+            <h2 className="text-xl font-semibold mb-3">
+              {t('pages.support.sections.resources.title')}
+            </h2>
+            <p className="text-gray-600 mb-4">
+              {t('pages.support.sections.resources.description')}
+            </p>
+            <Link
+              to="#"
+              className="text-primary hover:text-primary-dark font-medium"
+            >
+              {t('common.explore')} →
+            </Link>
+          </div>
         </div>
       </div>
     </div>

@@ -179,9 +179,115 @@
     },
     "copyright": "Tous droits réservés."
   },
-  "legal": {
-    "terms": "Conditions d'utilisation",
-    "privacy": "Politique de confidentialité",
-    "notice": "Mentions légales"
+  "pages": {
+    "about": {
+      "title": "À propos",
+      "description": "Inspire Daily est une application qui vous aide à créer du contenu authentique pour vos réseaux sociaux.",
+      "mission": {
+        "title": "Notre mission",
+        "description": "Nous croyons que le meilleur contenu vient d'expériences authentiques et personnelles. Notre mission est de vous aider à partager ces moments avec votre audience de manière engageante et naturelle."
+      },
+      "values": {
+        "title": "Nos valeurs",
+        "authenticity": {
+          "title": "Authenticité",
+          "description": "Nous encourageons le partage authentique et personnel."
+        },
+        "creativity": {
+          "title": "Créativité",
+          "description": "Nous stimulons votre créativité avec des questions inspirantes."
+        },
+        "community": {
+          "title": "Communauté",
+          "description": "Nous construisons une communauté de créateurs qui s'entraident."
+        }
+      }
+    },
+    "contact": {
+      "title": "Contact",
+      "description": "Nous sommes là pour vous aider. N'hésitez pas à nous contacter pour toute question.",
+      "form": {
+        "name": "Nom",
+        "email": "Email",
+        "message": "Message",
+        "send": "Envoyer",
+        "success": "Message envoyé avec succès",
+        "error": "Une erreur est survenue lors de l'envoi du message"
+      }
+    },
+    "support": {
+      "title": "Support",
+      "description": "Besoin d'aide ? Consultez nos ressources ou contactez-nous.",
+      "sections": {
+        "faq": {
+          "title": "FAQ",
+          "description": "Trouvez rapidement des réponses à vos questions."
+        },
+        "contact": {
+          "title": "Nous contacter",
+          "description": "Notre équipe est là pour vous aider."
+        },
+        "resources": {
+          "title": "Ressources",
+          "description": "Guides et tutoriels pour vous aider à démarrer."
+        }
+      }
+    },
+    "legal": {
+      "terms": {
+        "title": "Conditions d'utilisation",
+        "lastUpdate": "Dernière mise à jour",
+        "sections": {
+          "acceptance": {
+            "title": "Acceptation des conditions",
+            "content": "En utilisant Inspire Daily, vous acceptez les présentes conditions d'utilisation."
+          },
+          "services": {
+            "title": "Services",
+            "content": "Inspire Daily fournit une plateforme pour créer et optimiser du contenu pour les réseaux sociaux."
+          },
+          "accounts": {
+            "title": "Comptes",
+            "content": "Vous êtes responsable de maintenir la confidentialité de votre compte."
+          }
+        }
+      },
+      "privacy": {
+        "title": "Politique de confidentialité",
+        "lastUpdate": "Dernière mise à jour",
+        "sections": {
+          "collection": {
+            "title": "Collecte des données",
+            "content": "Nous collectons uniquement les données nécessaires au fonctionnement du service."
+          },
+          "usage": {
+            "title": "Utilisation des données",
+            "content": "Vos données sont utilisées pour personnaliser votre expérience et améliorer nos services."
+          },
+          "protection": {
+            "title": "Protection des données",
+            "content": "Nous mettons en œuvre des mesures de sécurité pour protéger vos données."
+          }
+        }
+      },
+      "notice": {
+        "title": "Mentions légales",
+        "lastUpdate": "Dernière mise à jour",
+        "sections": {
+          "company": {
+            "title": "Société",
+            "content": "Inspire Daily est édité par [Nom de la société]."
+          },
+          "hosting": {
+            "title": "Hébergement",
+            "content": "Le site est hébergé par [Nom de l'hébergeur]."
+          },
+          "contact": {
+            "title": "Contact",
+            "content": "Pour toute question, contactez-nous à [email]."
+          }
+        }
+      }
+    }
   }
 }

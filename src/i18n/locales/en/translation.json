@@ -179,9 +179,115 @@
     },
     "copyright": "All rights reserved."
   },
-  "legal": {
-    "terms": "Terms of Service",
-    "privacy": "Privacy Policy",
-    "notice": "Legal Notice"
+  "pages": {
+    "about": {
+      "title": "About",
+      "description": "Inspire Daily is an application that helps you create authentic content for your social media.",
+      "mission": {
+        "title": "Our Mission",
+        "description": "We believe that the best content comes from authentic and personal experiences. Our mission is to help you share these moments with your audience in an engaging and natural way."
+      },
+      "values": {
+        "title": "Our Values",
+        "authenticity": {
+          "title": "Authenticity",
+          "description": "We encourage authentic and personal sharing."
+        },
+        "creativity": {
+          "title": "Creativity",
+          "description": "We stimulate your creativity with inspiring questions."
+        },
+        "community": {
+          "title": "Community",
+          "description": "We build a community of creators who help each other."
+        }
+      }
+    },
+    "contact": {
+      "title": "Contact",
+      "description": "We're here to help. Don't hesitate to contact us with any questions.",
+      "form": {
+        "name": "Name",
+        "email": "Email",
+        "message": "Message",
+        "send": "Send",
+        "success": "Message sent successfully",
+        "error": "An error occurred while sending the message"
+      }
+    },
+    "support": {
+      "title": "Support",
+      "description": "Need help? Check our resources or contact us.",
+      "sections": {
+        "faq": {
+          "title": "FAQ",
+          "description": "Quickly find answers to your questions."
+        },
+        "contact": {
+          "title": "Contact Us",
+          "description": "Our team is here to help."
+        },
+        "resources": {
+          "title": "Resources",
+          "description": "Guides and tutorials to help you get started."
+        }
+      }
+    },
+    "legal": {
+      "terms": {
+        "title": "Terms of Service",
+        "lastUpdate": "Last updated",
+        "sections": {
+          "acceptance": {
+            "title": "Acceptance of Terms",
+            "content": "By using Inspire Daily, you accept these terms of service."
+          },
+          "services": {
+            "title": "Services",
+            "content": "Inspire Daily provides a platform for creating and optimizing social media content."
+          },
+          "accounts": {
+            "title": "Accounts",
+            "content": "You are responsible for maintaining the confidentiality of your account."
+          }
+        }
+      },
+      "privacy": {
+        "title": "Privacy Policy",
+        "lastUpdate": "Last updated",
+        "sections": {
+          "collection": {
+            "title": "Data Collection",
+            "content": "We only collect data necessary for the operation of the service."
+          },
+          "usage": {
+            "title": "Data Usage",
+            "content": "Your data is used to personalize your experience and improve our services."
+          },
+          "protection": {
+            "title": "Data Protection",
+            "content": "We implement security measures to protect your data."
+          }
+        }
+      },
+      "notice": {
+        "title": "Legal Notice",
+        "lastUpdate": "Last updated",
+        "sections": {
+          "company": {
+            "title": "Company",
+            "content": "Inspire Daily is published by [Company Name]."
+          },
+          "hosting": {
+            "title": "Hosting",
+            "content": "The site is hosted by [Host Name]."
+          },
+          "contact": {
+            "title": "Contact",
+            "content": "For any questions, contact us at [email]."
+          }
+        }
+      }
+    }
   }
 }
