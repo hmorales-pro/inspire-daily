@@ -29,12 +29,15 @@ const Index = () => {
         .eq('id', session.user.id)
         .single();
       
-      if (error) throw error;
+      if (error) {
+        console.error('Error fetching profile:', error);
+        throw error;
+      }
       return data;
     }
   });
 
-  const { data: todayQuestion, isLoading } = useQuery({
+  const { data: todayQuestion, isLoading, error } = useQuery({
     queryKey: ['todayQuestion'],
     queryFn: async () => {
       const today = new Date().toISOString().split('T')[0];
@@ -44,7 +47,13 @@ const Index = () => {
         .eq('display_date', today)
         .single();
 
-      if (error) throw error;
+      if (error) {
+        console.error('Error fetching today question:', error);
+        throw error;
+      }
+
+      // Log the question data to help with debugging
+      console.log('Today question data:', data);
       return data;
     }
   });
@@ -74,6 +83,7 @@ const Index = () => {
       setResponse('');
       navigate('/history');
     } catch (error) {
+      console.error('Error saving response:', error);
       toast({
         title: t('common.error'),
         description: t('home.response.saveError'),
@@ -134,6 +144,7 @@ const Index = () => {
       setResponse('');
       navigate('/history');
     } catch (error) {
+      console.error('Error optimizing response:', error);
       toast({
         title: t('common.error'),
         description: t('home.response.optimizeError'),
@@ -152,6 +163,15 @@ const Index = () => {
     );
   }
 
+  if (error) {
+    console.error('Error in Index component:', error);
+    return (
+      <div className="min-h-screen bg-primary-light p-4 flex items-center justify-center">
+        <p className="text-red-500">Une erreur est survenue lors du chargement de la question.</p>
+      </div>
+    );
+  }
+
   if (!todayQuestion) {
     return (
       <div className="min-h-screen bg-primary-light p-4 flex items-center justify-center">
@@ -159,6 +179,10 @@ const Index = () => {
       </div>
     );
   }
+
+  const questionText = i18n.language === 'en' && todayQuestion.question_en 
+    ? todayQuestion.question_en 
+    : todayQuestion.question;
 
   return (
     <div className="min-h-screen bg-primary-light p-4 space-y-6">
@@ -169,7 +193,7 @@ const Index = () => {
         
         <div className="space-y-6">
           <QuestionCard 
-            question={i18n.language === 'en' ? todayQuestion.question_en : todayQuestion.question}
+            question={questionText}
             date={new Date().toLocaleDateString(i18n.language === 'en' ? 'en-US' : 'fr-FR', {
               weekday: 'long',
               year: 'numeric',
