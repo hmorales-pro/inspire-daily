@@ -24,28 +24,24 @@ import legalFR from './locales/fr/legal.json';
 
 const resources = {
   en: {
-    translation: {
-      ...commonEN,
-      ...authEN,
-      ...landingEN,
-      ...homeEN,
-      ...historyEN,
-      ...settingsEN,
-      ...footerEN,
-      ...legalEN
-    }
+    common: commonEN,
+    auth: authEN,
+    landing: landingEN,
+    home: homeEN,
+    history: historyEN,
+    settings: settingsEN,
+    footer: footerEN,
+    legal: legalEN
   },
   fr: {
-    translation: {
-      ...commonFR,
-      ...authFR,
-      ...landingFR,
-      ...homeFR,
-      ...historyFR,
-      ...settingsFR,
-      ...footerFR,
-      ...legalFR
-    }
+    common: commonFR,
+    auth: authFR,
+    landing: landingFR,
+    home: homeFR,
+    history: historyFR,
+    settings: settingsFR,
+    footer: footerFR,
+    legal: legalFR
   }
 };
 
@@ -55,8 +51,9 @@ i18n
   .init({
     resources,
     fallbackLng: 'fr',
-    defaultNS: 'translation',
-    fallbackNS: 'translation',
+    ns: ['common', 'auth', 'landing', 'home', 'history', 'settings', 'footer', 'legal'],
+    defaultNS: 'common',
+    fallbackNS: 'common',
     detection: {
       order: ['localStorage', 'navigator', 'htmlTag', 'path', 'subdomain'],
       caches: ['localStorage'],
