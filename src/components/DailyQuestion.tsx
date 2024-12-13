@@ -23,7 +23,8 @@ const DailyQuestion = () => {
 
       console.log('Today question data:', data);
       return data;
-    }
+    },
+    staleTime: 0, // Force refetch when language changes
   });
 
   if (isLoading) {
@@ -50,6 +51,13 @@ const DailyQuestion = () => {
       </div>
     );
   }
+
+  // Log the current language and question data for debugging
+  console.log('Current language:', i18n.language);
+  console.log('Question data:', {
+    question: todayQuestion.question,
+    question_en: todayQuestion.question_en,
+  });
 
   const questionText = i18n.language === 'en' && todayQuestion.question_en 
     ? todayQuestion.question_en 
