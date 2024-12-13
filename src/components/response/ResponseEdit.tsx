@@ -2,6 +2,7 @@ import React from 'react';
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
 import ResponseInput from '../ResponseInput';
+import { useTranslation } from 'react-i18next';
 
 interface ResponseEditProps {
   editedResponse: string;
@@ -24,10 +25,12 @@ export const ResponseEdit = ({
   setEditedResponse,
   isEditingOptimized
 }: ResponseEditProps) => {
+  const { t } = useTranslation();
+
   return (
     <div className="space-y-4">
       <h3 className="font-medium">
-        {isEditingOptimized ? "Modification de la réponse optimisée :" : "Modification de la réponse originale :"}
+        {isEditingOptimized ? t('history.editOptimized') : t('history.editOriginal')}
       </h3>
       <ResponseInput
         value={editedResponse}
@@ -43,7 +46,7 @@ export const ResponseEdit = ({
         className="w-full"
       >
         <X className="w-4 h-4 mr-2" />
-        Annuler
+        {t('common.cancel')}
       </Button>
     </div>
   );

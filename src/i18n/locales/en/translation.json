@@ -105,6 +105,8 @@
     "error": "An error occurred while loading the history.",
     "originalResponse": "Original response:",
     "optimizedResponse": "Optimized response:",
+    "editOriginal": "Edit original response:",
+    "editOptimized": "Edit optimized response:",
     "selectionRequired": "Please select text to format",
     "response": {
       "copied": "Text copied to clipboard",

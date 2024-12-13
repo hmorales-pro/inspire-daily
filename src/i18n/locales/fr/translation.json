@@ -105,6 +105,8 @@
     "error": "Une erreur est survenue lors du chargement de l'historique.",
     "originalResponse": "Réponse originale :",
     "optimizedResponse": "Réponse optimisée :",
+    "editOriginal": "Modification de la réponse originale :",
+    "editOptimized": "Modification de la réponse optimisée :",
     "selectionRequired": "Veuillez sélectionner le texte à formater",
     "response": {
       "copied": "Texte copié dans le presse-papier",
