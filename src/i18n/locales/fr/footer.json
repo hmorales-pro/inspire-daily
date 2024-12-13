@@ -1,0 +1,24 @@
+{
+  "about": {
+    "title": "À propos",
+    "aboutUs": "À propos de nous",
+    "contact": "Contact",
+    "support": "Support"
+  },
+  "legal": {
+    "title": "Légal",
+    "terms": "Conditions d'utilisation",
+    "privacy": "Politique de confidentialité",
+    "notice": "Mentions légales"
+  },
+  "social": {
+    "title": "Réseaux sociaux"
+  },
+  "newsletter": {
+    "title": "Newsletter",
+    "description": "Recevez nos actualités et conseils pour créer du contenu engageant.",
+    "emailPlaceholder": "Votre email",
+    "subscribe": "S'abonner"
+  },
+  "copyright": "Tous droits réservés."
+}

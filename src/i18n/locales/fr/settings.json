@@ -1,0 +1,37 @@
+{
+  "title": "Paramètres",
+  "subscription": {
+    "title": "Abonnement",
+    "description": "Gérez votre abonnement et vos optimisations",
+    "type": "Type d'abonnement",
+    "free": "Gratuit",
+    "premium": "Premium",
+    "active": "Actif",
+    "inactive": "Inactif",
+    "upgrade": "Passer à l'abonnement Premium (5€/mois)",
+    "cancel": "Annuler mon abonnement Premium",
+    "unlimited": "Illimité",
+    "remainingOptimizations": "Optimisations restantes",
+    "optimizations": "optimisation(s)",
+    "resetDate": "Réinitialisation le",
+    "redirecting": "Redirection vers le paiement...",
+    "canceling": "Annulation en cours...",
+    "cancelSuccess": "Votre abonnement a été annulé avec succès.",
+    "cancelError": "Une erreur est survenue lors de l'annulation de l'abonnement.",
+    "upgradeSuccess": "Votre abonnement Premium a été activé avec succès.",
+    "upgradeError": "Une erreur est survenue lors de la mise à niveau de votre abonnement.",
+    "upgradeCanceled": "Le processus de paiement a été annulé.",
+    "features": {
+      "title": "Fonctionnalités Premium :",
+      "unlimited": "Optimisations illimitées",
+      "history": "Historique illimité",
+      "voice": "Saisie vocale"
+    }
+  },
+  "account": {
+    "title": "Compte",
+    "description": "Gérez vos informations personnelles",
+    "email": "Email",
+    "logout": "Se déconnecter"
+  }
+}

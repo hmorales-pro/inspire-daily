@@ -1,0 +1,37 @@
+{
+  "title": "Settings",
+  "subscription": {
+    "title": "Subscription",
+    "description": "Manage your subscription and optimizations",
+    "type": "Subscription type",
+    "free": "Free",
+    "premium": "Premium",
+    "active": "Active",
+    "inactive": "Inactive",
+    "upgrade": "Upgrade to Premium (€5/month)",
+    "cancel": "Cancel Premium subscription",
+    "unlimited": "Unlimited",
+    "remainingOptimizations": "Remaining optimizations",
+    "optimizations": "optimization(s)",
+    "resetDate": "Reset on",
+    "redirecting": "Redirecting to payment...",
+    "canceling": "Cancellation in progress...",
+    "cancelSuccess": "Your subscription has been successfully cancelled.",
+    "cancelError": "An error occurred while cancelling your subscription.",
+    "upgradeSuccess": "Your Premium subscription has been successfully activated.",
+    "upgradeError": "An error occurred while upgrading your subscription.",
+    "upgradeCanceled": "The payment process was cancelled.",
+    "features": {
+      "title": "Premium features:",
+      "unlimited": "Unlimited optimizations",
+      "history": "Unlimited history",
+      "voice": "Voice input"
+    }
+  },
+  "account": {
+    "title": "Account",
+    "description": "Manage your personal information",
+    "email": "Email",
+    "logout": "Logout"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "home": "Home",
+  "history": "History",
+  "profile": "Profile",
+  "logout": "Logout",
+  "loading": "Loading...",
+  "save": "Save",
+  "cancel": "Cancel",
+  "optimize": "Optimize",
+  "copy": "Copy",
+  "back": "Back",
+  "edit": "Edit",
+  "success": "Success",
+  "error": "Error"
+}

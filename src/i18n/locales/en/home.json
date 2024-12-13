@@ -1,0 +1,13 @@
+{
+  "title": "Today's Question",
+  "noQuestion": "No question available for today.",
+  "loading": "Loading today's question...",
+  "response": {
+    "placeholder": "Write your answer here...",
+    "save": "Save",
+    "optimize": "Optimize",
+    "voiceInput": "Voice input coming soon!",
+    "premiumOnly": "Premium feature only",
+    "selectionRequired": "Please select text to format"
+  }
+}

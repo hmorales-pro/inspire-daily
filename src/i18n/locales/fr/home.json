@@ -1,0 +1,13 @@
+{
+  "title": "Question du jour",
+  "noQuestion": "Aucune question disponible pour aujourd'hui.",
+  "loading": "Chargement de la question du jour...",
+  "response": {
+    "placeholder": "Écrivez votre réponse ici...",
+    "save": "Enregistrer",
+    "optimize": "Optimiser",
+    "voiceInput": "Saisie vocale bientôt disponible !",
+    "premiumOnly": "Fonctionnalité réservée aux membres Premium",
+    "selectionRequired": "Veuillez sélectionner le texte à formater"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "home": "Accueil",
+  "history": "Historique",
+  "profile": "Profil",
+  "logout": "Déconnexion",
+  "loading": "Chargement...",
+  "save": "Enregistrer",
+  "cancel": "Annuler",
+  "optimize": "Optimiser",
+  "copy": "Copier",
+  "back": "Retour",
+  "edit": "Modifier",
+  "success": "Succès",
+  "error": "Erreur"
+}

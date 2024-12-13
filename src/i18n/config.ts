@@ -2,15 +2,46 @@ import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 
-import translationEN from './locales/en/translation.json';
-import translationFR from './locales/fr/translation.json';
+// English translations
+import commonEN from './locales/en/common.json';
+import authEN from './locales/en/auth.json';
+import landingEN from './locales/en/landing.json';
+import homeEN from './locales/en/home.json';
+import historyEN from './locales/en/history.json';
+import settingsEN from './locales/en/settings.json';
+import footerEN from './locales/en/footer.json';
+import legalEN from './locales/en/legal.json';
+
+// French translations
+import commonFR from './locales/fr/common.json';
+import authFR from './locales/fr/auth.json';
+import landingFR from './locales/fr/landing.json';
+import homeFR from './locales/fr/home.json';
+import historyFR from './locales/fr/history.json';
+import settingsFR from './locales/fr/settings.json';
+import footerFR from './locales/fr/footer.json';
+import legalFR from './locales/fr/legal.json';
 
 const resources = {
   en: {
-    translation: translationEN
+    common: commonEN,
+    auth: authEN,
+    landing: landingEN,
+    home: homeEN,
+    history: historyEN,
+    settings: settingsEN,
+    footer: footerEN,
+    legal: legalEN
   },
   fr: {
-    translation: translationFR
+    common: commonFR,
+    auth: authFR,
+    landing: landingFR,
+    home: homeFR,
+    history: historyFR,
+    settings: settingsFR,
+    footer: footerFR,
+    legal: legalFR
   }
 };
 

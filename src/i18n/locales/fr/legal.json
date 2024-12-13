@@ -1,0 +1,108 @@
+{
+  "terms": {
+    "title": "Conditions d'utilisation",
+    "lastUpdate": "Dernière mise à jour",
+    "sections": {
+      "acceptance": {
+        "title": "1. Acceptation des conditions",
+        "content": "En accédant et en utilisant Inspire Daily, vous reconnaissez avoir lu, compris et accepté d'être lié par ces Conditions d'utilisation. Si vous n'acceptez pas une partie de ces conditions, vous ne devez pas utiliser nos services."
+      },
+      "services": {
+        "title": "2. Description des services",
+        "content": "Inspire Daily fournit une plateforme de création et d'optimisation de contenu pour les réseaux sociaux à travers des questions quotidiennes, une optimisation alimentée par l'IA et des outils de gestion de contenu. Nous proposons des options d'abonnement gratuit et premium avec différentes fonctionnalités."
+      },
+      "accounts": {
+        "title": "3. Comptes utilisateurs",
+        "content": "Vous êtes responsable de la confidentialité de vos identifiants de compte et de toutes les activités qui se produisent sous votre compte. Vous devez nous informer immédiatement de toute utilisation non autorisée de votre compte ou de toute autre violation de sécurité."
+      },
+      "content": {
+        "title": "4. Contenu utilisateur",
+        "content": "Vous conservez tous les droits sur le contenu que vous créez via notre plateforme. En utilisant nos services, vous nous accordez une licence non exclusive pour stocker, afficher et traiter votre contenu dans le but de fournir nos services."
+      },
+      "privacy": {
+        "title": "5. Confidentialité",
+        "content": "Votre vie privée est importante pour nous. La collecte et l'utilisation des informations personnelles sont régies par notre Politique de confidentialité, qui fait partie intégrante de ces Conditions d'utilisation."
+      },
+      "payments": {
+        "title": "6. Paiements et abonnements",
+        "content": "Les fonctionnalités premium nécessitent un abonnement payant. Tous les paiements sont traités de manière sécurisée par notre prestataire de paiement. Les abonnements se renouvellent automatiquement sauf annulation avant la date de renouvellement."
+      },
+      "termination": {
+        "title": "7. Résiliation de compte",
+        "content": "Nous nous réservons le droit de suspendre ou de résilier les comptes qui violent ces conditions ou adoptent un comportement inapproprié. Vous pouvez annuler votre abonnement à tout moment via les paramètres de votre compte."
+      },
+      "changes": {
+        "title": "8. Modifications des conditions",
+        "content": "Nous pouvons modifier ces conditions à tout moment. L'utilisation continue de nos services après ces modifications constitue l'acceptation des nouvelles conditions."
+      }
+    }
+  },
+  "privacy": {
+    "title": "Politique de confidentialité",
+    "lastUpdate": "Dernière mise à jour",
+    "sections": {
+      "introduction": {
+        "title": "1. Introduction",
+        "content": "Cette Politique de confidentialité explique comment Inspire Daily collecte, utilise et protège vos informations personnelles. Nous nous engageons à protéger votre vie privée et à traiter vos données de manière ouverte et transparente."
+      },
+      "collection": {
+        "title": "2. Informations collectées",
+        "content": "Nous collectons les informations que vous nous fournissez directement, y compris votre adresse e-mail, vos réponses aux questions quotidiennes et vos préférences de compte. Nous collectons également automatiquement certaines informations sur votre appareil et la façon dont vous interagissez avec nos services."
+      },
+      "usage": {
+        "title": "3. Utilisation de vos informations",
+        "content": "Nous utilisons vos informations pour fournir et améliorer nos services, personnaliser votre expérience, traiter les paiements, envoyer des notifications et analyser l'utilisation de nos services. Nous ne vendons jamais vos informations personnelles à des tiers."
+      },
+      "sharing": {
+        "title": "4. Partage d'informations",
+        "content": "Nous partageons vos informations uniquement avec les prestataires de services qui nous aident à exploiter notre plateforme et à traiter les paiements. Nous pouvons également partager des informations pour respecter des obligations légales ou protéger nos droits."
+      },
+      "security": {
+        "title": "5. Sécurité des données",
+        "content": "Nous mettons en œuvre des mesures techniques et organisationnelles appropriées pour protéger vos informations personnelles contre l'accès, la modification ou la destruction non autorisés."
+      },
+      "rights": {
+        "title": "6. Vos droits",
+        "content": "Vous avez le droit d'accéder à vos informations personnelles, de les corriger ou de les supprimer. Vous pouvez également demander une copie de vos données ou vous opposer à leur traitement. Contactez-nous pour exercer ces droits."
+      },
+      "cookies": {
+        "title": "7. Cookies et suivi",
+        "content": "Nous utilisons des cookies et des technologies similaires pour améliorer votre expérience et analyser l'utilisation de nos services. Vous pouvez contrôler les préférences de cookies via les paramètres de votre navigateur."
+      },
+      "contact": {
+        "title": "8. Nous contacter",
+        "content": "Si vous avez des questions concernant cette Politique de confidentialité ou vos informations personnelles, veuillez nous contacter à privacy@inspiredaily.com."
+      }
+    }
+  },
+  "notice": {
+    "title": "Mentions légales",
+    "lastUpdate": "Dernière mise à jour",
+    "sections": {
+      "company": {
+        "title": "1. Informations sur la société",
+        "content": "Inspire Daily est exploité par Inspire Daily SAS, société immatriculée en France. Numéro d'immatriculation : XXX XXX XXX. Siège social : XXX."
+      },
+      "publication": {
+        "title": "2. Directeur de la publication",
+        "content": "Directeur de la publication : Hugo Morales. Contact : hugo@inspiredaily.com"
+      },
+      "hosting": {
+        "title": "3. Hébergement",
+        "content": "Ce site web est hébergé par Vercel Inc., situé au 340 S Lemon Ave #4133 Walnut, CA 91789, USA."
+      },
+      "intellectual": {
+        "title": "4. Propriété intellectuelle",
+        "content": "Tout le contenu de ce site web (y compris, mais sans s'y limiter, les textes, graphiques, logos, images et logiciels) est la propriété d'Inspire Daily et est protégé par les lois sur la propriété intellectuelle."
+      },
+      "liability": {
+        "title": "5. Limitation de responsabilité",
+        "content": "Bien que nous nous efforcions de fournir des informations exactes, nous ne pouvons garantir l'exactitude, l'exhaustivité ou l'actualité des informations sur notre site web. Nous ne sommes pas responsables des dommages résultant de l'utilisation de nos services."
+      },
+      "contact": {
+        "title": "6. Informations de contact",
+        "content": "Pour toute question concernant ces mentions légales, veuillez nous contacter à legal@inspiredaily.com"
+      }
+    }
+  }
+}
