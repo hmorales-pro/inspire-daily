@@ -92,7 +92,8 @@
       "save": "Enregistrer",
       "optimize": "Optimiser",
       "voiceInput": "Saisie vocale bientôt disponible !",
-      "premiumOnly": "Fonctionnalité réservée aux membres Premium"
+      "premiumOnly": "Fonctionnalité réservée aux membres Premium",
+      "selectionRequired": "Veuillez sélectionner le texte à formater"
     }
   },
   "history": {

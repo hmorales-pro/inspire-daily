@@ -92,7 +92,8 @@
       "save": "Save",
       "optimize": "Optimize",
       "voiceInput": "Voice input coming soon!",
-      "premiumOnly": "Premium feature only"
+      "premiumOnly": "Premium feature only",
+      "selectionRequired": "Please select text to format"
     }
   },
   "history": {

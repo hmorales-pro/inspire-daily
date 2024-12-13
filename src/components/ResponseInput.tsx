@@ -10,6 +10,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { TextFormatting } from './TextFormatting';
+import { useTranslation } from 'react-i18next';
 
 interface ResponseInputProps {
   value: string;
@@ -42,6 +43,7 @@ const italicMap: { [key: string]: string } = {
 const ResponseInput = ({ value, onChange, onSave, onOptimize, isOptimizing, isPremium = false }: ResponseInputProps) => {
   const { toast } = useToast();
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
+  const { t } = useTranslation();
 
   const handleFormat = (type: 'bold' | 'italic') => {
     if (!textareaRef.current) return;
@@ -70,8 +72,8 @@ const ResponseInput = ({ value, onChange, onSave, onOptimize, isOptimizing, isPr
       }, 0);
     } else {
       toast({
-        title: "Sélection requise",
-        description: "Veuillez sélectionner le texte à formater",
+        title: t('history.selectionRequired'),
+        description: t('history.selectionRequired'),
         variant: "destructive",
       });
     }
@@ -84,7 +86,7 @@ const ResponseInput = ({ value, onChange, onSave, onOptimize, isOptimizing, isPr
       </div>
       <Textarea
         ref={textareaRef}
-        placeholder="Écrivez votre réponse ici..."
+        placeholder={t('home.response.placeholder')}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         className="min-h-[150px] resize-none"
@@ -96,7 +98,7 @@ const ResponseInput = ({ value, onChange, onSave, onOptimize, isOptimizing, isPr
           disabled={!value.trim() || isOptimizing}
         >
           <Send className="w-4 h-4 mr-2" />
-          Enregistrer
+          {t('home.response.save')}
         </Button>
         <Button
           onClick={onOptimize}
@@ -104,7 +106,7 @@ const ResponseInput = ({ value, onChange, onSave, onOptimize, isOptimizing, isPr
           disabled={!value.trim() || isOptimizing}
         >
           <RefreshCw className={`w-4 h-4 mr-2 ${isOptimizing ? 'animate-spin' : ''}`} />
-          Optimiser
+          {t('home.response.optimize')}
         </Button>
         <TooltipProvider delayDuration={50}>
           <Tooltip>
@@ -121,7 +123,7 @@ const ResponseInput = ({ value, onChange, onSave, onOptimize, isOptimizing, isPr
               </div>
             </TooltipTrigger>
             <TooltipContent side="bottom">
-              <p>{isPremium ? "La reconnaissance vocale arrive bientôt !" : "Fonctionnalité réservée aux membres Premium"}</p>
+              <p>{isPremium ? t('home.response.voiceInput') : t('home.response.premiumOnly')}</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
