@@ -31,7 +31,7 @@ export const ResponseCard = ({
   setEditedResponse
 }: ResponseCardProps) => {
   const [isEditingOptimized, setIsEditingOptimized] = React.useState(false);
-  const { t, i18n } = useTranslation();
+  const { t, i18n } = useTranslation(['history']);
 
   const handleCancel = () => {
     const textToRestore = isEditingOptimized ? response.optimized_response || '' : response.response;
@@ -86,7 +86,7 @@ export const ResponseCard = ({
         ) : (
           <>
             <ResponseContent
-              title={t('history.originalResponse')}
+              title={t('originalResponse')}
               content={response.response}
               isOptimizing={isOptimizing}
               profile={profile}
@@ -96,7 +96,7 @@ export const ResponseCard = ({
             />
             {response.is_optimized && response.optimized_response && (
               <ResponseContent
-                title={t('history.optimizedResponse')}
+                title={t('optimizedResponse')}
                 content={response.optimized_response}
                 isOptimizing={isOptimizing}
                 profile={profile}
