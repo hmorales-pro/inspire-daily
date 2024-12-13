@@ -8,6 +8,10 @@ export const PricingSection = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   
+  // Explicitement typer les features comme des tableaux de strings
+  const freeFeatures = t('landing.pricing.free.features', { returnObjects: true }) as string[];
+  const premiumFeatures = t('landing.pricing.premium.features', { returnObjects: true }) as string[];
+  
   return (
     <div className="bg-primary-light py-16">
       <div className="container mx-auto px-4">
@@ -30,7 +34,7 @@ export const PricingSection = () => {
             </CardHeader>
             <CardContent>
               <ul className="space-y-3">
-                {t('landing.pricing.free.features', { returnObjects: true }).map((feature, index) => (
+                {freeFeatures.map((feature, index) => (
                   <PricingFeature key={index} text={feature} />
                 ))}
               </ul>
@@ -55,7 +59,7 @@ export const PricingSection = () => {
             </CardHeader>
             <CardContent>
               <ul className="space-y-3">
-                {t('landing.pricing.premium.features', { returnObjects: true }).map((feature, index) => (
+                {premiumFeatures.map((feature, index) => (
                   <PricingFeature key={index} text={feature} />
                 ))}
               </ul>
