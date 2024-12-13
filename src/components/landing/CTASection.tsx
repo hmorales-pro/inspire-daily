@@ -2,9 +2,11 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getAppSettings } from "@/lib/settings";
+import { useTranslation } from "react-i18next";
 
 export const CTASection = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   
   const { data: redirectUrl } = useQuery({
     queryKey: ['redirectUrl'],
@@ -16,10 +18,10 @@ export const CTASection = () => {
     <div className="bg-primary-dark text-white py-16">
       <div className="container mx-auto px-4 text-center">
         <h2 className="text-3xl md:text-4xl font-bold mb-6">
-          Prêt à créer du contenu qui vous inspire ?
+          {t('landing.cta.title')}
         </h2>
         <p className="text-lg md:text-xl mb-8 text-gray-300 max-w-2xl mx-auto">
-          Rejoignez notre communauté de créateurs et donnez vie à vos réseaux sociaux avec du contenu authentique.
+          {t('landing.cta.subtitle')}
         </p>
         <Button 
           variant="outline" 
@@ -27,7 +29,7 @@ export const CTASection = () => {
           className="bg-white text-primary-dark hover:bg-gray-100 px-8 py-6 text-lg"
           onClick={() => navigate("/login")}
         >
-          S'inscrire maintenant
+          {t('landing.cta.button')}
         </Button>
       </div>
     </div>

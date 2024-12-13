@@ -1,41 +1,44 @@
 import { FeatureCard } from "./FeatureCard";
+import { useTranslation } from "react-i18next";
 
 export const FeaturesSection = () => {
+  const { t } = useTranslation();
+
   return (
     <div className="bg-white py-16">
       <div className="container mx-auto px-4">
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-primary-dark">
-          Créez du contenu qui vous ressemble
+          {t('landing.features.title')}
         </h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
           <FeatureCard
-            title="Questions quotidiennes"
-            description="Recevez chaque jour une nouvelle question inspirante pour alimenter vos réseaux sociaux avec du contenu authentique et engageant."
+            title={t('landing.features.sections.dailyQuestions.title')}
+            description={t('landing.features.sections.dailyQuestions.description')}
             icon="✨"
           />
           <FeatureCard
-            title="Inspiration garantie"
-            description="Plus besoin de chercher quoi poster : nos questions vous aident à partager votre quotidien et vos expériences de manière naturelle."
+            title={t('landing.features.sections.guaranteedInspiration.title')}
+            description={t('landing.features.sections.guaranteedInspiration.description')}
             icon="💡"
           />
           <FeatureCard
-            title="Contenu personnalisé"
-            description="Adaptez vos réponses à votre style et votre audience. Créez du contenu unique qui reflète votre personnalité."
+            title={t('landing.features.sections.customContent.title')}
+            description={t('landing.features.sections.customContent.description')}
             icon="🎯"
           />
           <FeatureCard
-            title="Saisie vocale"
-            description="Exprimez-vous naturellement grâce à la reconnaissance vocale. Parlez librement, nous transcrivons pour vous."
+            title={t('landing.features.sections.voiceInput.title')}
+            description={t('landing.features.sections.voiceInput.description')}
             icon="🎤"
           />
           <FeatureCard
-            title="Assistant IA"
-            description="Affinez vos réponses avec notre assistant IA pour un contenu encore plus impactant sur vos réseaux sociaux."
+            title={t('landing.features.sections.aiAssistant.title')}
+            description={t('landing.features.sections.aiAssistant.description')}
             icon="🤖"
           />
           <FeatureCard
-            title="Historique complet"
-            description="Gardez une trace de toutes vos réponses et réutilisez votre contenu quand vous le souhaitez."
+            title={t('landing.features.sections.completeHistory.title')}
+            description={t('landing.features.sections.completeHistory.description')}
             icon="📚"
           />
         </div>
