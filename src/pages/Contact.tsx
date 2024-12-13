@@ -3,12 +3,11 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 
 const Contact = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['pages']);
   const { toast } = useToast();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Simulate form submission
     toast({
       title: t('pages.contact.form.success'),
       description: "We'll get back to you soon!",

@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 
 const Support = () => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['pages']);
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-12">
