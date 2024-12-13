@@ -30,17 +30,7 @@ export const Footer = () => {
           <FooterSection title={t('footer.social.title')}>
             <ul className="space-y-4">
               <li>
-                <FooterLink to="https://twitter.com/inspiredaily" external>
-                  Twitter
-                </FooterLink>
-              </li>
-              <li>
-                <FooterLink to="https://instagram.com/inspiredaily" external>
-                  Instagram
-                </FooterLink>
-              </li>
-              <li>
-                <FooterLink to="https://linkedin.com/company/inspiredaily" external>
+                <FooterLink to="https://www.linkedin.com/in/hmorales-pro/" external>
                   LinkedIn
                 </FooterLink>
               </li>
