@@ -8,9 +8,17 @@ export const PricingSection = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   
-  // Ensure we have arrays by providing default empty arrays if translation fails
-  const freeFeatures = (t('landing.pricing.free.features', { returnObjects: true }) || []) as string[];
-  const premiumFeatures = (t('landing.pricing.premium.features', { returnObjects: true }) || []) as string[];
+  // Add more robust type checking and default values
+  const getFeaturesArray = (path: string): string[] => {
+    const features = t(path, { returnObjects: true });
+    if (!features) return [];
+    if (Array.isArray(features)) return features;
+    console.warn(`Translation for ${path} is not an array:`, features);
+    return [];
+  };
+
+  const freeFeatures = getFeaturesArray('landing.pricing.free.features');
+  const premiumFeatures = getFeaturesArray('landing.pricing.premium.features');
   
   return (
     <div className="bg-primary-light py-16">
@@ -34,7 +42,7 @@ export const PricingSection = () => {
             </CardHeader>
             <CardContent>
               <ul className="space-y-3">
-                {Array.isArray(freeFeatures) && freeFeatures.map((feature, index) => (
+                {freeFeatures.map((feature, index) => (
                   <PricingFeature key={index} text={feature} />
                 ))}
               </ul>
@@ -59,7 +67,7 @@ export const PricingSection = () => {
             </CardHeader>
             <CardContent>
               <ul className="space-y-3">
-                {Array.isArray(premiumFeatures) && premiumFeatures.map((feature, index) => (
+                {premiumFeatures.map((feature, index) => (
                   <PricingFeature key={index} text={feature} />
                 ))}
               </ul>
