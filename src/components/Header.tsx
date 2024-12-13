@@ -10,7 +10,7 @@ const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const supabase = useSupabaseClient();
-  const { t } = useTranslation();
+  const { t } = useTranslation(['common']);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -62,7 +62,7 @@ const Header = () => {
               onClick={() => navigate('/home')}
             >
               <Home className="h-5 w-5" />
-              <span className="hidden sm:inline">{t('common.home')}</span>
+              <span className="hidden sm:inline">{t('common:home')}</span>
             </Button>
 
             <Button
@@ -74,7 +74,7 @@ const Header = () => {
               onClick={() => navigate('/history')}
             >
               <History className="h-5 w-5" />
-              <span className="hidden sm:inline">{t('common.history')}</span>
+              <span className="hidden sm:inline">{t('common:history')}</span>
             </Button>
 
             <Button
@@ -86,7 +86,7 @@ const Header = () => {
               onClick={() => navigate('/settings')}
             >
               <User className="h-5 w-5" />
-              <span className="hidden sm:inline">{t('common.profile')}</span>
+              <span className="hidden sm:inline">{t('common:profile')}</span>
             </Button>
             
             <Button
@@ -96,7 +96,7 @@ const Header = () => {
               onClick={handleLogout}
             >
               <LogOut className="h-5 w-5" />
-              <span className="hidden sm:inline">{t('common.logout')}</span>
+              <span className="hidden sm:inline">{t('common:logout')}</span>
             </Button>
 
             <LanguageSwitcher />

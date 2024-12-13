@@ -14,7 +14,7 @@ const History = () => {
   const { editingId, editedResponse, isOptimizing, setEditingId, setEditedResponse, setIsOptimizing } = useHistoryState();
   const { toast } = useToast();
   const queryClient = useQueryClient();
-  const { t } = useTranslation();
+  const { t } = useTranslation(['history', 'common']);
 
   const { data: responses, isLoading, error } = useQuery({
     queryKey: ['responses'],
@@ -48,8 +48,8 @@ const History = () => {
       await updateResponse(response.id, response);
       
       toast({
-        title: t('common.success'),
-        description: t('history.response.updated'),
+        title: t('common:success'),
+        description: t('history:response.updated'),
       });
       
       setEditingId(null);
@@ -57,8 +57,8 @@ const History = () => {
       queryClient.invalidateQueries({ queryKey: ['responses'] });
     } catch (error) {
       toast({
-        title: t('common.error'),
-        description: t('history.response.updateError'),
+        title: t('common:error'),
+        description: t('history:response.updateError'),
         variant: "destructive",
       });
     }
@@ -67,8 +67,8 @@ const History = () => {
   const handleOptimize = async (response) => {
     if (!profile || profile.optimizations_count === 0) {
       toast({
-        title: t('common.error'),
-        description: t('history.response.optimizationLimit'),
+        title: t('common:error'),
+        description: t('history:response.optimizationLimit'),
         variant: "destructive",
       });
       return;
@@ -98,15 +98,15 @@ const History = () => {
       });
       
       toast({
-        title: t('common.success'),
-        description: t('history.response.optimized'),
+        title: t('common:success'),
+        description: t('history:response.optimized'),
       });
       
       queryClient.invalidateQueries({ queryKey: ['responses'] });
     } catch (error) {
       toast({
-        title: t('common.error'),
-        description: t('history.response.optimizeError'),
+        title: t('common:error'),
+        description: t('history:response.optimizeError'),
         variant: "destructive",
       });
     } finally {
@@ -117,7 +117,7 @@ const History = () => {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-primary-light p-4 flex items-center justify-center">
-        <p className="text-muted-foreground">{t('common.loading')}</p>
+        <p className="text-muted-foreground">{t('common:loading')}</p>
       </div>
     );
   }
@@ -125,7 +125,7 @@ const History = () => {
   if (error) {
     return (
       <div className="min-h-screen bg-primary-light p-4 flex items-center justify-center">
-        <p className="text-destructive">{t('history.error')}</p>
+        <p className="text-destructive">{t('history:error')}</p>
       </div>
     );
   }
@@ -136,7 +136,7 @@ const History = () => {
     <div className="min-h-screen bg-primary-light p-4">
       <div className="max-w-4xl mx-auto pt-8">
         <h1 className="text-2xl font-bold text-center text-primary-dark mb-8">
-          {t('history.title')}
+          {t('history:title')}
         </h1>
         
         <ScrollArea className="h-[calc(100vh-200px)]">

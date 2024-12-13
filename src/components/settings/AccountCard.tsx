@@ -9,7 +9,7 @@ interface AccountCardProps {
 }
 
 export const AccountCard = ({ email }: AccountCardProps) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['settings', 'common']);
   const navigate = useNavigate();
   const supabase = useSupabaseClient();
 
@@ -21,12 +21,12 @@ export const AccountCard = ({ email }: AccountCardProps) => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{t('settings.account.title')}</CardTitle>
-        <CardDescription>{t('settings.account.description')}</CardDescription>
+        <CardTitle>{t('settings:account.title')}</CardTitle>
+        <CardDescription>{t('settings:account.description')}</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <div>
-          <h3 className="font-medium mb-2">{t('settings.account.email')}</h3>
+          <h3 className="font-medium mb-2">{t('settings:account.email')}</h3>
           <p>{email}</p>
         </div>
 
@@ -35,7 +35,7 @@ export const AccountCard = ({ email }: AccountCardProps) => {
           onClick={handleLogout}
           className="w-full"
         >
-          {t('settings.account.logout')}
+          {t('settings:account.logout')}
         </Button>
       </CardContent>
     </Card>

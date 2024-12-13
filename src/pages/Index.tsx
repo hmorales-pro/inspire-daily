@@ -14,7 +14,7 @@ const Index = () => {
   const [isOptimizing, setIsOptimizing] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
-  const { t, i18n } = useTranslation();
+  const { t, i18n } = useTranslation(['home', 'common']);
 
   const { data: profile } = useQuery({
     queryKey: ['profile'],
@@ -57,8 +57,8 @@ const Index = () => {
   const handleSave = async () => {
     if (!todayQuestion) {
       toast({
-        title: "Erreur",
-        description: t('home.noQuestion'),
+        title: t('common:error'),
+        description: t('home:noQuestion'),
         variant: "destructive",
       });
       return;
@@ -72,8 +72,8 @@ const Index = () => {
       });
       
       toast({
-        title: t('common.save'),
-        description: t('home.response.saved'),
+        title: t('common:success'),
+        description: t('home:response.saved'),
       });
       
       setResponse('');
@@ -81,8 +81,8 @@ const Index = () => {
     } catch (error) {
       console.error('Error saving response:', error);
       toast({
-        title: t('common.error'),
-        description: t('home.response.saveError'),
+        title: t('common:error'),
+        description: t('home:response.saveError'),
         variant: "destructive",
       });
     }
@@ -91,8 +91,8 @@ const Index = () => {
   const handleOptimize = async () => {
     if (!todayQuestion) {
       toast({
-        title: t('common.error'),
-        description: t('home.noQuestion'),
+        title: t('common:error'),
+        description: t('home:noQuestion'),
         variant: "destructive",
       });
       return;
@@ -100,8 +100,8 @@ const Index = () => {
 
     if (profile?.optimizations_count === 0) {
       toast({
-        title: t('common.error'),
-        description: t('home.response.optimizationLimit'),
+        title: t('common:error'),
+        description: t('home:response.optimizationLimit'),
         variant: "destructive",
       });
       return;
@@ -131,8 +131,8 @@ const Index = () => {
       });
       
       toast({
-        title: t('common.optimize'),
-        description: t('home.response.optimized'),
+        title: t('common:success'),
+        description: t('home:response.optimized'),
       });
       
       setResponse('');
@@ -140,8 +140,8 @@ const Index = () => {
     } catch (error) {
       console.error('Error optimizing response:', error);
       toast({
-        title: t('common.error'),
-        description: t('home.response.optimizeError'),
+        title: t('common:error'),
+        description: t('home:response.optimizeError'),
         variant: "destructive",
       });
     } finally {
@@ -153,7 +153,7 @@ const Index = () => {
     <div className="min-h-screen bg-primary-light p-4 space-y-6">
       <div className="max-w-4xl mx-auto pt-8">
         <h1 className="text-2xl font-bold text-center text-primary-dark mb-8">
-          {t('home.title')}
+          {t('home:title')}
         </h1>
         
         <div className="space-y-6">
