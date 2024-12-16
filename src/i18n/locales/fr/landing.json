@@ -75,6 +75,7 @@
       "description": "Offre exclusive limitée aux 200 premiers",
       "price": "85",
       "oneTime": "paiement unique",
+      "exclusive": "Exclusif",
       "features": [
         "1 question par jour",
         "Historique illimité",

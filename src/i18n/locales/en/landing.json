@@ -75,6 +75,7 @@
       "description": "Exclusive offer limited to first 200 users",
       "price": "85",
       "oneTime": "one-time payment",
+      "exclusive": "Exclusive",
       "features": [
         "1 question per day",
         "Unlimited history",
