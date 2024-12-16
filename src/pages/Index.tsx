@@ -93,13 +93,12 @@ const Index = () => {
     <>
       {isAuthenticated ? (
         <Header />
-      ) : (
-        <div className="p-4">
-          <BackButton />
-        </div>
-      )}
+      ) : null}
       <div className="min-h-screen bg-primary-light p-4 space-y-6">
-        <div className="max-w-4xl mx-auto pt-8">
+        <div className="max-w-4xl mx-auto">
+          {!isAuthenticated && (
+            <BackButton />
+          )}
           <h1 className="text-2xl font-bold text-center text-primary-dark mb-8">
             {t('home:title')}
           </h1>
