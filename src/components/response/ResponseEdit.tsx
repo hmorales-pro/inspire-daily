@@ -25,12 +25,12 @@ export const ResponseEdit = ({
   setEditedResponse,
   isEditingOptimized
 }: ResponseEditProps) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['history']);
 
   return (
     <div className="space-y-4">
       <h3 className="font-medium">
-        {isEditingOptimized ? t('history.editOptimized') : t('history.editOriginal')}
+        {isEditingOptimized ? t('editOptimized') : t('editOriginal')}
       </h3>
       <ResponseInput
         value={editedResponse}
@@ -46,7 +46,7 @@ export const ResponseEdit = ({
         className="w-full"
       >
         <X className="w-4 h-4 mr-2" />
-        {t('common.cancel')}
+        {t('response.cancel')}
       </Button>
     </div>
   );

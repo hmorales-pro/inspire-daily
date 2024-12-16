@@ -3,6 +3,8 @@
   "noResponses": "Aucune réponse enregistrée pour le moment.",
   "loading": "Chargement de l'historique...",
   "error": "Une erreur est survenue lors du chargement de l'historique.",
+  "editOriginal": "Modifier la réponse originale",
+  "editOptimized": "Modifier la réponse optimisée",
   "response": {
     "originalVersion": "Version originale",
     "optimizedVersion": "Version optimisée",
@@ -13,6 +15,10 @@
     "optimized": "Réponse optimisée avec succès",
     "optimizeError": "Erreur lors de l'optimisation de la réponse",
     "optimizationLimit": "Vous n'avez plus d'optimisations disponibles",
-    "registerToOptimize": "Inscrivez-vous pour optimiser vos réponses"
+    "registerToOptimize": "Inscrivez-vous pour optimiser vos réponses",
+    "save": "Enregistrer",
+    "optimize": "Optimiser",
+    "cancel": "Annuler",
+    "edit": "Modifier"
   }
 }

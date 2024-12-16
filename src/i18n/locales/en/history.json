@@ -3,18 +3,22 @@
   "noResponses": "No responses recorded yet.",
   "loading": "Loading...",
   "error": "An error occurred while loading the history.",
-  "originalResponse": "Original response:",
-  "optimizedResponse": "Optimized response:",
-  "editOriginal": "Edit original response:",
-  "editOptimized": "Edit optimized response:",
-  "selectionRequired": "Please select text to format",
+  "editOriginal": "Edit original response",
+  "editOptimized": "Edit optimized response",
   "response": {
+    "originalVersion": "Original version",
+    "optimizedVersion": "Optimized version",
     "copied": "Text copied to clipboard",
     "copyError": "Unable to copy text",
     "updated": "Response updated successfully",
     "updateError": "Error updating response",
     "optimized": "Response optimized successfully",
     "optimizeError": "Error optimizing response",
-    "optimizationLimit": "You have no optimizations left"
+    "optimizationLimit": "You have no optimizations left",
+    "registerToOptimize": "Sign up to optimize your responses",
+    "save": "Save",
+    "optimize": "Optimize",
+    "cancel": "Cancel",
+    "edit": "Edit"
   }
 }
