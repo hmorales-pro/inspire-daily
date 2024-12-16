@@ -54,45 +54,51 @@ export const SubscriptionCard = ({ profileData }: SubscriptionCardProps) => {
         <CardDescription>{t('settings:subscription.description')}</CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
-        <div>
-          <h3 className="font-medium mb-2">{t('settings:subscription.type')}</h3>
-          <p>
-            {profileData?.subscription_type === 'premium' ? (
-              <>
-                Premium ({t('settings:subscription.active')})
-              </>
-            ) : profileData?.subscription_type === 'premiumYear' ? (
-              <>
-                {t('landing:pricing.annual.title')} ({t('settings:subscription.active')})
-              </>
-            ) : profileData?.subscription_type === 'lifetime' ? (
-              <>
-                {t('landing:pricing.lifetime.title')} ({t('settings:subscription.active')})
-              </>
-            ) : (
-              <>
-                {t('settings:subscription.free')}
-              </>
-            )}
-          </p>
-        </div>
+        <div className="space-y-4">
+          <div>
+            <h3 className="font-medium mb-2">{t('settings:subscription.type')}</h3>
+            <p className="text-lg">
+              {profileData?.subscription_type === 'premium' ? (
+                <span className="text-green-600 font-medium">
+                  Premium ({t('settings:subscription.active')})
+                </span>
+              ) : profileData?.subscription_type === 'premiumYear' ? (
+                <span className="text-green-600 font-medium">
+                  {t('landing:pricing.annual.title')} ({t('settings:subscription.active')})
+                </span>
+              ) : profileData?.subscription_type === 'lifetime' ? (
+                <span className="text-green-600 font-medium">
+                  {t('landing:pricing.lifetime.title')} ({t('settings:subscription.active')})
+                </span>
+              ) : (
+                <span className="text-muted-foreground">
+                  {t('settings:subscription.free')}
+                </span>
+              )}
+            </p>
+          </div>
 
-        <div>
-          <h3 className="font-medium mb-2">{t('settings:subscription.remainingOptimizations')}</h3>
-          <p>
-            {profileData?.subscription_type !== 'free' ? (
-              t('settings:subscription.unlimited')
-            ) : (
-              <>
-                {profileData?.optimizations_count} {t('settings:subscription.optimizations')}
-                {profileData?.optimizations_reset_date && (
-                  <span className="text-sm text-muted-foreground ml-2">
-                    ({t('settings:subscription.resetDate')} {formatDate(profileData.optimizations_reset_date)})
+          <div>
+            <h3 className="font-medium mb-2">{t('settings:subscription.remainingOptimizations')}</h3>
+            <p className="text-lg">
+              {profileData?.subscription_type !== 'free' ? (
+                <span className="text-green-600 font-medium">
+                  {t('settings:subscription.unlimited')}
+                </span>
+              ) : (
+                <div className="space-y-1">
+                  <span className="text-xl font-medium">
+                    {profileData?.optimizations_count} {t('settings:subscription.optimizations')}
                   </span>
-                )}
-              </>
-            )}
-          </p>
+                  {profileData?.optimizations_reset_date && (
+                    <p className="text-sm text-muted-foreground">
+                      {t('settings:subscription.resetDate')} {formatDate(profileData.optimizations_reset_date)}
+                    </p>
+                  )}
+                </div>
+              )}
+            </p>
+          </div>
         </div>
 
         {profileData?.subscription_type === 'free' && (
