@@ -25,18 +25,18 @@ export const ResponseContent = ({
   isOriginalVersion = true
 }: ResponseContentProps) => {
   const { toast } = useToast();
-  const { t } = useTranslation(['history', 'common']);
+  const { t } = useTranslation(['history']);
 
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(content);
       toast({
-        description: t('history:response.copied'),
+        description: t('response.copied'),
       });
     } catch (err) {
       toast({
         title: t('common:error'),
-        description: t('history:response.copyError'),
+        description: t('response.copyError'),
         variant: "destructive",
       });
     }
@@ -45,7 +45,9 @@ export const ResponseContent = ({
   return (
     <div>
       <div className="flex justify-between items-center mb-2">
-        <h3 className="font-medium">{title}</h3>
+        <h3 className="font-medium">
+          {isOriginalVersion ? t('response.originalVersion') : t('response.optimizedVersion')}
+        </h3>
         <div className="flex items-center gap-2">
           <Button
             variant="outline"
