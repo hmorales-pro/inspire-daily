@@ -8,7 +8,6 @@ import OptimizedResponseCard from '@/components/home/OptimizedResponseCard';
 import { useAnonymousSession } from '@/components/home/useAnonymousSession';
 import { useResponseActions } from '@/components/home/useResponseActions';
 import Header from '@/components/Header';
-import { BackButton } from '@/components/BackButton';
 import { useEffect, useState } from 'react';
 
 const Index = () => {
@@ -96,9 +95,6 @@ const Index = () => {
       ) : null}
       <div className="min-h-screen bg-primary-light p-4 space-y-6">
         <div className="max-w-4xl mx-auto">
-          {!isAuthenticated && (
-            <BackButton />
-          )}
           <h1 className="text-2xl font-bold text-center text-primary-dark mb-8">
             {t('home:title')}
           </h1>

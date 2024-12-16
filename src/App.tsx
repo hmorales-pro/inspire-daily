@@ -104,8 +104,7 @@ const App = () => (
         <BrowserRouter>
           <div className="min-h-screen bg-primary-light">
             <Routes>
-              {/* Routes publiques */}
-              <Route path="/" element={<Index />} />
+              {/* Public routes */}
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/support" element={<Support />} />
@@ -114,14 +113,14 @@ const App = () => (
               <Route path="/legal/notice" element={<LegalNotice />} />
               <Route path="/home" element={<Navigate to="/" replace />} />
               
-              {/* Routes d'authentification */}
+              {/* Auth routes */}
               <Route path="/login" element={
                 <PublicRoute>
                   <Login />
                 </PublicRoute>
               } />
 
-              {/* Routes protégées */}
+              {/* Protected routes */}
               <Route path="/history" element={
                 <ProtectedRoute>
                   <History />
@@ -132,6 +131,9 @@ const App = () => (
                   <Settings />
                 </ProtectedRoute>
               } />
+
+              {/* Root route */}
+              <Route path="/" element={<Index />} />
             </Routes>
           </div>
         </BrowserRouter>
