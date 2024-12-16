@@ -8,9 +8,11 @@ import { useTranslation } from 'react-i18next';
 import ResponseInput from '@/components/ResponseInput';
 import DailyQuestion from '@/components/DailyQuestion';
 import { v4 as uuidv4 } from 'uuid';
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 
 const Index = () => {
   const [response, setResponse] = useState('');
+  const [optimizedResponse, setOptimizedResponse] = useState<string | null>(null);
   const [isOptimizing, setIsOptimizing] = useState(false);
   const [sessionId, setSessionId] = useState('');
   const [hasOptimized, setHasOptimized] = useState(false);
@@ -153,6 +155,7 @@ const Index = () => {
     
     try {
       const optimizedContent = await optimizeResponse(response);
+      setOptimizedResponse(optimizedContent);
       
       if (profile) {
         if (profile.subscription_type === 'free') {
@@ -198,7 +201,6 @@ const Index = () => {
         description: t('home:response.optimized'),
       });
       
-      setResponse('');
     } catch (error) {
       console.error('Error optimizing response:', error);
       toast({
@@ -206,6 +208,7 @@ const Index = () => {
         description: t('home:response.optimizeError'),
         variant: "destructive",
       });
+      setOptimizedResponse(null);
     } finally {
       setIsOptimizing(false);
     }
@@ -229,6 +232,17 @@ const Index = () => {
             isOptimizing={isOptimizing}
             isPremium={profile?.subscription_type === 'premium'}
           />
+
+          {optimizedResponse && !profile && (
+            <Card className="mt-4">
+              <CardHeader>
+                <h2 className="text-lg font-semibold">{t('home:response.optimizedVersion')}</h2>
+              </CardHeader>
+              <CardContent>
+                <p className="whitespace-pre-wrap">{optimizedResponse}</p>
+              </CardContent>
+            </Card>
+          )}
         </div>
       </div>
     </div>
