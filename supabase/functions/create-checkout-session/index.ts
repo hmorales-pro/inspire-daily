@@ -1,10 +1,5 @@
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 import Stripe from 'https://esm.sh/stripe@11.1.0?target=deno'
-
-// Add debug logging
-console.log('DENO_ENV:', Deno.env.get('DENO_ENV'));
-console.log('Using stripe key:', Deno.env.get('DENO_ENV') === 'development' ? 'TEST KEY' : 'PRODUCTION KEY');
 
 // Use test key in development, production key in production
 const stripeKey = Deno.env.get('DENO_ENV') === 'development' 
@@ -28,13 +23,16 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
-serve(async (req) => {
-  // Handle CORS preflight requests
+Deno.serve(async (req) => {
+  // Handle CORS
   if (req.method === 'OPTIONS') {
-    return new Response(null, { headers: corsHeaders })
+    return new Response(null, {
+      headers: corsHeaders
+    })
   }
 
   try {
+    // Create Supabase client
     const supabaseClient = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_ANON_KEY') ?? '',
@@ -45,7 +43,7 @@ serve(async (req) => {
       }
     )
 
-    // Get the authenticated user
+    // Get authenticated user
     const {
       data: { user },
       error: userError,
@@ -68,11 +66,10 @@ serve(async (req) => {
       .eq('id', user.id)
       .single()
 
-    console.log('Profile:', profile);
     let customerId = profile?.stripe_customer_id
 
     if (!customerId) {
-      console.log('Creating new customer');
+      console.log('Creating new customer')
       const customer = await stripe.customers.create({
         email: user.email,
         metadata: {
@@ -81,9 +78,8 @@ serve(async (req) => {
         },
       })
       customerId = customer.id
-      console.log('New customer ID:', customerId);
 
-      // Update profile with Stripe customer ID
+      // Save customer ID
       await supabaseClient
         .from('profiles')
         .update({ stripe_customer_id: customerId })
@@ -121,11 +117,11 @@ serve(async (req) => {
     })
 
     return new Response(
-      JSON.stringify({ sessionId: session.id, url: session.url }),
+      JSON.stringify({ url: session.url }),
       {
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         status: 200,
-      }
+      },
     )
   } catch (error) {
     console.error('Error:', error)

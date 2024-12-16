@@ -94,6 +94,7 @@ export type Database = {
           optimizations_count: number | null
           optimizations_reset_date: string | null
           stripe_customer_id: string | null
+          subscription_expires_at: string | null
           subscription_status: string | null
           subscription_type: string
         }
@@ -103,6 +104,7 @@ export type Database = {
           optimizations_count?: number | null
           optimizations_reset_date?: string | null
           stripe_customer_id?: string | null
+          subscription_expires_at?: string | null
           subscription_status?: string | null
           subscription_type?: string
         }
@@ -112,6 +114,7 @@ export type Database = {
           optimizations_count?: number | null
           optimizations_reset_date?: string | null
           stripe_customer_id?: string | null
+          subscription_expires_at?: string | null
           subscription_status?: string | null
           subscription_type?: string
         }
