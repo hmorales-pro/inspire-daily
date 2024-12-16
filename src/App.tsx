@@ -89,7 +89,7 @@ const PublicRoute = ({ children }: { children: React.ReactNode }) => {
   }
 
   if (isAuthenticated) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/home" replace />;
   }
 
   return <>{children}</>;
@@ -104,28 +104,24 @@ const App = () => (
         <BrowserRouter>
           <div className="min-h-screen bg-primary-light">
             <Routes>
-              {/* Public routes */}
+              {/* Routes publiques */}
+              <Route path="/" element={<Landing />} />
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/support" element={<Support />} />
               <Route path="/legal/terms" element={<TermsOfService />} />
               <Route path="/legal/privacy" element={<PrivacyPolicy />} />
               <Route path="/legal/notice" element={<LegalNotice />} />
-              <Route path="/home" element={<Navigate to="/app" replace />} />
+              <Route path="/home" element={<Index />} /> {/* Rendu public */}
               
-              {/* Auth routes */}
+              {/* Routes d'authentification */}
               <Route path="/login" element={
                 <PublicRoute>
                   <Login />
                 </PublicRoute>
               } />
 
-              {/* Protected routes */}
-              <Route path="/app" element={
-                <ProtectedRoute>
-                  <Index />
-                </ProtectedRoute>
-              } />
+              {/* Routes protégées */}
               <Route path="/history" element={
                 <ProtectedRoute>
                   <History />
@@ -136,9 +132,6 @@ const App = () => (
                   <Settings />
                 </ProtectedRoute>
               } />
-
-              {/* Root route */}
-              <Route path="/" element={<Landing />} />
             </Routes>
           </div>
         </BrowserRouter>
