@@ -1,15 +1,15 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { useTranslation } from 'react-i18next';
 import { supabase } from '@/lib/supabase';
 import ResponseInput from '@/components/ResponseInput';
 import DailyQuestion from '@/components/DailyQuestion';
 import OptimizedResponseCard from '@/components/home/OptimizedResponseCard';
 import { useAnonymousSession } from '@/components/home/useAnonymousSession';
 import { useResponseActions } from '@/components/home/useResponseActions';
-import { useTranslation } from 'react-i18next';
 
 const Index = () => {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation(['home', 'common']);
   const { sessionId, hasOptimized, markAsOptimized } = useAnonymousSession();
 
   const { data: profile } = useQuery({
