@@ -11,6 +11,8 @@ interface PricingGridProps {
   selectedPlan: string | null;
   showAllPlans?: boolean;
   currentPlan?: string;
+  optimizationsCount?: number;
+  optimizationsResetDate?: string;
 }
 
 export const PricingGrid = ({ 
@@ -18,9 +20,11 @@ export const PricingGrid = ({
   isUpgrading, 
   selectedPlan,
   showAllPlans = true,
-  currentPlan
+  currentPlan,
+  optimizationsCount,
+  optimizationsResetDate
 }: PricingGridProps) => {
-  const { t } = useTranslation(['landing', 'common']);
+  const { t } = useTranslation(['landing', 'common', 'settings']);
   
   const getFeaturesArray = (path: string): string[] => {
     const features = t(path, { returnObjects: true });
@@ -42,6 +46,10 @@ export const PricingGrid = ({
   // Ne pas afficher le plan gratuit si l'utilisateur est déjà sur un plan payant
   const shouldShowFreePlan = showAllPlans || currentPlan === 'free';
 
+  const formatDate = (date: string) => {
+    return new Date(date).toLocaleDateString();
+  };
+
   return (
     <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
       {shouldShowFreePlan && (
@@ -53,6 +61,18 @@ export const PricingGrid = ({
               <span className="text-4xl font-bold">{t('pricing.free.price')}€</span>
               <span className="text-gray-500">/mois</span>
             </div>
+            {currentPlan === 'free' && optimizationsCount !== undefined && (
+              <div className="mt-4 p-4 bg-gray-50 rounded-lg">
+                <p className="text-sm font-medium text-gray-900">
+                  {optimizationsCount} {t('settings:subscription.optimizations')}
+                </p>
+                {optimizationsResetDate && (
+                  <p className="text-xs text-gray-500 mt-1">
+                    {t('settings:subscription.resetDate')} {formatDate(optimizationsResetDate)}
+                  </p>
+                )}
+              </div>
+            )}
           </CardHeader>
           <CardContent>
             <ul className="space-y-3">
