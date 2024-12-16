@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { SessionContextProvider } from '@supabase/auth-helpers-react';
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
+import { SEOHead } from "@/components/SEOHead";
 import Index from "./pages/Index";
 import History from "./pages/History";
 import Settings from "./pages/Settings";
@@ -99,6 +100,7 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <SessionContextProvider supabaseClient={supabase}>
       <TooltipProvider>
+        <SEOHead />
         <Toaster />
         <Sonner />
         <BrowserRouter>
@@ -112,7 +114,7 @@ const App = () => (
               <Route path="/legal/terms" element={<TermsOfService />} />
               <Route path="/legal/privacy" element={<PrivacyPolicy />} />
               <Route path="/legal/notice" element={<LegalNotice />} />
-              <Route path="/home" element={<Index />} /> {/* Rendu public */}
+              <Route path="/home" element={<Index />} />
               
               {/* Routes d'authentification */}
               <Route path="/login" element={

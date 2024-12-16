@@ -171,6 +171,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
+      setup_daily_emails_cron: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       setup_monthly_questions_cron: {
         Args: Record<PropertyKey, never>
         Returns: undefined
