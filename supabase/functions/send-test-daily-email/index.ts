@@ -11,7 +11,6 @@ const corsHeaders = {
 };
 
 const handler = async (req: Request): Promise<Response> => {
-  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
@@ -49,15 +48,31 @@ const handler = async (req: Request): Promise<Response> => {
     console.log('Question retrieved:', questionData);
 
     const emailHtml = `
-      <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
-        <h1 style="color: #1a1a1a;">📝 Question du Jour</h1>
-        <p style="font-size: 18px; color: #333; margin: 24px 0;">${questionData.question}</p>
-        <a href="https://inspire-daily.eu" 
-           style="display: inline-block; background-color: #2563eb; color: white; padding: 12px 24px; 
-                  text-decoration: none; border-radius: 6px; margin-top: 24px;">
-          Répondre Maintenant
-        </a>
-      </div>
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <meta charset="utf-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        </head>
+        <body style="margin: 0; padding: 0; background-color: #F6F6F7; font-family: 'Inter', sans-serif;">
+          <div style="max-width: 600px; margin: 0 auto; padding: 40px 20px;">
+            <div style="background-color: white; border-radius: 12px; padding: 32px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);">
+              <h1 style="color: #1A1F2C; font-size: 24px; margin: 0 0 24px 0;">📝 Question du Jour</h1>
+              <p style="color: #1A1F2C; font-size: 18px; line-height: 1.6; margin: 0 0 32px 0;">${questionData.question}</p>
+              <a href="https://inspire-daily.eu" 
+                 style="display: inline-block; background-color: #9b87f5; color: white; padding: 12px 24px; 
+                        text-decoration: none; border-radius: 8px; font-weight: 500; transition: background-color 0.2s ease;">
+                Répondre Maintenant
+              </a>
+            </div>
+            <div style="text-align: center; margin-top: 24px;">
+              <p style="color: #7E69AB; font-size: 14px;">
+                Inspire Daily - Votre moment de réflexion quotidien
+              </p>
+            </div>
+          </div>
+        </body>
+      </html>
     `;
 
     console.log('Sending email with Resend...');
@@ -68,7 +83,7 @@ const handler = async (req: Request): Promise<Response> => {
         Authorization: `Bearer ${RESEND_API_KEY}`,
       },
       body: JSON.stringify({
-        from: "Resend <onboarding@resend.dev>",
+        from: "Inspire Daily <onboarding@resend.dev>",
         to: ["hugo.morales.pro@gmail.com"],
         subject: "Votre Question du Jour",
         html: emailHtml,
