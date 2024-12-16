@@ -14,6 +14,7 @@
     "optimized": "Response optimized successfully",
     "optimizeError": "Error optimizing response",
     "optimizationLimit": "You have no optimizations left",
-    "registerToOptimize": "Register to optimize more responses"
+    "registerToOptimize": "Register to optimize more responses",
+    "optimizedVersion": "Optimized version"
   }
 }

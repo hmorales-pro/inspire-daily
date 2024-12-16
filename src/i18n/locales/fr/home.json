@@ -14,6 +14,7 @@
     "optimized": "Réponse optimisée avec succès",
     "optimizeError": "Erreur lors de l'optimisation de la réponse",
     "optimizationLimit": "Vous n'avez plus d'optimisations disponibles",
-    "registerToOptimize": "Inscrivez-vous pour optimiser plus de réponses"
+    "registerToOptimize": "Inscrivez-vous pour optimiser plus de réponses",
+    "optimizedVersion": "Version optimisée"
   }
 }
