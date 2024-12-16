@@ -9,12 +9,7 @@
     "voiceInput": "Voice input coming soon!",
     "premiumOnly": "Premium feature only",
     "selectionRequired": "Please select text to format",
-    "saved": "Response saved successfully",
-    "saveError": "Error saving response",
-    "optimized": "Response optimized successfully",
-    "optimizeError": "Error optimizing response",
-    "optimizationLimit": "You have no optimizations left",
-    "registerToOptimize": "Register to optimize more responses",
-    "optimizedVersion": "Optimized version"
+    "boldText": "Make text bold",
+    "italicText": "Make text italic"
   }
 }

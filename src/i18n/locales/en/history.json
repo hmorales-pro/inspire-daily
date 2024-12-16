@@ -15,8 +15,6 @@
     "updateError": "Error updating response",
     "optimized": "Response optimized successfully",
     "optimizeError": "Error optimizing response",
-    "optimizationLimit": "You have no optimizations left",
-    "boldText": "Bold",
-    "italicText": "Italic"
+    "optimizationLimit": "You have no optimizations left"
   }
 }
