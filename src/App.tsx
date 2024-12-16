@@ -89,7 +89,7 @@ const PublicRoute = ({ children }: { children: React.ReactNode }) => {
   }
 
   if (isAuthenticated) {
-    return <Navigate to="/home" replace />;
+    return <Navigate to="/" replace />;
   }
 
   return <>{children}</>;
@@ -105,14 +105,14 @@ const App = () => (
           <div className="min-h-screen bg-primary-light">
             <Routes>
               {/* Routes publiques */}
-              <Route path="/" element={<Landing />} />
+              <Route path="/" element={<Index />} />
               <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/support" element={<Support />} />
               <Route path="/legal/terms" element={<TermsOfService />} />
               <Route path="/legal/privacy" element={<PrivacyPolicy />} />
               <Route path="/legal/notice" element={<LegalNotice />} />
-              <Route path="/home" element={<Index />} /> {/* Rendu public */}
+              <Route path="/home" element={<Navigate to="/" replace />} />
               
               {/* Routes d'authentification */}
               <Route path="/login" element={
