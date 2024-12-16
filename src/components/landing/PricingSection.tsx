@@ -4,10 +4,17 @@ import { useNavigate } from "react-router-dom";
 import { PricingFeature } from "./PricingFeature";
 import { useTranslation } from "react-i18next";
 import { Badge } from "@/components/ui/badge";
+import { useState } from "react";
+import { supabase } from "@/lib/supabase";
+import { useToast } from "@/hooks/use-toast";
+import { Loader2 } from "lucide-react";
 
 export const PricingSection = () => {
   const navigate = useNavigate();
-  const { t } = useTranslation('landing');
+  const { t } = useTranslation(['landing', 'common']);
+  const { toast } = useToast();
+  const [isUpgrading, setIsUpgrading] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
   
   const getFeaturesArray = (path: string): string[] => {
     const features = t(path, { returnObjects: true });
@@ -25,6 +32,41 @@ export const PricingSection = () => {
   const premiumFeatures = getFeaturesArray('pricing.premium.features');
   const annualFeatures = getFeaturesArray('pricing.annual.features');
   const lifetimeFeatures = getFeaturesArray('pricing.lifetime.features');
+
+  const handleUpgrade = async (subscriptionType: string) => {
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (!session) {
+        // Si l'utilisateur n'est pas connecté, on le redirige vers la page de connexion
+        navigate("/login");
+        return;
+      }
+
+      setSelectedPlan(subscriptionType);
+      setIsUpgrading(true);
+
+      const response = await supabase.functions.invoke('create-checkout-session', {
+        body: { subscriptionType }
+      });
+      
+      if (response.error) throw response.error;
+      
+      const { url } = response.data;
+      if (url) {
+        window.location.href = url;
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      toast({
+        title: t('common:error'),
+        description: t('common:errorOccurred'),
+        variant: "destructive",
+      });
+    } finally {
+      setIsUpgrading(false);
+    }
+  };
   
   return (
     <div className="bg-primary-light py-16">
@@ -54,9 +96,17 @@ export const PricingSection = () => {
               </ul>
               <Button 
                 className="w-full mt-6 bg-primary hover:bg-primary/90"
-                onClick={() => navigate("/login")}
+                onClick={() => handleUpgrade('free')}
+                disabled={isUpgrading}
               >
-                {t('hero.cta')}
+                {isUpgrading && selectedPlan === 'free' ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    {t('common:loading')}
+                  </>
+                ) : (
+                  t('hero.cta')
+                )}
               </Button>
             </CardContent>
           </Card>
@@ -79,9 +129,17 @@ export const PricingSection = () => {
               </ul>
               <Button 
                 className="w-full mt-6 bg-primary hover:bg-primary/90"
-                onClick={() => navigate("/login")}
+                onClick={() => handleUpgrade('premium')}
+                disabled={isUpgrading}
               >
-                {t('pricing.premium.title')}
+                {isUpgrading && selectedPlan === 'premium' ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    {t('common:loading')}
+                  </>
+                ) : (
+                  t('pricing.premium.title')
+                )}
               </Button>
             </CardContent>
           </Card>
@@ -104,9 +162,17 @@ export const PricingSection = () => {
               </ul>
               <Button 
                 className="w-full mt-6 bg-primary hover:bg-primary/90"
-                onClick={() => navigate("/login")}
+                onClick={() => handleUpgrade('premiumYear')}
+                disabled={isUpgrading}
               >
-                {t('pricing.annual.title')}
+                {isUpgrading && selectedPlan === 'premiumYear' ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    {t('common:loading')}
+                  </>
+                ) : (
+                  t('pricing.annual.title')
+                )}
               </Button>
             </CardContent>
           </Card>
@@ -135,9 +201,17 @@ export const PricingSection = () => {
               </ul>
               <Button 
                 className="w-full mt-6 bg-primary hover:bg-primary/90"
-                onClick={() => navigate("/login")}
+                onClick={() => handleUpgrade('lifetime')}
+                disabled={isUpgrading}
               >
-                {t('pricing.lifetime.title')}
+                {isUpgrading && selectedPlan === 'lifetime' ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    {t('common:loading')}
+                  </>
+                ) : (
+                  t('pricing.lifetime.title')
+                )}
               </Button>
             </CardContent>
           </Card>
