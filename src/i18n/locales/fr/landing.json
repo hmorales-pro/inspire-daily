@@ -57,6 +57,19 @@
         "Saisie vocale"
       ]
     },
+    "annual": {
+      "title": "Annuel",
+      "description": "La meilleure valeur",
+      "price": "50",
+      "oneTime": "paiement unique",
+      "features": [
+        "1 question par jour",
+        "Historique illimité",
+        "Optimisations IA illimitées",
+        "Saisie vocale",
+        "Accès pendant 1 an"
+      ]
+    },
     "lifetime": {
       "title": "Lifetime",
       "description": "Offre exclusive limitée aux 200 premiers",

@@ -23,6 +23,7 @@ export const PricingSection = () => {
 
   const freeFeatures = getFeaturesArray('pricing.free.features');
   const premiumFeatures = getFeaturesArray('pricing.premium.features');
+  const annualFeatures = getFeaturesArray('pricing.annual.features');
   const lifetimeFeatures = getFeaturesArray('pricing.lifetime.features');
   
   return (
@@ -34,7 +35,7 @@ export const PricingSection = () => {
         <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
           {t('pricing.subtitle')}
         </p>
-        <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
           {/* Free Plan */}
           <Card className="bg-white">
             <CardHeader>
@@ -81,6 +82,31 @@ export const PricingSection = () => {
                 onClick={() => navigate("/login")}
               >
                 {t('pricing.premium.title')}
+              </Button>
+            </CardContent>
+          </Card>
+
+          {/* Annual Plan */}
+          <Card className="bg-white border-primary">
+            <CardHeader>
+              <CardTitle className="text-2xl font-bold">{t('pricing.annual.title')}</CardTitle>
+              <CardDescription>{t('pricing.annual.description')}</CardDescription>
+              <div className="mt-4">
+                <span className="text-4xl font-bold">{t('pricing.annual.price')}€</span>
+                <span className="text-gray-500 block text-sm mt-1">{t('pricing.annual.oneTime')}</span>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <ul className="space-y-3">
+                {annualFeatures.map((feature, index) => (
+                  <PricingFeature key={index} text={feature} />
+                ))}
+              </ul>
+              <Button 
+                className="w-full mt-6 bg-primary hover:bg-primary/90"
+                onClick={() => navigate("/login")}
+              >
+                {t('pricing.annual.title')}
               </Button>
             </CardContent>
           </Card>
