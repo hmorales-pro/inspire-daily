@@ -35,7 +35,7 @@ const italicMap: { [key: string]: string } = {
   'a': '𝘢', 'b': '𝘣', 'c': '𝘤', 'd': '𝘥', 'e': '𝘦', 'f': '𝘧', 'g': '𝘨', 'h': '𝘩', 'i': '𝘪',
   'j': '𝘫', 'k': '𝘬', 'l': '𝘭', 'm': '𝘮', 'n': '𝘯', 'o': '𝘰', 'p': '𝘱', 'q': '𝘲', 'r': '𝘳',
   's': '𝘴', 't': '𝘵', 'u': '𝘶', 'v': '𝘷', 'w': '𝘸', 'x': '𝘹', 'y': '𝘺', 'z': '𝘻',
-  'A': '𝘈', 'B': '𝘉', 'C': '𝘊', 'D': '𝘋', 'E': '𝘌', 'F': '𝘍', 'G': '𝘎', 'H': '𝘏', 'I': '𝘐',
+  'A': '𝘈', 'B': '𝘉', 'C': '𝘊', 'D': '𝘋', 'E': '𝘌', 'F': '𝘍', 'G': '𝘎', 'H': '𝘏', 'I': '𝗜',
   'J': '𝘑', 'K': '𝘒', 'L': '𝘓', 'M': '𝘔', 'N': '𝘕', 'O': '𝘖', 'P': '𝘗', 'Q': '𝘘', 'R': '𝘙',
   'S': '𝘚', 'T': '𝘛', 'U': '𝘜', 'V': '𝘝', 'W': '𝘞', 'X': '𝘟', 'Y': '𝘠', 'Z': '𝘡'
 };
@@ -43,7 +43,7 @@ const italicMap: { [key: string]: string } = {
 const ResponseInput = ({ value, onChange, onSave, onOptimize, isOptimizing, isPremium = false }: ResponseInputProps) => {
   const { toast } = useToast();
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
-  const { t } = useTranslation();
+  const { t } = useTranslation(['home', 'common']);
 
   const handleFormat = (type: 'bold' | 'italic') => {
     if (!textareaRef.current) return;
@@ -62,7 +62,6 @@ const ResponseInput = ({ value, onChange, onSave, onOptimize, isOptimizing, isPr
       const newText = value.substring(0, start) + formattedText + value.substring(end);
       onChange(newText);
 
-      // Restore cursor position
       setTimeout(() => {
         if (textareaRef.current) {
           textareaRef.current.selectionStart = start + formattedText.length;
@@ -72,8 +71,8 @@ const ResponseInput = ({ value, onChange, onSave, onOptimize, isOptimizing, isPr
       }, 0);
     } else {
       toast({
-        title: t('history.selectionRequired'),
-        description: t('history.selectionRequired'),
+        title: t('home:response.selectionRequired'),
+        description: t('home:response.selectionRequired'),
         variant: "destructive",
       });
     }
@@ -86,7 +85,7 @@ const ResponseInput = ({ value, onChange, onSave, onOptimize, isOptimizing, isPr
       </div>
       <Textarea
         ref={textareaRef}
-        placeholder={t('home.response.placeholder')}
+        placeholder={t('home:response.placeholder')}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         className="min-h-[150px] resize-none"
@@ -98,7 +97,7 @@ const ResponseInput = ({ value, onChange, onSave, onOptimize, isOptimizing, isPr
           disabled={!value.trim() || isOptimizing}
         >
           <Send className="w-4 h-4 mr-2" />
-          {t('home.response.save')}
+          {t('home:response.save')}
         </Button>
         <Button
           onClick={onOptimize}
@@ -106,7 +105,7 @@ const ResponseInput = ({ value, onChange, onSave, onOptimize, isOptimizing, isPr
           disabled={!value.trim() || isOptimizing}
         >
           <RefreshCw className={`w-4 h-4 mr-2 ${isOptimizing ? 'animate-spin' : ''}`} />
-          {t('home.response.optimize')}
+          {t('home:response.optimize')}
         </Button>
         <TooltipProvider delayDuration={50}>
           <Tooltip>
@@ -123,7 +122,7 @@ const ResponseInput = ({ value, onChange, onSave, onOptimize, isOptimizing, isPr
               </div>
             </TooltipTrigger>
             <TooltipContent side="bottom">
-              <p>{isPremium ? t('home.response.voiceInput') : t('home.response.premiumOnly')}</p>
+              <p>{isPremium ? t('home:response.voiceInput') : t('home:response.premiumOnly')}</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
