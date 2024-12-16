@@ -51,7 +51,7 @@ const handler = async (req: Request): Promise<Response> => {
         Authorization: `Bearer ${RESEND_API_KEY}`,
       },
       body: JSON.stringify({
-        from: "Inspire Daily <daily@inspire-daily.app>",
+        from: "Resend <onboarding@resend.dev>", // Changé ici pour utiliser l'adresse par défaut
         to: ["hugo.morales.pro@gmail.com"],
         subject: "Votre Question du Jour",
         html: emailHtml,
