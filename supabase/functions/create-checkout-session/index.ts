@@ -96,8 +96,11 @@ Deno.serve(async (req) => {
 
     const priceId = PRICE_IDS[subscriptionType as keyof typeof PRICE_IDS];
     if (!priceId) {
+      console.error('Invalid subscription type:', subscriptionType);
       throw new Error('Invalid subscription type');
     }
+
+    console.log('Using price ID:', priceId);
 
     // Create checkout session with the correct mode based on subscription type
     const session = await stripe.checkout.sessions.create({
