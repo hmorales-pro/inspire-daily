@@ -65,7 +65,7 @@ const handler = async (req: Request): Promise<Response> => {
                 <p style="color: #1A1F2C; font-size: 16px; line-height: 1.6; margin: 0;">${questionData.question_en}</p>
               </div>
 
-              <a href="https://inspire-daily.app" 
+              <a href="https://inspire-daily.eu" 
                  style="display: inline-block; background-color: #9b87f5; color: white; padding: 12px 24px; 
                         text-decoration: none; border-radius: 8px; font-weight: 500; transition: background-color 0.2s ease;">
                 Répondre / Answer Now
@@ -112,7 +112,7 @@ const handler = async (req: Request): Promise<Response> => {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       }
     );
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error in send-test-daily-email function:", error);
     return new Response(
       JSON.stringify({ error: error.message }),
