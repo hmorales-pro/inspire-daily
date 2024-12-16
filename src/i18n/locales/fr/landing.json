@@ -58,8 +58,8 @@
       ]
     },
     "annual": {
-      "title": "Annuel",
-      "description": "La meilleure valeur",
+      "title": "Premium Year",
+      "description": "Économisez 2 mois par rapport au Premium",
       "price": "50",
       "oneTime": "paiement unique",
       "features": [

@@ -58,8 +58,8 @@
       ]
     },
     "annual": {
-      "title": "Annual",
-      "description": "Best value",
+      "title": "Premium Year",
+      "description": "Save 2 months compared to Premium",
       "price": "50",
       "oneTime": "one-time payment",
       "features": [
