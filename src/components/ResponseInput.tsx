@@ -81,7 +81,7 @@ const ResponseInput = ({ value, onChange, onSave, onOptimize, isOptimizing, isPr
   return (
     <div className="w-full max-w-md mx-auto space-y-4 animate-fade-in">
       <div className="flex justify-end mb-2">
-        <TextFormatting isPremium={isPremium} onFormat={handleFormat} />
+        <TextFormatting onFormat={handleFormat} />
       </div>
       <Textarea
         ref={textareaRef}

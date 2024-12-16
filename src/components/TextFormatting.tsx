@@ -7,13 +7,15 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useTranslation } from 'react-i18next';
 
 interface TextFormattingProps {
-  isPremium: boolean;
   onFormat: (type: 'bold' | 'italic') => void;
 }
 
-export const TextFormatting = ({ isPremium, onFormat }: TextFormattingProps) => {
+export const TextFormatting = ({ onFormat }: TextFormattingProps) => {
+  const { t } = useTranslation(['home']);
+
   return (
     <TooltipProvider delayDuration={50}>
       <div className="flex space-x-2">
@@ -24,14 +26,13 @@ export const TextFormatting = ({ isPremium, onFormat }: TextFormattingProps) => 
                 variant="outline"
                 size="icon"
                 onClick={() => onFormat('bold')}
-                disabled={!isPremium}
               >
                 <Bold className="w-4 h-4" />
               </Button>
             </div>
           </TooltipTrigger>
           <TooltipContent side="bottom">
-            <p>{isPremium ? "Mettre en gras" : "Fonctionnalité réservée aux membres Premium"}</p>
+            <p>{t('home:response.boldText')}</p>
           </TooltipContent>
         </Tooltip>
 
@@ -42,14 +43,13 @@ export const TextFormatting = ({ isPremium, onFormat }: TextFormattingProps) => 
                 variant="outline"
                 size="icon"
                 onClick={() => onFormat('italic')}
-                disabled={!isPremium}
               >
                 <Italic className="w-4 h-4" />
               </Button>
             </div>
           </TooltipTrigger>
           <TooltipContent side="bottom">
-            <p>{isPremium ? "Mettre en italique" : "Fonctionnalité réservée aux membres Premium"}</p>
+            <p>{t('home:response.italicText')}</p>
           </TooltipContent>
         </Tooltip>
       </div>
