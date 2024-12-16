@@ -21,6 +21,8 @@
     "upgradeSuccess": "Your Premium subscription has been successfully activated.",
     "upgradeError": "An error occurred while upgrading your subscription.",
     "upgradeCanceled": "The payment process was cancelled.",
+    "upgradePlans": "Upgrade your plan",
+    "choosePlan": "Choose the plan that best suits your needs",
     "features": {
       "title": "Premium features:",
       "unlimited": "Unlimited optimizations",

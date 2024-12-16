@@ -21,6 +21,8 @@
     "upgradeSuccess": "Votre abonnement Premium a été activé avec succès.",
     "upgradeError": "Une erreur est survenue lors de la mise à niveau de votre abonnement.",
     "upgradeCanceled": "Le processus de paiement a été annulé.",
+    "upgradePlans": "Améliorer votre abonnement",
+    "choosePlan": "Choisissez le plan qui correspond le mieux à vos besoins",
     "features": {
       "title": "Fonctionnalités Premium :",
       "unlimited": "Optimisations illimitées",

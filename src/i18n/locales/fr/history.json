@@ -15,6 +15,8 @@
     "updateError": "Erreur lors de la mise à jour de la réponse",
     "optimized": "Réponse optimisée avec succès",
     "optimizeError": "Erreur lors de l'optimisation de la réponse",
-    "optimizationLimit": "Vous n'avez plus d'optimisations disponibles"
+    "optimizationLimit": "Vous n'avez plus d'optimisations disponibles",
+    "boldText": "Gras",
+    "italicText": "Italique"
   }
 }
