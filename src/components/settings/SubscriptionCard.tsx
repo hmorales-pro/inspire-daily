@@ -1,10 +1,9 @@
 import { useTranslation } from 'react-i18next';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Loader2 } from "lucide-react";
 import { useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { useToast } from "@/hooks/use-toast";
+import { PricingGrid } from '../pricing/PricingGrid';
 
 interface SubscriptionCardProps {
   profileData: any;
@@ -44,6 +43,7 @@ export const SubscriptionCard = ({ profileData }: SubscriptionCardProps) => {
       });
     } finally {
       setIsUpgrading(false);
+      setSelectedPlan(null);
     }
   };
 
@@ -105,90 +105,13 @@ export const SubscriptionCard = ({ profileData }: SubscriptionCardProps) => {
           <div className="space-y-4 pt-4">
             <div className="space-y-4">
               <h3 className="font-medium">{t('settings:subscription.upgradePlans')}</h3>
-              
-              {/* Premium mensuel */}
-              <Card className="p-4">
-                <div className="flex justify-between items-center mb-4">
-                  <div>
-                    <h4 className="font-semibold">{t('landing:pricing.premium.title')}</h4>
-                    <p className="text-sm text-muted-foreground">{t('landing:pricing.premium.description')}</p>
-                  </div>
-                  <div className="text-right">
-                    <div className="font-bold">{t('landing:pricing.premium.price')}€</div>
-                    <div className="text-sm text-muted-foreground">/mois</div>
-                  </div>
-                </div>
-                <Button 
-                  className="w-full"
-                  onClick={() => handleUpgrade('premium')}
-                  disabled={isUpgrading}
-                >
-                  {isUpgrading && selectedPlan === 'premium' ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      {t('settings:subscription.redirecting')}
-                    </>
-                  ) : (
-                    t('settings:subscription.choosePlan')
-                  )}
-                </Button>
-              </Card>
-
-              {/* Premium annuel */}
-              <Card className="p-4">
-                <div className="flex justify-between items-center mb-4">
-                  <div>
-                    <h4 className="font-semibold">{t('landing:pricing.annual.title')}</h4>
-                    <p className="text-sm text-muted-foreground">{t('landing:pricing.annual.description')}</p>
-                  </div>
-                  <div className="text-right">
-                    <div className="font-bold">{t('landing:pricing.annual.price')}€</div>
-                    <div className="text-sm text-muted-foreground">{t('landing:pricing.annual.oneTime')}</div>
-                  </div>
-                </div>
-                <Button 
-                  className="w-full"
-                  onClick={() => handleUpgrade('premiumYear')}
-                  disabled={isUpgrading}
-                >
-                  {isUpgrading && selectedPlan === 'premiumYear' ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      {t('settings:subscription.redirecting')}
-                    </>
-                  ) : (
-                    t('settings:subscription.choosePlan')
-                  )}
-                </Button>
-              </Card>
-
-              {/* Lifetime */}
-              <Card className="p-4">
-                <div className="flex justify-between items-center mb-4">
-                  <div>
-                    <h4 className="font-semibold">{t('landing:pricing.lifetime.title')}</h4>
-                    <p className="text-sm text-muted-foreground">{t('landing:pricing.lifetime.description')}</p>
-                  </div>
-                  <div className="text-right">
-                    <div className="font-bold">{t('landing:pricing.lifetime.price')}€</div>
-                    <div className="text-sm text-muted-foreground">{t('landing:pricing.lifetime.oneTime')}</div>
-                  </div>
-                </div>
-                <Button 
-                  className="w-full"
-                  onClick={() => handleUpgrade('lifetime')}
-                  disabled={isUpgrading}
-                >
-                  {isUpgrading && selectedPlan === 'lifetime' ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      {t('settings:subscription.redirecting')}
-                    </>
-                  ) : (
-                    t('settings:subscription.choosePlan')
-                  )}
-                </Button>
-              </Card>
+              <PricingGrid
+                onSelectPlan={handleUpgrade}
+                isUpgrading={isUpgrading}
+                selectedPlan={selectedPlan}
+                showAllPlans={false}
+                currentPlan={profileData?.subscription_type}
+              />
             </div>
           </div>
         )}
