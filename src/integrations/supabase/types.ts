@@ -167,6 +167,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: undefined
       }
+      reset_monthly_optimizations: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       setup_monthly_questions_cron: {
         Args: Record<PropertyKey, never>
         Returns: undefined

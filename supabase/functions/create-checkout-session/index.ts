@@ -99,7 +99,7 @@ Deno.serve(async (req) => {
       throw new Error('Invalid subscription type');
     }
 
-    // Create checkout session
+    // Create checkout session with the correct mode based on subscription type
     const session = await stripe.checkout.sessions.create({
       customer: customerId,
       line_items: [
@@ -115,6 +115,8 @@ Deno.serve(async (req) => {
         subscription_type: subscriptionType
       }
     })
+
+    console.log('Created checkout session:', session.id);
 
     return new Response(
       JSON.stringify({ url: session.url }),
