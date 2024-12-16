@@ -23,6 +23,7 @@
     "upgradeCanceled": "The payment process was cancelled.",
     "upgradePlans": "Upgrade your plan",
     "choosePlan": "Choose the plan that best suits your needs",
+    "currentPlan": "Your current plan",
     "features": {
       "title": "Premium features:",
       "unlimited": "Unlimited optimizations",

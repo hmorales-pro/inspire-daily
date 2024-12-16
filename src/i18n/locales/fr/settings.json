@@ -23,6 +23,7 @@
     "upgradeCanceled": "Le processus de paiement a été annulé.",
     "upgradePlans": "Améliorer votre abonnement",
     "choosePlan": "Choisissez le plan qui correspond le mieux à vos besoins",
+    "currentPlan": "Votre abonnement actuel",
     "features": {
       "title": "Fonctionnalités Premium :",
       "unlimited": "Optimisations illimitées",
