@@ -6,16 +6,18 @@ const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
 const supabaseServiceRoleKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
 
 const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
 const handler = async (req: Request): Promise<Response> => {
-  if (req.method === "OPTIONS") {
+  // Handle CORS preflight requests
+  if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
+    console.log('Starting email sending process...');
     const supabase = createClient(supabaseUrl, supabaseServiceRoleKey);
     const today = new Date().toISOString().split('T')[0];
 
@@ -27,6 +29,7 @@ const handler = async (req: Request): Promise<Response> => {
       .single();
 
     if (questionError) {
+      console.error('Error fetching question:', questionError);
       throw new Error(`Error fetching question: ${questionError.message}`);
     }
 
@@ -44,6 +47,7 @@ const handler = async (req: Request): Promise<Response> => {
       </div>
     `;
 
+    console.log('Sending email with Resend...');
     const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {
@@ -51,7 +55,7 @@ const handler = async (req: Request): Promise<Response> => {
         Authorization: `Bearer ${RESEND_API_KEY}`,
       },
       body: JSON.stringify({
-        from: "Resend <onboarding@resend.dev>", // On garde l'adresse par défaut pour l'instant
+        from: "Resend <onboarding@resend.dev>",
         to: ["hugo.morales.pro@gmail.com"],
         subject: "Votre Question du Jour",
         html: emailHtml,
