@@ -9,6 +9,8 @@ import ResponseInput from '@/components/ResponseInput';
 import DailyQuestion from '@/components/DailyQuestion';
 import { v4 as uuidv4 } from 'uuid';
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Edit2 } from "lucide-react";
 
 const Index = () => {
   const [response, setResponse] = useState('');
@@ -18,7 +20,7 @@ const Index = () => {
   const [hasOptimized, setHasOptimized] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
-  const { t, i18n } = useTranslation(['home', 'common']);
+  const { t, i18n } = useTranslation(['home', 'common', 'auth']);
 
   useEffect(() => {
     // Generate or retrieve session ID from localStorage
@@ -214,6 +216,10 @@ const Index = () => {
     }
   };
 
+  const handleEditClick = () => {
+    navigate('/login');
+  };
+
   return (
     <div className="min-h-screen bg-primary-light p-4 space-y-6">
       <div className="max-w-4xl mx-auto pt-8">
@@ -235,8 +241,17 @@ const Index = () => {
 
           {optimizedResponse && !profile && (
             <Card className="mt-4">
-              <CardHeader>
+              <CardHeader className="flex flex-row items-center justify-between">
                 <h2 className="text-lg font-semibold">{t('home:response.optimizedVersion')}</h2>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleEditClick}
+                  className="flex items-center gap-2"
+                >
+                  <Edit2 className="w-4 h-4" />
+                  {t('common:edit')}
+                </Button>
               </CardHeader>
               <CardContent>
                 <p className="whitespace-pre-wrap">{optimizedResponse}</p>
