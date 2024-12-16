@@ -10,8 +10,6 @@ import { useResponseActions } from '@/components/home/useResponseActions';
 import Header from '@/components/Header';
 import { BackButton } from '@/components/BackButton';
 import { useEffect, useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { toast } from 'sonner';
 
 const Index = () => {
   const { t } = useTranslation(['home', 'common']);
@@ -85,18 +83,6 @@ const Index = () => {
     profile
   });
 
-  const handleTestEmail = async () => {
-    try {
-      const { data, error } = await supabase.functions.invoke('send-test-daily-email');
-      if (error) throw error;
-      toast.success('Email de test envoyé !');
-      console.log('Test email response:', data);
-    } catch (error) {
-      console.error('Error sending test email:', error);
-      toast.error('Erreur lors de l\'envoi de l\'email de test');
-    }
-  };
-
   if (isAuthenticated === null) {
     return <div className="min-h-screen bg-primary-light p-4 flex items-center justify-center">
       <p className="text-muted-foreground">{t('common:loading')}</p>
@@ -116,18 +102,6 @@ const Index = () => {
           <h1 className="text-2xl font-bold text-center text-primary-dark mb-8">
             {t('home:title')}
           </h1>
-          
-          {/* Temporary test button */}
-          <div className="mb-4">
-            <Button 
-              onClick={handleTestEmail}
-              variant="outline"
-              size="sm"
-              className="mx-auto block"
-            >
-              Envoyer un email de test
-            </Button>
-          </div>
           
           <div className="space-y-6">
             <DailyQuestion />
