@@ -7,10 +7,29 @@ import DailyQuestion from '@/components/DailyQuestion';
 import OptimizedResponseCard from '@/components/home/OptimizedResponseCard';
 import { useAnonymousSession } from '@/components/home/useAnonymousSession';
 import { useResponseActions } from '@/components/home/useResponseActions';
+import Header from '@/components/Header';
+import { BackButton } from '@/components/BackButton';
+import { useEffect, useState } from 'react';
 
 const Index = () => {
-  const { t, i18n } = useTranslation(['home', 'common']);
+  const { t } = useTranslation(['home', 'common']);
   const { sessionId, hasOptimized, markAsOptimized } = useAnonymousSession();
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    const checkSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      setIsAuthenticated(!!session);
+    };
+    
+    checkSession();
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setIsAuthenticated(!!session);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   const { data: profile } = useQuery({
     queryKey: ['profile'],
@@ -33,7 +52,7 @@ const Index = () => {
   });
 
   const { data: todayQuestion } = useQuery({
-    queryKey: ['todayQuestion', i18n.language],
+    queryKey: ['todayQuestion'],
     queryFn: async () => {
       const today = new Date().toISOString().split('T')[0];
       const { data, error } = await supabase
@@ -64,31 +83,46 @@ const Index = () => {
     profile
   });
 
-  return (
-    <div className="min-h-screen bg-primary-light p-4 space-y-6">
-      <div className="max-w-4xl mx-auto pt-8">
-        <h1 className="text-2xl font-bold text-center text-primary-dark mb-8">
-          {t('home:title')}
-        </h1>
-        
-        <div className="space-y-6">
-          <DailyQuestion />
-          
-          <ResponseInput
-            value={response}
-            onChange={setResponse}
-            onSave={() => handleSave(todayQuestion)}
-            onOptimize={() => handleOptimize(todayQuestion)}
-            isOptimizing={isOptimizing}
-            isPremium={profile?.subscription_type === 'premium'}
-          />
+  if (isAuthenticated === null) {
+    return <div className="min-h-screen bg-primary-light p-4 flex items-center justify-center">
+      <p className="text-muted-foreground">{t('common:loading')}</p>
+    </div>;
+  }
 
-          {optimizedResponse && !profile && (
-            <OptimizedResponseCard optimizedResponse={optimizedResponse} />
-          )}
+  return (
+    <>
+      {isAuthenticated ? (
+        <Header />
+      ) : (
+        <div className="p-4">
+          <BackButton />
+        </div>
+      )}
+      <div className="min-h-screen bg-primary-light p-4 space-y-6">
+        <div className="max-w-4xl mx-auto pt-8">
+          <h1 className="text-2xl font-bold text-center text-primary-dark mb-8">
+            {t('home:title')}
+          </h1>
+          
+          <div className="space-y-6">
+            <DailyQuestion />
+            
+            <ResponseInput
+              value={response}
+              onChange={setResponse}
+              onSave={() => handleSave(todayQuestion)}
+              onOptimize={() => handleOptimize(todayQuestion)}
+              isOptimizing={isOptimizing}
+              isPremium={profile?.subscription_type === 'premium'}
+            />
+
+            {optimizedResponse && !profile && (
+              <OptimizedResponseCard optimizedResponse={optimizedResponse} />
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
