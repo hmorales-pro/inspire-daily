@@ -50,22 +50,16 @@ export const SubscriptionCard = ({ profileData }: SubscriptionCardProps) => {
         <CardDescription>{t('settings:subscription.description')}</CardDescription>
       </CardHeader>
       <CardContent>
-        {profileData?.subscription_type === 'free' && (
-          <div className="space-y-4 pt-4">
-            <div className="space-y-4">
-              <h3 className="font-medium">{t('settings:subscription.upgradePlans')}</h3>
-              <PricingGrid
-                onSelectPlan={handleUpgrade}
-                isUpgrading={isUpgrading}
-                selectedPlan={selectedPlan}
-                showAllPlans={false}
-                currentPlan={profileData?.subscription_type}
-                optimizationsCount={profileData?.optimizations_count}
-                optimizationsResetDate={profileData?.optimizations_reset_date}
-              />
-            </div>
-          </div>
-        )}
+        <div className="space-y-8">
+          <PricingGrid
+            onSelectPlan={handleUpgrade}
+            isUpgrading={isUpgrading}
+            selectedPlan={selectedPlan}
+            currentPlan={profileData?.subscription_type}
+            optimizationsCount={profileData?.optimizations_count}
+            optimizationsResetDate={profileData?.optimizations_reset_date}
+          />
+        </div>
       </CardContent>
     </Card>
   );
