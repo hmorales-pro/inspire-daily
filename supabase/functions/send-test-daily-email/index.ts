@@ -18,10 +18,19 @@ const handler = async (req: Request): Promise<Response> => {
 
   try {
     console.log('Starting email sending process...');
+    
+    // Verify environment variables
+    if (!RESEND_API_KEY) {
+      throw new Error('RESEND_API_KEY is not set');
+    }
+    if (!supabaseUrl || !supabaseServiceRoleKey) {
+      throw new Error('Supabase configuration is missing');
+    }
+
     const supabase = createClient(supabaseUrl, supabaseServiceRoleKey);
     const today = new Date().toISOString().split('T')[0];
 
-    // Récupérer la question du jour
+    console.log('Fetching today\'s question...');
     const { data: questionData, error: questionError } = await supabase
       .from('daily_questions')
       .select('*')
@@ -31,6 +40,10 @@ const handler = async (req: Request): Promise<Response> => {
     if (questionError) {
       console.error('Error fetching question:', questionError);
       throw new Error(`Error fetching question: ${questionError.message}`);
+    }
+
+    if (!questionData) {
+      throw new Error('No question found for today');
     }
 
     console.log('Question retrieved:', questionData);
