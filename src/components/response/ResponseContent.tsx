@@ -1,12 +1,9 @@
 import React from 'react';
 import { ResponseActions } from './ResponseActions';
-import { Button } from "@/components/ui/button";
-import { Copy } from "lucide-react";
-import { useToast } from "@/components/ui/use-toast";
-import { useTranslation } from 'react-i18next';
+import { CopyButton } from './CopyButton';
+import { ResponseTitle } from './ResponseTitle';
 
 interface ResponseContentProps {
-  title: string;
   content: string;
   isOptimizing: boolean;
   profile: any;
@@ -16,7 +13,6 @@ interface ResponseContentProps {
 }
 
 export const ResponseContent = ({
-  title,
   content,
   isOptimizing,
   profile,
@@ -24,39 +20,12 @@ export const ResponseContent = ({
   onOptimize,
   isOriginalVersion = true
 }: ResponseContentProps) => {
-  const { toast } = useToast();
-  const { t } = useTranslation(['history']);
-
-  const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(content);
-      toast({
-        description: t('response.copied'),
-      });
-    } catch (err) {
-      toast({
-        title: t('common:error'),
-        description: t('response.copyError'),
-        variant: "destructive",
-      });
-    }
-  };
-
   return (
     <div>
       <div className="flex justify-between items-center mb-2">
-        <h3 className="font-medium">
-          {isOriginalVersion ? t('response.originalVersion') : t('response.optimizedVersion')}
-        </h3>
+        <ResponseTitle isOriginalVersion={isOriginalVersion} />
         <div className="flex items-center gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handleCopy}
-          >
-            <Copy className="w-4 h-4 mr-2" />
-            {t('common:copy')}
-          </Button>
+          <CopyButton content={content} />
           <ResponseActions
             isOptimizing={isOptimizing}
             profile={profile}
