@@ -56,6 +56,19 @@
         "Unlimited AI optimizations",
         "Voice input"
       ]
+    },
+    "lifetime": {
+      "title": "Lifetime",
+      "description": "Exclusive offer limited to first 200 users",
+      "price": "85",
+      "oneTime": "one-time payment",
+      "features": [
+        "1 question per day",
+        "Unlimited history",
+        "Unlimited AI optimizations",
+        "Voice input",
+        "Lifetime access to all features"
+      ]
     }
   },
   "cta": {

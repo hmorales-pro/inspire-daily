@@ -56,6 +56,19 @@
         "Optimisations IA illimitées",
         "Saisie vocale"
       ]
+    },
+    "lifetime": {
+      "title": "Lifetime",
+      "description": "Offre exclusive limitée aux 200 premiers",
+      "price": "85",
+      "oneTime": "paiement unique",
+      "features": [
+        "1 question par jour",
+        "Historique illimité",
+        "Optimisations IA illimitées",
+        "Saisie vocale",
+        "Accès à vie à toutes les fonctionnalités"
+      ]
     }
   },
   "cta": {
