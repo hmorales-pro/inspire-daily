@@ -2,7 +2,7 @@ import React from 'react';
 
 export const ProductHuntBadge = () => {
   return (
-    <div className="fixed bottom-4 right-4 z-50">
+    <div className="fixed bottom-4 left-4 z-50">
       <a 
         href="https://www.producthunt.com/posts/inspire-daily?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-inspire&#0045;daily" 
         target="_blank" 
