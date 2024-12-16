@@ -11,41 +11,37 @@ const corsHeaders = {
 };
 
 const handler = async (req: Request): Promise<Response> => {
-  if (req.method === 'OPTIONS') {
-    return new Response(null, { headers: corsHeaders });
-  }
-
   try {
-    console.log('Starting email sending process...');
-    
-    // Verify environment variables
-    if (!RESEND_API_KEY) {
-      throw new Error('RESEND_API_KEY is not set');
+    // Handle CORS preflight requests first
+    if (req.method === 'OPTIONS') {
+      return new Response(null, { headers: corsHeaders });
     }
-    if (!supabaseUrl || !supabaseServiceRoleKey) {
-      throw new Error('Supabase configuration is missing');
+
+    // Quick validation of environment variables
+    if (!RESEND_API_KEY || !supabaseUrl || !supabaseServiceRoleKey) {
+      throw new Error('Missing required environment variables');
     }
 
     const supabase = createClient(supabaseUrl, supabaseServiceRoleKey);
     const today = new Date().toISOString().split('T')[0];
 
-    console.log('Fetching today\'s question...');
-    const { data: questionData, error: questionError } = await supabase
+    // Set a timeout for the database query
+    const timeoutPromise = new Promise((_, reject) => {
+      setTimeout(() => reject(new Error('Database query timeout')), 5000);
+    });
+
+    const queryPromise = supabase
       .from('daily_questions')
       .select('*')
       .eq('display_date', today)
       .single();
 
-    if (questionError) {
-      console.error('Error fetching question:', questionError);
-      throw new Error(`Error fetching question: ${questionError.message}`);
-    }
+    // Race between the query and the timeout
+    const { data: questionData } = await Promise.race([queryPromise, timeoutPromise]) as any;
 
     if (!questionData) {
       throw new Error('No question found for today');
     }
-
-    console.log('Question retrieved:', questionData);
 
     const emailHtml = `
       <!DOCTYPE html>
@@ -75,8 +71,12 @@ const handler = async (req: Request): Promise<Response> => {
       </html>
     `;
 
-    console.log('Sending email with Resend...');
-    const res = await fetch("https://api.resend.com/emails", {
+    // Set a timeout for the email sending
+    const emailTimeoutPromise = new Promise((_, reject) => {
+      setTimeout(() => reject(new Error('Email sending timeout')), 5000);
+    });
+
+    const emailPromise = fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -90,14 +90,12 @@ const handler = async (req: Request): Promise<Response> => {
       }),
     });
 
-    if (!res.ok) {
-      const error = await res.text();
-      console.error('Error sending email:', error);
-      throw new Error(`Failed to send email: ${error}`);
-    }
+    // Race between the email sending and the timeout
+    const emailResponse = await Promise.race([emailPromise, emailTimeoutPromise]);
 
-    const data = await res.json();
-    console.log('Email sent successfully:', data);
+    if (!emailResponse.ok) {
+      throw new Error(`Failed to send email: ${await emailResponse.text()}`);
+    }
 
     return new Response(
       JSON.stringify({ success: true, message: "Test email sent successfully" }),
@@ -111,7 +109,7 @@ const handler = async (req: Request): Promise<Response> => {
     return new Response(
       JSON.stringify({ error: error.message }),
       {
-        status: 500,
+        status: error.message.includes('timeout') ? 504 : 500,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       }
     );
