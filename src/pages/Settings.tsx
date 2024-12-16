@@ -12,7 +12,6 @@ const Settings = () => {
   const { toast } = useToast();
   const { t } = useTranslation(['settings', 'common']);
   const [searchParams] = useSearchParams();
-  const [isUpgrading, setIsUpgrading] = useState(false);
 
   const { data: session } = useQuery({
     queryKey: ['session'],
@@ -41,29 +40,6 @@ const Settings = () => {
     },
     enabled: !!session?.user?.id,
   });
-
-  const handleUpgrade = async () => {
-    try {
-      setIsUpgrading(true);
-      const response = await supabase.functions.invoke('create-checkout-session');
-      
-      if (response.error) throw response.error;
-      
-      const { url } = response.data;
-      if (url) {
-        window.location.href = url;
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      toast({
-        title: t('common:error'),
-        description: t('settings:subscription.upgradeError'),
-        variant: "destructive",
-      });
-    } finally {
-      setIsUpgrading(false);
-    }
-  };
 
   // Handle Stripe callback
   React.useEffect(() => {
@@ -101,11 +77,7 @@ const Settings = () => {
         </h1>
 
         <div className="space-y-6">
-          <SubscriptionCard 
-            profileData={profileData}
-            isUpgrading={isUpgrading}
-            handleUpgrade={handleUpgrade}
-          />
+          <SubscriptionCard profileData={profileData} />
           <AccountCard email={session?.user?.email} />
         </div>
       </div>
