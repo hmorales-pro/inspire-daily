@@ -26,7 +26,7 @@ export const HeroSection = () => {
         <Button 
           size="lg"
           className="bg-primary hover:bg-primary/90 text-white px-8 py-6 text-lg animate-fade-in"
-          onClick={() => navigate("/login")}
+          onClick={() => navigate("/home")}
         >
           {t('hero.cta')}
         </Button>

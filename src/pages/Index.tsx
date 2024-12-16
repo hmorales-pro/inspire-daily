@@ -1,20 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useToast } from "@/components/ui/use-toast";
 import { useNavigate } from 'react-router-dom';
-import { saveResponse } from '@/lib/supabase';
+import { saveResponse, supabase } from '@/lib/supabase';
 import { optimizeResponse } from '@/lib/openai';
 import { useQuery } from '@tanstack/react-query';
-import { supabase } from '@/lib/supabase';
 import { useTranslation } from 'react-i18next';
 import ResponseInput from '@/components/ResponseInput';
 import DailyQuestion from '@/components/DailyQuestion';
+import { v4 as uuidv4 } from 'uuid';
 
 const Index = () => {
   const [response, setResponse] = useState('');
   const [isOptimizing, setIsOptimizing] = useState(false);
+  const [sessionId, setSessionId] = useState('');
+  const [hasOptimized, setHasOptimized] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
   const { t, i18n } = useTranslation(['home', 'common']);
+
+  useEffect(() => {
+    // Generate or retrieve session ID from localStorage
+    const storedSessionId = localStorage.getItem('anonymousSessionId');
+    if (storedSessionId) {
+      setSessionId(storedSessionId);
+      // Check if user has already optimized
+      const hasOptimizedBefore = localStorage.getItem('hasOptimized') === 'true';
+      setHasOptimized(hasOptimizedBefore);
+    } else {
+      const newSessionId = uuidv4();
+      localStorage.setItem('anonymousSessionId', newSessionId);
+      setSessionId(newSessionId);
+    }
+  }, []);
 
   const { data: profile } = useQuery({
     queryKey: ['profile'],
@@ -65,11 +82,24 @@ const Index = () => {
     }
 
     try {
-      await saveResponse({
-        question: i18n.language === 'en' ? todayQuestion.question_en : todayQuestion.question,
-        response: response,
-        is_optimized: false
-      });
+      if (profile) {
+        await saveResponse({
+          question: i18n.language === 'en' ? todayQuestion.question_en : todayQuestion.question,
+          response: response,
+          is_optimized: false
+        });
+      } else {
+        // Save anonymous response
+        const { error } = await supabase
+          .from('anonymous_responses')
+          .insert({
+            question: i18n.language === 'en' ? todayQuestion.question_en : todayQuestion.question,
+            response: response,
+            session_id: sessionId
+          });
+
+        if (error) throw error;
+      }
       
       toast({
         title: t('common:success'),
@@ -77,7 +107,9 @@ const Index = () => {
       });
       
       setResponse('');
-      navigate('/history');
+      if (profile) {
+        navigate('/history');
+      }
     } catch (error) {
       console.error('Error saving response:', error);
       toast({
@@ -98,6 +130,16 @@ const Index = () => {
       return;
     }
 
+    if (!profile && hasOptimized) {
+      toast({
+        title: t('common:error'),
+        description: t('home:response.registerToOptimize'),
+        variant: "destructive",
+      });
+      navigate('/login');
+      return;
+    }
+
     if (profile?.optimizations_count === 0) {
       toast({
         title: t('common:error'),
@@ -112,23 +154,44 @@ const Index = () => {
     try {
       const optimizedContent = await optimizeResponse(response);
       
-      if (profile && profile.subscription_type === 'free') {
-        const { error: updateError } = await supabase
-          .from('profiles')
-          .update({ 
-            optimizations_count: Math.max(0, (profile.optimizations_count || 0) - 1)
-          })
-          .eq('id', profile.id);
+      if (profile) {
+        if (profile.subscription_type === 'free') {
+          const { error: updateError } = await supabase
+            .from('profiles')
+            .update({ 
+              optimizations_count: Math.max(0, (profile.optimizations_count || 0) - 1)
+            })
+            .eq('id', profile.id);
 
-        if (updateError) throw updateError;
+          if (updateError) throw updateError;
+        }
+        
+        await saveResponse({
+          question: i18n.language === 'en' ? todayQuestion.question_en : todayQuestion.question,
+          response: response,
+          is_optimized: true,
+          optimized_response: optimizedContent
+        });
+        
+        navigate('/history');
+      } else {
+        // Save anonymous optimized response
+        const { error } = await supabase
+          .from('anonymous_responses')
+          .insert({
+            question: i18n.language === 'en' ? todayQuestion.question_en : todayQuestion.question,
+            response: response,
+            is_optimized: true,
+            optimized_response: optimizedContent,
+            session_id: sessionId
+          });
+
+        if (error) throw error;
+        
+        // Mark that user has used their free optimization
+        localStorage.setItem('hasOptimized', 'true');
+        setHasOptimized(true);
       }
-      
-      await saveResponse({
-        question: i18n.language === 'en' ? todayQuestion.question_en : todayQuestion.question,
-        response: response,
-        is_optimized: true,
-        optimized_response: optimizedContent
-      });
       
       toast({
         title: t('common:success'),
@@ -136,7 +199,6 @@ const Index = () => {
       });
       
       setResponse('');
-      navigate('/history');
     } catch (error) {
       console.error('Error optimizing response:', error);
       toast({

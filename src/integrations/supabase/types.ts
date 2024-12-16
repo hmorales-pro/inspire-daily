@@ -9,6 +9,36 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      anonymous_responses: {
+        Row: {
+          created_at: string
+          id: number
+          is_optimized: boolean
+          optimized_response: string | null
+          question: string
+          response: string
+          session_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          is_optimized?: boolean
+          optimized_response?: string | null
+          question: string
+          response: string
+          session_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          is_optimized?: boolean
+          optimized_response?: string | null
+          question?: string
+          response?: string
+          session_id?: string
+        }
+        Relationships: []
+      }
       app_settings: {
         Row: {
           created_at: string

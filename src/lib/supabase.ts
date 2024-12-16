@@ -15,6 +15,16 @@ export interface Response {
   user_id?: string;
 }
 
+export interface AnonymousResponse {
+  id?: number;
+  question: string;
+  response: string;
+  created_at?: string;
+  is_optimized: boolean;
+  optimized_response?: string;
+  session_id: string;
+}
+
 export const saveResponse = async (response: Omit<Response, 'id' | 'created_at'>) => {
   const { data: { session } } = await supabase.auth.getSession();
   if (!session?.user) throw new Error('User must be logged in to save responses');
@@ -56,6 +66,17 @@ export const getResponses = async () => {
     .from('responses')
     .select('*')
     .eq('user_id', session.user.id)
+    .order('created_at', { ascending: false });
+
+  if (error) throw error;
+  return data;
+};
+
+export const getAnonymousResponses = async (sessionId: string) => {
+  const { data, error } = await supabase
+    .from('anonymous_responses')
+    .select('*')
+    .eq('session_id', sessionId)
     .order('created_at', { ascending: false });
 
   if (error) throw error;
