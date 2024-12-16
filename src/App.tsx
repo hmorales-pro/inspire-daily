@@ -112,6 +112,7 @@ const App = () => (
               <Route path="/legal/terms" element={<TermsOfService />} />
               <Route path="/legal/privacy" element={<PrivacyPolicy />} />
               <Route path="/legal/notice" element={<LegalNotice />} />
+              <Route path="/home" element={<Index />} /> {/* Rendu public */}
               
               {/* Routes d'authentification */}
               <Route path="/login" element={
@@ -121,11 +122,6 @@ const App = () => (
               } />
 
               {/* Routes protégées */}
-              <Route path="/home" element={
-                <ProtectedRoute>
-                  <Index />
-                </ProtectedRoute>
-              } />
               <Route path="/history" element={
                 <ProtectedRoute>
                   <History />
