@@ -102,6 +102,10 @@ Deno.serve(async (req) => {
 
     console.log('Using price ID:', priceId);
 
+    // Determine the mode based on subscription type
+    const mode = subscriptionType === 'premium' ? 'subscription' : 'payment';
+    console.log('Using mode:', mode);
+
     // Create checkout session with the correct mode based on subscription type
     const session = await stripe.checkout.sessions.create({
       customer: customerId,
@@ -111,7 +115,7 @@ Deno.serve(async (req) => {
           quantity: 1,
         },
       ],
-      mode: subscriptionType === 'premium' ? 'subscription' : 'payment',
+      mode: mode,
       success_url: `${req.headers.get('origin')}/settings?success=true`,
       cancel_url: `${req.headers.get('origin')}/settings?canceled=true`,
       metadata: {
