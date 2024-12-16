@@ -8,6 +8,12 @@
     "optimize": "Optimiser",
     "voiceInput": "Saisie vocale bientôt disponible !",
     "premiumOnly": "Fonctionnalité réservée aux membres Premium",
-    "selectionRequired": "Veuillez sélectionner le texte à formater"
+    "selectionRequired": "Veuillez sélectionner le texte à formater",
+    "saved": "Réponse enregistrée avec succès",
+    "saveError": "Erreur lors de l'enregistrement de la réponse",
+    "optimized": "Réponse optimisée avec succès",
+    "optimizeError": "Erreur lors de l'optimisation de la réponse",
+    "optimizationLimit": "Vous n'avez plus d'optimisations disponibles",
+    "registerToOptimize": "Inscrivez-vous pour optimiser plus de réponses"
   }
 }
