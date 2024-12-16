@@ -86,7 +86,6 @@ export const ResponseCard = ({
         ) : (
           <>
             <ResponseContent
-              title={t('response.originalVersion')}
               content={response.response}
               isOptimizing={isOptimizing}
               profile={profile}
@@ -96,7 +95,6 @@ export const ResponseCard = ({
             />
             {response.is_optimized && response.optimized_response && (
               <ResponseContent
-                title={t('response.optimizedVersion')}
                 content={response.optimized_response}
                 isOptimizing={isOptimizing}
                 profile={profile}
