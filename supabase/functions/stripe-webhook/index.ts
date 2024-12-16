@@ -28,7 +28,7 @@ serve(async (request) => {
     console.log('Processing webhook with signature:', signature)
     const body = await request.text()
     
-    // Vérification de la signature du webhook
+    // Verify webhook signature
     let event
     try {
       event = stripe.webhooks.constructEvent(
@@ -55,13 +55,17 @@ serve(async (request) => {
       
       console.log('Customer ID:', customerId)
 
-      // Initialisation du client Supabase avec la clé service
+      // Initialize Supabase admin client
       const supabaseAdmin = createClient(
         Deno.env.get('SUPABASE_URL') ?? '',
         Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
       )
 
-      // Recherche du profil utilisateur
+      // Get subscription type from metadata
+      const subscriptionType = session.metadata?.subscription_type || 'premium'
+      console.log('Subscription type:', subscriptionType)
+
+      // Find user profile
       const { data: profiles, error: profileError } = await supabaseAdmin
         .from('profiles')
         .select('*')
@@ -80,20 +84,35 @@ serve(async (request) => {
       const profile = profiles[0]
       console.log('Found profile:', profile)
 
-      // Vérification du statut du paiement
+      // Verify payment status
       if (session.payment_status !== 'paid') {
         console.error('Payment not completed')
         throw new Error('Payment not completed')
       }
 
-      // Mise à jour du profil
+      // Update profile based on subscription type
+      const updateData = {
+        subscription_type: subscriptionType,
+        subscription_status: 'active',
+        optimizations_count: null
+      }
+
+      // For one-time payments (Premium Year and Lifetime)
+      if (subscriptionType === 'premiumYear') {
+        updateData.subscription_status = 'active_until'
+        // Set expiration date to 1 year from now
+        const expirationDate = new Date()
+        expirationDate.setFullYear(expirationDate.getFullYear() + 1)
+        updateData.subscription_expires_at = expirationDate.toISOString()
+      } else if (subscriptionType === 'lifetime') {
+        updateData.subscription_status = 'lifetime'
+        updateData.subscription_expires_at = null
+      }
+
+      // Update profile
       const { error: updateError } = await supabaseAdmin
         .from('profiles')
-        .update({
-          subscription_type: 'premium',
-          subscription_status: 'active',
-          optimizations_count: null
-        })
+        .update(updateData)
         .eq('id', profile.id)
 
       if (updateError) {
@@ -108,7 +127,7 @@ serve(async (request) => {
       })
     }
 
-    // Pour les autres types d'événements
+    // For other event types
     return new Response(JSON.stringify({ received: true }), { 
       status: 200,
       headers: { 'Content-Type': 'application/json' }
