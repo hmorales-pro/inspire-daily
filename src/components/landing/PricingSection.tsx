@@ -114,7 +114,7 @@ export const PricingSection = () => {
           {/* Lifetime Plan */}
           <Card className="bg-white border-2 border-primary relative overflow-hidden">
             <div className="absolute -right-12 top-6 rotate-45 bg-primary text-white px-12 py-1 text-sm">
-              Exclusif
+              {t('pricing.lifetime.exclusive')}
             </div>
             <CardHeader>
               <CardTitle className="text-2xl font-bold flex items-center gap-2">
