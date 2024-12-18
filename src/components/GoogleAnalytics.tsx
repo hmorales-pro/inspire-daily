@@ -1,9 +1,15 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import Analytics from '@analytics/google-analytics';
+import Analytics from 'analytics';
+import googleAnalytics from '@analytics/google-analytics';
 
 const analytics = Analytics({
-  measurementId: 'G-YFXS2JBWBW' // ID de mesure GA4 pour Inspire Daily
+  app: 'inspire-daily',
+  plugins: [
+    googleAnalytics({
+      measurementId: 'G-YFXS2JBWBW'
+    })
+  ]
 });
 
 export const GoogleAnalytics = () => {
