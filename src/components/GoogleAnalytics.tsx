@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import Analytics from '@analytics/google-analytics';
 
 const analytics = Analytics({
-  measurementId: 'G-XXXXXXXXXX' // Remplacez par votre ID de mesure GA4
+  measurementId: 'G-YFXS2JBWBW' // ID de mesure GA4 pour Inspire Daily
 });
 
 export const GoogleAnalytics = () => {
