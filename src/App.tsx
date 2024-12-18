@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { SEOHead } from "@/components/SEOHead";
 import { ProductHuntBadge } from "@/components/ProductHuntBadge";
+import { GoogleAnalytics } from "@/components/GoogleAnalytics";
 import Index from "./pages/Index";
 import History from "./pages/History";
 import Settings from "./pages/Settings";
@@ -106,6 +107,7 @@ const App = () => (
         <Sonner />
         <ProductHuntBadge />
         <BrowserRouter>
+          <GoogleAnalytics />
           <div className="min-h-screen bg-primary-light">
             <Routes>
               {/* Routes publiques */}
