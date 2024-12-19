@@ -11,6 +11,8 @@ const corsHeaders = {
 };
 
 const handler = async (req: Request): Promise<Response> => {
+  console.log("Starting daily questions email function");
+  
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
@@ -18,6 +20,8 @@ const handler = async (req: Request): Promise<Response> => {
   try {
     const supabase = createClient(supabaseUrl, supabaseServiceRoleKey);
     const today = new Date().toISOString().split('T')[0];
+
+    console.log(`Fetching question for date: ${today}`);
 
     // Récupérer la question du jour
     const { data: questionData, error: questionError } = await supabase
@@ -27,22 +31,29 @@ const handler = async (req: Request): Promise<Response> => {
       .single();
 
     if (questionError) {
+      console.error('Error fetching question:', questionError);
       throw new Error(`Error fetching question: ${questionError.message}`);
     }
+
+    console.log('Question data:', questionData);
 
     // Récupérer tous les utilisateurs avec leurs profils
     const { data: profiles, error: profilesError } = await supabase
       .from('profiles')
-      .select('*');
+      .select('*')
+      .eq('subscription_status', 'active');
 
     if (profilesError) {
+      console.error('Error fetching profiles:', profilesError);
       throw new Error(`Error fetching profiles: ${profilesError.message}`);
     }
 
-    console.log(`Sending emails to ${profiles.length} users`);
+    console.log(`Found ${profiles.length} active profiles to send emails to`);
 
     // Envoyer un email à chaque utilisateur
     const emailPromises = profiles.map(async (profile) => {
+      console.log(`Preparing email for user: ${profile.email}`);
+      
       const questionText = profile.preferred_language === 'en' && questionData.question_en
         ? questionData.question_en
         : questionData.question;
@@ -60,6 +71,7 @@ const handler = async (req: Request): Promise<Response> => {
       `;
 
       try {
+        console.log(`Sending email to: ${profile.email}`);
         const res = await fetch("https://api.resend.com/emails", {
           method: "POST",
           headers: {
@@ -77,6 +89,8 @@ const handler = async (req: Request): Promise<Response> => {
         if (!res.ok) {
           const error = await res.text();
           console.error(`Error sending email to ${profile.email}:`, error);
+        } else {
+          console.log(`Successfully sent email to: ${profile.email}`);
         }
       } catch (error) {
         console.error(`Failed to send email to ${profile.email}:`, error);
@@ -84,6 +98,8 @@ const handler = async (req: Request): Promise<Response> => {
     });
 
     await Promise.all(emailPromises);
+
+    console.log("Daily questions email function completed successfully");
 
     return new Response(
       JSON.stringify({ success: true, message: `Emails sent to ${profiles.length} users` }),
