@@ -62,7 +62,7 @@ const handler = async (req: Request): Promise<Response> => {
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
           <h1 style="color: #1a1a1a;">📝 ${profile.preferred_language === 'en' ? 'Daily Question' : 'Question du Jour'}</h1>
           <p style="font-size: 18px; color: #333; margin: 24px 0;">${questionText}</p>
-          <a href="https://inspire-daily.app" 
+          <a href="https://inspire-daily.eu" 
              style="display: inline-block; background-color: #2563eb; color: white; padding: 12px 24px; 
                     text-decoration: none; border-radius: 6px; margin-top: 24px;">
             ${profile.preferred_language === 'en' ? 'Answer Now' : 'Répondre Maintenant'}
@@ -79,7 +79,7 @@ const handler = async (req: Request): Promise<Response> => {
             Authorization: `Bearer ${RESEND_API_KEY}`,
           },
           body: JSON.stringify({
-            from: "Inspire Daily <daily@inspire-daily.app>",
+            from: "Inspire Daily <daily@inspire-daily.eu>",
             to: [profile.email],
             subject: profile.preferred_language === 'en' ? "Your Daily Question" : "Votre Question du Jour",
             html: emailHtml,
