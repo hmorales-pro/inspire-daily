@@ -90,6 +90,7 @@ export type Database = {
       profiles: {
         Row: {
           email: string
+          email_notifications: boolean
           id: string
           optimizations_count: number | null
           optimizations_reset_date: string | null
@@ -100,6 +101,7 @@ export type Database = {
         }
         Insert: {
           email: string
+          email_notifications?: boolean
           id: string
           optimizations_count?: number | null
           optimizations_reset_date?: string | null
@@ -110,6 +112,7 @@ export type Database = {
         }
         Update: {
           email?: string
+          email_notifications?: boolean
           id?: string
           optimizations_count?: number | null
           optimizations_reset_date?: string | null

@@ -35,6 +35,14 @@
     "title": "Compte",
     "description": "Gérez vos informations personnelles",
     "email": "Email",
-    "logout": "Se déconnecter"
+    "logout": "Se déconnecter",
+    "notifications": {
+      "title": "Notifications par email",
+      "description": "Recevoir les questions quotidiennes par email",
+      "enabled": "Activées",
+      "disabled": "Désactivées",
+      "success": "Préférences de notification mises à jour",
+      "error": "Erreur lors de la mise à jour des préférences de notification"
+    }
   }
 }

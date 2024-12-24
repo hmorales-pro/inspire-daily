@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/lib/supabase';
 import { Loader2 } from "lucide-react";
@@ -78,7 +78,10 @@ const Settings = () => {
 
         <div className="space-y-6">
           <SubscriptionCard profileData={profileData} />
-          <AccountCard email={session?.user?.email} />
+          <AccountCard 
+            email={session?.user?.email} 
+            emailNotifications={profileData?.email_notifications}
+          />
         </div>
       </div>
     </div>

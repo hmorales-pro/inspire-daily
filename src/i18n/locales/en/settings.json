@@ -35,6 +35,14 @@
     "title": "Account",
     "description": "Manage your personal information",
     "email": "Email",
-    "logout": "Logout"
+    "logout": "Logout",
+    "notifications": {
+      "title": "Email notifications",
+      "description": "Receive daily questions by email",
+      "enabled": "Enabled",
+      "disabled": "Disabled",
+      "success": "Email notification preferences updated",
+      "error": "Failed to update email notification preferences"
+    }
   }
 }
