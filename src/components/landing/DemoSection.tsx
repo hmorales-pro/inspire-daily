@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import DailyQuestion from '../DailyQuestion';
 import { TextFormatting } from '../TextFormatting';
@@ -10,7 +10,7 @@ export const DemoSection = () => {
   const { t } = useTranslation(['landing']);
   const [demoText, setDemoText] = useState('');
   const { toast } = useToast();
-  const textareaRef = React.useRef<HTMLTextAreaElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const handleFormat = (type: 'bold' | 'italic') => {
     if (!textareaRef.current) return;
@@ -27,6 +27,29 @@ export const DemoSection = () => {
       });
       return;
     }
+
+    const prefix = type === 'bold' ? '**' : '_';
+    const suffix = type === 'bold' ? '**' : '_';
+
+    const newText = 
+      demoText.substring(0, start) + 
+      prefix + 
+      selectedText + 
+      suffix + 
+      demoText.substring(end);
+
+    setDemoText(newText);
+
+    // Restore focus and set new selection
+    setTimeout(() => {
+      if (textareaRef.current) {
+        textareaRef.current.focus();
+        textareaRef.current.setSelectionRange(
+          start + prefix.length,
+          end + prefix.length
+        );
+      }
+    }, 0);
   };
 
   return (
