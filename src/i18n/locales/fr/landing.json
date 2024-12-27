@@ -68,6 +68,33 @@
         "Optimisations IA illimitées",
         "Saisie vocale"
       ]
+    },
+    "annual": {
+      "title": "Premium Annuel",
+      "description": "Économisez 2 mois par rapport au Premium",
+      "price": "50",
+      "oneTime": "paiement unique",
+      "features": [
+        "1 question par jour",
+        "Historique illimité",
+        "Optimisations IA illimitées",
+        "Saisie vocale",
+        "Accès pour 1 an"
+      ]
+    },
+    "lifetime": {
+      "title": "À vie",
+      "description": "Offre exclusive limitée aux 200 premiers utilisateurs",
+      "price": "85",
+      "oneTime": "paiement unique",
+      "exclusive": "Exclusif",
+      "features": [
+        "1 question par jour",
+        "Historique illimité",
+        "Optimisations IA illimitées",
+        "Saisie vocale",
+        "Accès à vie à toutes les fonctionnalités"
+      ]
     }
   },
   "cta": {
