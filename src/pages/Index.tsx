@@ -113,6 +113,7 @@ const Index = () => {
               onOptimize={() => handleOptimize(todayQuestion)}
               isOptimizing={isOptimizing}
               isPremium={profile?.subscription_type === 'premium'}
+              isAuthenticated={isAuthenticated}
             />
 
             {optimizedResponse && !profile && (
