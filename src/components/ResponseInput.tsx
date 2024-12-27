@@ -1,7 +1,7 @@
 import React from 'react';
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { Send, RefreshCw, Mic } from "lucide-react";
+import { RefreshCw, Mic } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import {
   Tooltip,
@@ -91,14 +91,6 @@ const ResponseInput = ({ value, onChange, onSave, onOptimize, isOptimizing, isPr
         className="min-h-[150px] resize-none"
       />
       <div className="flex space-x-2">
-        <Button
-          onClick={onSave}
-          className="flex-1 bg-primary hover:bg-primary/90"
-          disabled={!value.trim() || isOptimizing}
-        >
-          <Send className="w-4 h-4 mr-2" />
-          {t('home:response.save')}
-        </Button>
         <Button
           onClick={onOptimize}
           className="flex-1 bg-secondary hover:bg-secondary/90"
