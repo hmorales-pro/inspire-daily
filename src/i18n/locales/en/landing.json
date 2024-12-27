@@ -43,7 +43,9 @@
     "tryIt": "Try it now",
     "placeholder": "Write your answer here...",
     "selectionRequired": "Selection required",
-    "selectionRequiredDesc": "Please select the text you want to format"
+    "selectionRequiredDesc": "Please select the text you want to format",
+    "copied": "Text copied to clipboard",
+    "copyError": "Unable to copy text"
   },
   "pricing": {
     "title": "Choose your plan",

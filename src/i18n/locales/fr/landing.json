@@ -43,7 +43,9 @@
     "tryIt": "Essayez maintenant",
     "placeholder": "Écrivez votre réponse ici...",
     "selectionRequired": "Sélection requise",
-    "selectionRequiredDesc": "Veuillez sélectionner le texte à mettre en forme"
+    "selectionRequiredDesc": "Veuillez sélectionner le texte à mettre en forme",
+    "copied": "Texte copié dans le presse-papiers",
+    "copyError": "Impossible de copier le texte"
   },
   "pricing": {
     "title": "Choisissez votre formule",
