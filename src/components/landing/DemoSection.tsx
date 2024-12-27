@@ -5,6 +5,8 @@ import { TextFormatting } from '../TextFormatting';
 import { Textarea } from '../ui/textarea';
 import { Card, CardContent } from '../ui/card';
 import { useToast } from '../ui/use-toast';
+import { Button } from '../ui/button';
+import { Copy } from 'lucide-react';
 
 export const DemoSection = () => {
   const { t } = useTranslation(['landing']);
@@ -77,6 +79,21 @@ export const DemoSection = () => {
     }, 0);
   };
 
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(demoText);
+      toast({
+        description: t('demo.copied'),
+      });
+    } catch (err) {
+      toast({
+        title: t('common:error'),
+        description: t('demo.copyError'),
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <div className="bg-white py-16">
       <div className="container mx-auto px-4">
@@ -124,8 +141,17 @@ export const DemoSection = () => {
             <DailyQuestion />
             <Card>
               <CardContent className="pt-6">
-                <div className="flex justify-end mb-2">
+                <div className="flex justify-end mb-2 gap-2">
                   <TextFormatting onFormat={handleFormat} />
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={handleCopy}
+                    className="flex items-center gap-2"
+                  >
+                    <Copy className="w-4 h-4" />
+                    {t('common:copy')}
+                  </Button>
                 </div>
                 <Textarea
                   ref={textareaRef}
