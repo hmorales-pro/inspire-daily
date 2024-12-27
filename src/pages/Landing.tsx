@@ -1,6 +1,7 @@
 import LandingHeader from "@/components/LandingHeader";
 import { HeroSection } from "@/components/landing/HeroSection";
 import { FeaturesSection } from "@/components/landing/FeaturesSection";
+import { DemoSection } from "@/components/landing/DemoSection";
 import { PricingSection } from "@/components/landing/PricingSection";
 import { CTASection } from "@/components/landing/CTASection";
 import { Footer } from "@/components/landing/Footer";
@@ -10,6 +11,7 @@ const Landing = () => {
     <div className="min-h-screen bg-gradient-to-b from-primary-light to-white">
       <LandingHeader />
       <HeroSection />
+      <DemoSection />
       <FeaturesSection />
       <PricingSection />
       <CTASection />

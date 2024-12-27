@@ -33,6 +33,18 @@
       }
     }
   },
+  "demo": {
+    "title": "Comment ça marche ?",
+    "howItWorks": "Mode d'emploi",
+    "step1": "Chaque jour, une nouvelle question vous est posée pour stimuler votre créativité et vous aider à partager votre histoire.",
+    "step2": "Prenez le temps de réfléchir à votre réponse et rédigez-la dans l'éditeur avec les outils de mise en forme.",
+    "step3": "Utilisez les boutons de mise en forme pour mettre en gras ou en italique certains mots et créer du contenu qui se démarque.",
+    "step4": "Copiez votre réponse et partagez-la directement sur vos réseaux sociaux préférés.",
+    "tryIt": "Essayez maintenant",
+    "placeholder": "Écrivez votre réponse ici...",
+    "selectionRequired": "Sélection requise",
+    "selectionRequiredDesc": "Veuillez sélectionner le texte à mettre en forme"
+  },
   "pricing": {
     "title": "Choisissez votre formule",
     "subtitle": "Des options flexibles pour partager votre quotidien sur les réseaux sociaux",
@@ -55,33 +67,6 @@
         "Historique illimité",
         "Optimisations IA illimitées",
         "Saisie vocale"
-      ]
-    },
-    "annual": {
-      "title": "Premium Year",
-      "description": "Économisez 2 mois par rapport au Premium",
-      "price": "50",
-      "oneTime": "paiement unique",
-      "features": [
-        "1 question par jour",
-        "Historique illimité",
-        "Optimisations IA illimitées",
-        "Saisie vocale",
-        "Accès pendant 1 an"
-      ]
-    },
-    "lifetime": {
-      "title": "Lifetime",
-      "description": "Offre exclusive limitée aux 200 premiers",
-      "price": "85",
-      "oneTime": "paiement unique",
-      "exclusive": "Exclusif",
-      "features": [
-        "1 question par jour",
-        "Historique illimité",
-        "Optimisations IA illimitées",
-        "Saisie vocale",
-        "Accès à vie à toutes les fonctionnalités"
       ]
     }
   },

@@ -33,6 +33,18 @@
       }
     }
   },
+  "demo": {
+    "title": "How does it work?",
+    "howItWorks": "User Guide",
+    "step1": "Each day, you receive a new question designed to spark your creativity and help you share your story.",
+    "step2": "Take time to reflect on your answer and write it in the editor using the formatting tools.",
+    "step3": "Use the formatting buttons to bold or italicize certain words and create content that stands out.",
+    "step4": "Copy your response and share it directly on your favorite social media platforms.",
+    "tryIt": "Try it now",
+    "placeholder": "Write your answer here...",
+    "selectionRequired": "Selection required",
+    "selectionRequiredDesc": "Please select the text you want to format"
+  },
   "pricing": {
     "title": "Choose your plan",
     "subtitle": "Flexible options to share your daily life on social media",
