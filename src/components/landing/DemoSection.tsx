@@ -7,6 +7,12 @@ import { Card, CardContent } from '../ui/card';
 import { useToast } from '../ui/use-toast';
 import { Button } from '../ui/button';
 import { Copy } from 'lucide-react';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '../ui/tooltip';
 
 export const DemoSection = () => {
   const { t } = useTranslation(['landing']);
@@ -143,15 +149,24 @@ export const DemoSection = () => {
               <CardContent className="pt-6">
                 <div className="flex justify-end mb-2 gap-2">
                   <TextFormatting onFormat={handleFormat} />
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={handleCopy}
-                    className="flex items-center gap-2"
-                  >
-                    <Copy className="w-4 h-4" />
-                    {t('common:copy')}
-                  </Button>
+                  <TooltipProvider delayDuration={50}>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <div>
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            onClick={handleCopy}
+                          >
+                            <Copy className="w-4 h-4" />
+                          </Button>
+                        </div>
+                      </TooltipTrigger>
+                      <TooltipContent side="bottom">
+                        <p>{t('common:copy')}</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
                 </div>
                 <Textarea
                   ref={textareaRef}
