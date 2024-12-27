@@ -28,14 +28,14 @@ export const DemoSection = () => {
       return;
     }
 
-    const prefix = type === 'bold' ? '**' : '_';
-    const suffix = type === 'bold' ? '**' : '_';
+    // Convert text to bold or italic using Unicode characters
+    const formattedText = type === 'bold' 
+      ? selectedText.split('').map(char => char + '\u0336').join('')  // Bold using combining double line
+      : selectedText.split('').map(char => char + '\u0301').join(''); // Italic using combining acute accent
 
     const newText = 
       demoText.substring(0, start) + 
-      prefix + 
-      selectedText + 
-      suffix + 
+      formattedText + 
       demoText.substring(end);
 
     setDemoText(newText);
@@ -45,8 +45,8 @@ export const DemoSection = () => {
       if (textareaRef.current) {
         textareaRef.current.focus();
         textareaRef.current.setSelectionRange(
-          start + prefix.length,
-          end + prefix.length
+          start,
+          start + formattedText.length
         );
       }
     }, 0);
