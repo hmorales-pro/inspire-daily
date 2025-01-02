@@ -1,6 +1,6 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.3';
-import { Configuration, OpenAIApi } from 'https://esm.sh/openai@4.26.0';
+import OpenAI from 'https://esm.sh/openai@4.26.0';
 
 const OPENAI_API_KEY = Deno.env.get('OPENAI_API_KEY');
 const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
@@ -11,7 +11,7 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-const generateQuestion = async (openai: OpenAIApi): Promise<{ fr: string; en: string }> => {
+const generateQuestion = async (openai: OpenAI): Promise<{ fr: string; en: string }> => {
   console.log('Starting question generation with OpenAI...');
   
   try {
@@ -21,19 +21,19 @@ const generateQuestion = async (openai: OpenAIApi): Promise<{ fr: string; en: st
     Example: {"fr": "Quel est le plus grand obstacle que vous avez surmonté et comment cela vous a-t-il changé ?", "en": "What's the biggest obstacle you've overcome and how has it changed you?"}`;
 
     console.log('Sending request to OpenAI with model: gpt-4o');
-    const completion = await openai.createChatCompletion({
+    const completion = await openai.chat.completions.create({
       model: "gpt-4o",
       messages: [{ role: "user", content: prompt }],
       temperature: 0.7,
       max_tokens: 150,
     });
 
-    if (!completion.data.choices[0]?.message?.content) {
+    if (!completion.choices[0]?.message?.content) {
       throw new Error('No response content from OpenAI');
     }
 
-    console.log('Received response from OpenAI:', completion.data.choices[0].message.content);
-    return JSON.parse(completion.data.choices[0].message.content);
+    console.log('Received response from OpenAI:', completion.choices[0].message.content);
+    return JSON.parse(completion.choices[0].message.content);
   } catch (error) {
     console.error('Error in generateQuestion:', error);
     if (error instanceof Error) {
@@ -63,8 +63,7 @@ const handler = async (req: Request): Promise<Response> => {
     const supabase = createClient(supabaseUrl, supabaseServiceRoleKey);
     
     console.log('Initializing OpenAI client...');
-    const configuration = new Configuration({ apiKey: OPENAI_API_KEY });
-    const openai = new OpenAIApi(configuration);
+    const openai = new OpenAI({ apiKey: OPENAI_API_KEY });
 
     const { months = 1 } = await req.json().catch(() => ({}));
     console.log(`Generating questions for the next ${months} months`);
