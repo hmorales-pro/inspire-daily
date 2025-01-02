@@ -10,6 +10,8 @@ const DailyQuestion = () => {
     queryKey: ['todayQuestion', i18n.language],
     queryFn: async () => {
       const today = new Date().toISOString().split('T')[0];
+      console.log('Fetching question for date:', today);
+      
       const { data, error } = await supabase
         .from('daily_questions')
         .select('*')
@@ -19,6 +21,22 @@ const DailyQuestion = () => {
       if (error) {
         console.error('Error fetching today question:', error);
         throw error;
+      }
+
+      if (!data) {
+        console.log('No question found for today. Checking database content...');
+        // Log a few days of questions to help debug
+        const { data: recentQuestions, error: recentError } = await supabase
+          .from('daily_questions')
+          .select('display_date, question')
+          .order('display_date', { ascending: false })
+          .limit(5);
+          
+        if (recentError) {
+          console.error('Error fetching recent questions:', recentError);
+        } else {
+          console.log('Recent questions in database:', recentQuestions);
+        }
       }
 
       console.log('Today question data:', data);
