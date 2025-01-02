@@ -20,18 +20,29 @@ const generateQuestion = async (openai: OpenAIApi): Promise<{ fr: string; en: st
     Return the response in JSON format with 'fr' for French and 'en' for English translations.
     Example: {"fr": "Quel est le plus grand obstacle que vous avez surmonté et comment cela vous a-t-il changé ?", "en": "What's the biggest obstacle you've overcome and how has it changed you?"}`;
 
-    console.log('Sending request to OpenAI...');
+    console.log('Sending request to OpenAI with model: gpt-4o');
     const completion = await openai.createChatCompletion({
       model: "gpt-4o",
       messages: [{ role: "user", content: prompt }],
+      temperature: 0.7,
+      max_tokens: 150,
     });
 
-    console.log('Received response from OpenAI');
-    const responseText = completion.data.choices[0]?.message?.content || '';
-    return JSON.parse(responseText);
+    if (!completion.data.choices[0]?.message?.content) {
+      throw new Error('No response content from OpenAI');
+    }
+
+    console.log('Received response from OpenAI:', completion.data.choices[0].message.content);
+    return JSON.parse(completion.data.choices[0].message.content);
   } catch (error) {
     console.error('Error in generateQuestion:', error);
-    throw new Error(`Failed to generate question: ${error.message}`);
+    if (error instanceof Error) {
+      console.error('Error details:', error.message);
+      if ('response' in error) {
+        console.error('OpenAI API response:', error.response);
+      }
+    }
+    throw error;
   }
 };
 
@@ -55,7 +66,7 @@ const handler = async (req: Request): Promise<Response> => {
     const configuration = new Configuration({ apiKey: OPENAI_API_KEY });
     const openai = new OpenAIApi(configuration);
 
-    const { months = 12 } = await req.json().catch(() => ({}));
+    const { months = 1 } = await req.json().catch(() => ({}));
     console.log(`Generating questions for the next ${months} months`);
 
     // Calculate dates for the specified number of months
@@ -88,6 +99,9 @@ const handler = async (req: Request): Promise<Response> => {
 
     console.log(`Found ${missingDates.length} missing dates to generate questions for`);
 
+    let successCount = 0;
+    let errorCount = 0;
+
     // Generate and insert questions for missing dates
     for (const date of missingDates) {
       try {
@@ -106,21 +120,29 @@ const handler = async (req: Request): Promise<Response> => {
 
         if (insertError) {
           console.error(`Error inserting question for ${date}:`, insertError);
+          errorCount++;
         } else {
           console.log(`Successfully generated and inserted question for ${date}`);
+          successCount++;
         }
 
-        // Add a small delay to avoid rate limiting
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        // Add a delay between requests to avoid rate limiting
+        await new Promise(resolve => setTimeout(resolve, 2000));
       } catch (error) {
         console.error(`Error processing date ${date}:`, error);
+        errorCount++;
       }
     }
 
     return new Response(
       JSON.stringify({ 
         success: true, 
-        message: `Generated questions for ${missingDates.length} dates` 
+        message: `Generated ${successCount} questions successfully. ${errorCount} errors occurred.`,
+        details: {
+          totalDates: missingDates.length,
+          successCount,
+          errorCount,
+        }
       }),
       { 
         headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -131,7 +153,10 @@ const handler = async (req: Request): Promise<Response> => {
   } catch (error) {
     console.error('Error in generate-monthly-questions function:', error);
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ 
+        error: error instanceof Error ? error.message : 'Unknown error occurred',
+        details: error
+      }),
       { 
         headers: { ...corsHeaders, "Content-Type": "application/json" },
         status: 500 
