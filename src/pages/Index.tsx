@@ -60,7 +60,7 @@ const Index = () => {
         .from('daily_questions')
         .select('*')
         .eq('display_date', today)
-        .single();
+        .maybeSingle();
 
       if (error) {
         console.error('Error fetching today question:', error);
@@ -104,7 +104,7 @@ const Index = () => {
             {t('home:title')}
           </h1>
           
-          {isAuthenticated && (
+          {profile?.subscription_type === 'premium' && (
             <div className="mb-6 flex justify-center">
               <GenerateQuestionsButton />
             </div>
