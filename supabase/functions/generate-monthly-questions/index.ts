@@ -12,36 +12,49 @@ const corsHeaders = {
 };
 
 const generateQuestion = async (openai: OpenAIApi): Promise<{ fr: string; en: string }> => {
-  const prompt = `Generate a thought-provoking question for self-reflection and personal growth. 
-  The question should be open-ended and encourage deep thinking.
-  Return the response in JSON format with 'fr' for French and 'en' for English translations.
-  Example: {"fr": "Quel est le plus grand obstacle que vous avez surmonté et comment cela vous a-t-il changé ?", "en": "What's the biggest obstacle you've overcome and how has it changed you?"}`;
-
-  const completion = await openai.createChatCompletion({
-    model: "gpt-4",
-    messages: [{ role: "user", content: prompt }],
-  });
-
+  console.log('Starting question generation with OpenAI...');
+  
   try {
+    const prompt = `Generate a thought-provoking question for self-reflection and personal growth. 
+    The question should be open-ended and encourage deep thinking.
+    Return the response in JSON format with 'fr' for French and 'en' for English translations.
+    Example: {"fr": "Quel est le plus grand obstacle que vous avez surmonté et comment cela vous a-t-il changé ?", "en": "What's the biggest obstacle you've overcome and how has it changed you?"}`;
+
+    console.log('Sending request to OpenAI...');
+    const completion = await openai.createChatCompletion({
+      model: "gpt-4o",
+      messages: [{ role: "user", content: prompt }],
+    });
+
+    console.log('Received response from OpenAI');
     const responseText = completion.data.choices[0]?.message?.content || '';
     return JSON.parse(responseText);
   } catch (error) {
-    console.error('Error parsing OpenAI response:', error);
-    throw new Error('Failed to generate question');
+    console.error('Error in generateQuestion:', error);
+    throw new Error(`Failed to generate question: ${error.message}`);
   }
 };
 
 const handler = async (req: Request): Promise<Response> => {
+  console.log('Starting generate-monthly-questions function...');
+
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
+    if (!OPENAI_API_KEY) {
+      console.error('OpenAI API key is not configured');
+      throw new Error('OpenAI API key is not configured');
+    }
+
+    console.log('Initializing Supabase client...');
     const supabase = createClient(supabaseUrl, supabaseServiceRoleKey);
+    
+    console.log('Initializing OpenAI client...');
     const configuration = new Configuration({ apiKey: OPENAI_API_KEY });
     const openai = new OpenAIApi(configuration);
 
-    // Get the request body to check if we want to generate for multiple months
     const { months = 12 } = await req.json().catch(() => ({}));
     console.log(`Generating questions for the next ${months} months`);
 
@@ -49,7 +62,6 @@ const handler = async (req: Request): Promise<Response> => {
     const allDates = [];
     const today = new Date();
     
-    // Generate dates for the specified number of months
     for (let i = 0; i < months; i++) {
       const currentMonth = new Date(today.getFullYear(), today.getMonth() + i, 1);
       const lastDay = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0).getDate();
@@ -60,22 +72,29 @@ const handler = async (req: Request): Promise<Response> => {
       }
     }
 
-    // Check which dates don't have questions yet
-    const { data: existingQuestions } = await supabase
+    console.log('Checking existing questions...');
+    const { data: existingQuestions, error: queryError } = await supabase
       .from('daily_questions')
       .select('display_date')
       .in('display_date', allDates);
 
+    if (queryError) {
+      console.error('Error querying existing questions:', queryError);
+      throw queryError;
+    }
+
     const existingDates = new Set(existingQuestions?.map(q => q.display_date) || []);
     const missingDates = allDates.filter(date => !existingDates.has(date));
 
-    console.log(`Generating questions for ${missingDates.length} missing dates`);
+    console.log(`Found ${missingDates.length} missing dates to generate questions for`);
 
     // Generate and insert questions for missing dates
     for (const date of missingDates) {
       try {
+        console.log(`Generating question for date: ${date}`);
         const { fr, en } = await generateQuestion(openai);
         
+        console.log(`Inserting question for date ${date}:`, { fr, en });
         const { error: insertError } = await supabase
           .from('daily_questions')
           .insert([{
@@ -88,13 +107,13 @@ const handler = async (req: Request): Promise<Response> => {
         if (insertError) {
           console.error(`Error inserting question for ${date}:`, insertError);
         } else {
-          console.log(`Successfully generated question for ${date}`);
+          console.log(`Successfully generated and inserted question for ${date}`);
         }
 
         // Add a small delay to avoid rate limiting
         await new Promise(resolve => setTimeout(resolve, 1000));
       } catch (error) {
-        console.error(`Error generating question for ${date}:`, error);
+        console.error(`Error processing date ${date}:`, error);
       }
     }
 
