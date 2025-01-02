@@ -10,7 +10,6 @@ import { useResponseActions } from '@/components/home/useResponseActions';
 import Header from '@/components/Header';
 import { BackButton } from '@/components/BackButton';
 import { useEffect, useState } from 'react';
-import GenerateQuestionsButton from '@/components/GenerateQuestionsButton';
 
 const Index = () => {
   const { t } = useTranslation(['home', 'common']);
@@ -103,12 +102,6 @@ const Index = () => {
           <h1 className="text-2xl font-bold text-center text-primary-dark mb-8">
             {t('home:title')}
           </h1>
-          
-          {profile?.subscription_type === 'premium' && (
-            <div className="mb-6 flex justify-center">
-              <GenerateQuestionsButton />
-            </div>
-          )}
           
           <div className="space-y-6">
             <DailyQuestion />
