@@ -41,28 +41,24 @@ const handler = async (req: Request): Promise<Response> => {
     const configuration = new Configuration({ apiKey: OPENAI_API_KEY });
     const openai = new OpenAIApi(configuration);
 
-    // Get the current date and next month's date
+    // Get the request body to check if we want to generate for multiple months
+    const { months = 12 } = await req.json().catch(() => ({}));
+    console.log(`Generating questions for the next ${months} months`);
+
+    // Calculate dates for the specified number of months
+    const allDates = [];
     const today = new Date();
-    const nextMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1);
-
-    // Generate questions for the remaining days of the current month
-    const currentMonthDays = [];
-    const tempDate = new Date(today);
-    while (tempDate.getMonth() === today.getMonth()) {
-      currentMonthDays.push(tempDate.toISOString().split('T')[0]);
-      tempDate.setDate(tempDate.getDate() + 1);
+    
+    // Generate dates for the specified number of months
+    for (let i = 0; i < months; i++) {
+      const currentMonth = new Date(today.getFullYear(), today.getMonth() + i, 1);
+      const lastDay = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0).getDate();
+      
+      for (let day = 1; day <= lastDay; day++) {
+        const date = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day);
+        allDates.push(date.toISOString().split('T')[0]);
+      }
     }
-
-    // Generate questions for all days in the next month
-    const nextMonthDays = [];
-    const tempNextDate = new Date(nextMonth);
-    while (tempNextDate.getMonth() === nextMonth.getMonth()) {
-      nextMonthDays.push(tempNextDate.toISOString().split('T')[0]);
-      tempNextDate.setDate(tempNextDate.getDate() + 1);
-    }
-
-    // Combine all dates
-    const allDates = [...currentMonthDays, ...nextMonthDays];
 
     // Check which dates don't have questions yet
     const { data: existingQuestions } = await supabase
