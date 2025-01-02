@@ -14,7 +14,7 @@ const DailyQuestion = () => {
         .from('daily_questions')
         .select('*')
         .eq('display_date', today)
-        .single();
+        .maybeSingle();
 
       if (error) {
         console.error('Error fetching today question:', error);
