@@ -11,21 +11,34 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-const generateQuestion = async (openai: OpenAI): Promise<{ fr: string; en: string }> => {
-  console.log('Starting question generation with OpenAI...');
+const generateDayOneQuestion = async (openai: OpenAI): Promise<{ fr: string; en: string }> => {
+  console.log('Starting Day One style question generation with OpenAI...');
   
   try {
-    const prompt = `Generate a thought-provoking question for self-reflection and personal growth. 
-    The question should be open-ended and encourage deep thinking.
+    const prompt = `Generate a reflective journaling question in the style of Day One app. 
+    The question should encourage personal reflection, emotional awareness, and meaningful documentation of daily life.
+    Focus on one of these themes randomly:
+    1. Daily highlights and memorable moments
+    2. Emotional reflection and feelings
+    3. Gratitude and appreciation
+    4. Personal growth and learning
+    5. Meaningful interactions and conversations
+    6. Sensory experiences and observations
+    7. Goals and aspirations
+    8. Places and environments
+    
     Return the response in JSON format with 'fr' for French and 'en' for English translations.
-    Example: {"fr": "Quel est le plus grand obstacle que vous avez surmonté et comment cela vous a-t-il changé ?", "en": "What's the biggest obstacle you've overcome and how has it changed you?"}`;
+    Example: {
+      "fr": "Quel moment de votre journée mérite d'être immortalisé ? Décrivez les émotions, les sensations et les détails qui le rendent spécial.",
+      "en": "What moment from your day deserves to be immortalized? Describe the emotions, sensations, and details that make it special."
+    }`;
 
     console.log('Sending request to OpenAI with model: gpt-4o');
     const completion = await openai.chat.completions.create({
       model: "gpt-4o",
       messages: [{ role: "user", content: prompt }],
       temperature: 0.7,
-      max_tokens: 150,
+      max_tokens: 200,
     });
 
     if (!completion.choices[0]?.message?.content) {
@@ -35,7 +48,7 @@ const generateQuestion = async (openai: OpenAI): Promise<{ fr: string; en: strin
     console.log('Received response from OpenAI:', completion.choices[0].message.content);
     return JSON.parse(completion.choices[0].message.content);
   } catch (error) {
-    console.error('Error in generateQuestion:', error);
+    console.error('Error in generateDayOneQuestion:', error);
     if (error instanceof Error) {
       console.error('Error details:', error.message);
       if ('response' in error) {
@@ -104,8 +117,8 @@ const handler = async (req: Request): Promise<Response> => {
     // Generate and insert questions for missing dates
     for (const date of missingDates) {
       try {
-        console.log(`Generating question for date: ${date}`);
-        const { fr, en } = await generateQuestion(openai);
+        console.log(`Generating Day One style question for date: ${date}`);
+        const { fr, en } = await generateDayOneQuestion(openai);
         
         console.log(`Inserting question for date ${date}:`, { fr, en });
         const { error: insertError } = await supabase
@@ -136,7 +149,7 @@ const handler = async (req: Request): Promise<Response> => {
     return new Response(
       JSON.stringify({ 
         success: true, 
-        message: `Generated ${successCount} questions successfully. ${errorCount} errors occurred.`,
+        message: `Generated ${successCount} Day One style questions successfully. ${errorCount} errors occurred.`,
         details: {
           totalDates: missingDates.length,
           successCount,
