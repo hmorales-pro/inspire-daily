@@ -63,6 +63,59 @@ const generateDayOneQuestion = async (): Promise<{ fr: string; en: string }> => 
   }
 };
 
+const processBatch = async (dates: string[], batchSize: number = 5) => {
+  const results = {
+    success: 0,
+    errors: 0,
+    processedDates: [] as string[],
+  };
+
+  // Process dates in batches
+  for (let i = 0; i < dates.length; i += batchSize) {
+    const batch = dates.slice(i, i + batchSize);
+    console.log(`Processing batch ${i / batchSize + 1}, dates:`, batch);
+
+    // Process each date in the current batch concurrently
+    const batchPromises = batch.map(async (date) => {
+      try {
+        console.log(`Generating question for date: ${date}`);
+        const { fr, en } = await generateDayOneQuestion();
+        
+        const { error: insertError } = await supabase
+          .from('daily_questions')
+          .insert([{
+            question: fr,
+            question_en: en,
+            display_date: date,
+          }]);
+
+        if (insertError) {
+          console.error(`Error inserting question for ${date}:`, insertError);
+          results.errors++;
+        } else {
+          console.log(`Successfully generated and inserted question for ${date}`);
+          results.success++;
+          results.processedDates.push(date);
+        }
+      } catch (error) {
+        console.error(`Error processing date ${date}:`, error);
+        results.errors++;
+      }
+    });
+
+    // Wait for all promises in the current batch to complete
+    await Promise.all(batchPromises);
+
+    // Add a delay between batches to avoid rate limiting
+    if (i + batchSize < dates.length) {
+      console.log('Waiting between batches...');
+      await new Promise(resolve => setTimeout(resolve, 5000));
+    }
+  }
+
+  return results;
+};
+
 serve(async (req) => {
   console.log('Starting generate-questions-now function...');
 
@@ -95,48 +148,31 @@ serve(async (req) => {
 
     console.log(`Found ${missingDates.length} missing dates to generate questions for:`, missingDates);
 
-    let successCount = 0;
-    let errorCount = 0;
-
-    // Generate and insert questions for missing dates
-    for (const date of missingDates) {
-      try {
-        console.log(`Generating Day One style question for date: ${date}`);
-        const { fr, en } = await generateDayOneQuestion();
-        
-        console.log(`Inserting question for date ${date}:`, { fr, en });
-        const { error: insertError } = await supabase
-          .from('daily_questions')
-          .insert([{
-            question: fr,
-            question_en: en,
-            display_date: date,
-          }]);
-
-        if (insertError) {
-          console.error(`Error inserting question for ${date}:`, insertError);
-          errorCount++;
-        } else {
-          console.log(`Successfully generated and inserted question for ${date}`);
-          successCount++;
+    if (missingDates.length === 0) {
+      return new Response(
+        JSON.stringify({ 
+          success: true, 
+          message: "No new questions needed to be generated.",
+          details: { totalDates: 0, successCount: 0, errorCount: 0 }
+        }),
+        { 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+          status: 200 
         }
-
-        // Add a delay between requests to avoid rate limiting
-        await new Promise(resolve => setTimeout(resolve, 2000));
-      } catch (error) {
-        console.error(`Error processing date ${date}:`, error);
-        errorCount++;
-      }
+      );
     }
+
+    const results = await processBatch(missingDates);
 
     return new Response(
       JSON.stringify({ 
         success: true, 
-        message: `Generated ${successCount} questions successfully. ${errorCount} errors occurred.`,
+        message: `Generated ${results.success} questions successfully. ${results.errors} errors occurred.`,
         details: {
           totalDates: missingDates.length,
-          successCount,
-          errorCount,
+          successCount: results.success,
+          errorCount: results.errors,
+          processedDates: results.processedDates,
           missingDates,
         }
       }),
