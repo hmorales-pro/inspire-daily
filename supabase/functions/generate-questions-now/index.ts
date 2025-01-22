@@ -20,28 +20,30 @@ const generateDayOneQuestion = async (): Promise<{ fr: string; en: string }> => 
   console.log('Starting Day One style question generation with OpenAI...');
   
   try {
-    const prompt = `Generate a reflective journaling question in the style of Day One app. 
-    The question should encourage personal reflection, emotional awareness, and meaningful documentation of daily life.
-    Focus on one of these themes randomly:
-    1. Daily highlights and memorable moments
-    2. Emotional reflection and feelings
-    3. Gratitude and appreciation
-    4. Personal growth and learning
-    5. Meaningful interactions and conversations
-    6. Sensory experiences and observations
-    7. Goals and aspirations
-    8. Places and environments
-    
-    Return the response in JSON format with 'fr' for French and 'en' for English translations.
-    Example: {
-      "fr": "Quel moment de votre journée mérite d'être immortalisé ? Décrivez les émotions, les sensations et les détails qui le rendent spécial.",
-      "en": "What moment from your day deserves to be immortalized? Describe the emotions, sensations, and details that make it special."
-    }`;
-
-    console.log('Sending request to OpenAI with model: gpt-4o');
     const completion = await openai.chat.completions.create({
       model: "gpt-4o",
-      messages: [{ role: "user", content: prompt }],
+      messages: [
+        {
+          role: "user",
+          content: `Generate a reflective journaling question in the style of Day One app. 
+          The question should encourage personal reflection, emotional awareness, and meaningful documentation of daily life.
+          Focus on one of these themes randomly:
+          1. Daily highlights and memorable moments
+          2. Emotional reflection and feelings
+          3. Gratitude and appreciation
+          4. Personal growth and learning
+          5. Meaningful interactions and conversations
+          6. Sensory experiences and observations
+          7. Goals and aspirations
+          8. Places and environments
+          
+          Return the response in JSON format with 'fr' for French and 'en' for English translations.
+          Example: {
+            "fr": "Quel moment de votre journée mérite d'être immortalisé ? Décrivez les émotions, les sensations et les détails qui le rendent spécial.",
+            "en": "What moment from your day deserves to be immortalized? Describe the emotions, sensations, and details that make it special."
+          }`
+        }
+      ],
       temperature: 0.7,
       max_tokens: 200,
     });
@@ -54,6 +56,9 @@ const generateDayOneQuestion = async (): Promise<{ fr: string; en: string }> => 
     return JSON.parse(completion.choices[0].message.content);
   } catch (error) {
     console.error('Error in generateDayOneQuestion:', error);
+    if (error instanceof Error) {
+      console.error('Error details:', error.message);
+    }
     throw error;
   }
 };
