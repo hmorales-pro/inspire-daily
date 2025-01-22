@@ -56,60 +56,69 @@ const generateDayOneQuestion = async (): Promise<{ fr: string; en: string }> => 
     return JSON.parse(completion.choices[0].message.content);
   } catch (error) {
     console.error('Error in generateDayOneQuestion:', error);
-    if (error instanceof Error) {
-      console.error('Error details:', error.message);
-    }
     throw error;
   }
 };
 
-const processBatch = async (dates: string[], batchSize: number = 5) => {
+const processBatch = async (dates: string[], batchSize: number = 3) => {
   const results = {
     success: 0,
     errors: 0,
     processedDates: [] as string[],
   };
 
-  // Process dates in batches
+  // Process dates in smaller batches
   for (let i = 0; i < dates.length; i += batchSize) {
     const batch = dates.slice(i, i + batchSize);
     console.log(`Processing batch ${i / batchSize + 1}, dates:`, batch);
 
-    // Process each date in the current batch concurrently
-    const batchPromises = batch.map(async (date) => {
+    // Process each date in the current batch sequentially to avoid rate limits
+    for (const date of batch) {
       try {
         console.log(`Generating question for date: ${date}`);
         const { fr, en } = await generateDayOneQuestion();
         
-        const { error: insertError } = await supabase
-          .from('daily_questions')
-          .insert([{
-            question: fr,
-            question_en: en,
-            display_date: date,
-          }]);
+        // Add retry logic for database insertion
+        let retryCount = 0;
+        const maxRetries = 3;
+        
+        while (retryCount < maxRetries) {
+          const { error: insertError } = await supabase
+            .from('daily_questions')
+            .insert([{
+              question: fr,
+              question_en: en,
+              display_date: date,
+            }]);
 
-        if (insertError) {
-          console.error(`Error inserting question for ${date}:`, insertError);
-          results.errors++;
-        } else {
-          console.log(`Successfully generated and inserted question for ${date}`);
-          results.success++;
-          results.processedDates.push(date);
+          if (!insertError) {
+            console.log(`Successfully generated and inserted question for ${date}`);
+            results.success++;
+            results.processedDates.push(date);
+            break;
+          } else {
+            console.error(`Error inserting question for ${date} (attempt ${retryCount + 1}):`, insertError);
+            retryCount++;
+            if (retryCount === maxRetries) {
+              results.errors++;
+            }
+            // Wait before retrying
+            await new Promise(resolve => setTimeout(resolve, 1000));
+          }
         }
+
+        // Add a delay between each question generation to avoid rate limiting
+        await new Promise(resolve => setTimeout(resolve, 3000));
       } catch (error) {
         console.error(`Error processing date ${date}:`, error);
         results.errors++;
       }
-    });
+    }
 
-    // Wait for all promises in the current batch to complete
-    await Promise.all(batchPromises);
-
-    // Add a delay between batches to avoid rate limiting
+    // Add a longer delay between batches
     if (i + batchSize < dates.length) {
       console.log('Waiting between batches...');
-      await new Promise(resolve => setTimeout(resolve, 5000));
+      await new Promise(resolve => setTimeout(resolve, 10000));
     }
   }
 
