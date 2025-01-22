@@ -3,16 +3,20 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.3';
 import { OpenAI } from "https://deno.land/x/openai@v4.24.0/mod.ts";
 
-const OPENAI_API_KEY = Deno.env.get('OPENAI_API_KEY');
+const openai = new OpenAI({
+  apiKey: Deno.env.get('OPENAI_API_KEY'),
+});
+
 const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-const supabaseServiceRoleKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-const generateDayOneQuestion = async (openai: OpenAI): Promise<{ fr: string; en: string }> => {
+const generateDayOneQuestion = async (): Promise<{ fr: string; en: string }> => {
   console.log('Starting Day One style question generation with OpenAI...');
   
   try {
@@ -54,25 +58,14 @@ const generateDayOneQuestion = async (openai: OpenAI): Promise<{ fr: string; en:
   }
 };
 
-const handler = async (req: Request): Promise<Response> => {
+serve(async (req) => {
   console.log('Starting generate-questions-now function...');
 
-  if (req.method === "OPTIONS") {
+  if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    if (!OPENAI_API_KEY) {
-      console.error('OpenAI API key is not configured');
-      throw new Error('OpenAI API key is not configured');
-    }
-
-    console.log('Initializing Supabase client...');
-    const supabase = createClient(supabaseUrl, supabaseServiceRoleKey);
-    
-    console.log('Initializing OpenAI client...');
-    const openai = new OpenAI({ apiKey: OPENAI_API_KEY });
-
     // Generate questions for the next 30 days
     const startDate = new Date();
     const dates = Array.from({ length: 30 }, (_, i) => {
@@ -95,7 +88,7 @@ const handler = async (req: Request): Promise<Response> => {
     const existingDates = new Set(existingQuestions?.map(q => q.display_date) || []);
     const missingDates = dates.filter(date => !existingDates.has(date));
 
-    console.log(`Found ${missingDates.length} missing dates to generate questions for`);
+    console.log(`Found ${missingDates.length} missing dates to generate questions for:`, missingDates);
 
     let successCount = 0;
     let errorCount = 0;
@@ -104,7 +97,7 @@ const handler = async (req: Request): Promise<Response> => {
     for (const date of missingDates) {
       try {
         console.log(`Generating Day One style question for date: ${date}`);
-        const { fr, en } = await generateDayOneQuestion(openai);
+        const { fr, en } = await generateDayOneQuestion();
         
         console.log(`Inserting question for date ${date}:`, { fr, en });
         const { error: insertError } = await supabase
@@ -139,10 +132,11 @@ const handler = async (req: Request): Promise<Response> => {
           totalDates: missingDates.length,
           successCount,
           errorCount,
+          missingDates,
         }
       }),
       { 
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         status: 200 
       }
     );
@@ -155,11 +149,9 @@ const handler = async (req: Request): Promise<Response> => {
         details: error
       }),
       { 
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-        status: 500 
+        status: 500,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       }
     );
   }
-};
-
-serve(handler);
+});
